@@ -521,7 +521,8 @@ dnac_response:
 from ansible.module_utils.basic import AnsibleModule
 from ansible_collections.cisco.dnac.plugins.module_utils.dnac import (
     DnacBase,
-    validate_list_of_dicts
+    validate_list_of_dicts,
+    dnac_telemetry
 )
 import time
 
@@ -537,7 +538,7 @@ class LanAutomation(DnacBase):
         self.updated_hostname, self.no_hostname_updated = [], []
         self.added_link, self.no_link_added = [], []
         self.deleted_link, self.no_link_deleted = [], []
-
+        dnac_telemetry(__file__.split('.py')[0],self.dnac_version_in_string)
     def validate_input(self):
         """
         Validate the fields provided in the playbook.  Checks the

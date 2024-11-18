@@ -446,7 +446,8 @@ from ansible_collections.cisco.dnac.plugins.module_utils.dnac import (
     DnacBase,
     validate_list_of_dicts,
     get_dict_result,
-    validate_str
+    validate_str,
+    dnac_telemetry
 )
 
 import os
@@ -463,6 +464,7 @@ class Site(DnacBase):
         self.deleted_site_list, self.site_absent_list = [], []
         self.keymap = {}
         self.handle_config = {}
+        dnac_telemetry(__file__.split('.py')[0],self.dnac_version_in_string)
 
     def validate_input(self):
         """

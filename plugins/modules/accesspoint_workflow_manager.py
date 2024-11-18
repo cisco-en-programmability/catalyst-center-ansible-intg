@@ -1656,6 +1656,7 @@ from ansible_collections.cisco.dnac.plugins.module_utils.dnac import (
     validate_list_of_dicts,
     validate_str,
     get_dict_result,
+    dnac_telemetry
 )
 from ansible.module_utils.basic import AnsibleModule
 
@@ -1686,6 +1687,7 @@ class Accesspoint(DnacBase):
                            124, 128, 132, 136, 140, 144, 149, 153, 157, 161, 165, 169, 173),
             "6ghz_radio": list(range(1, 234, 4))
         }
+        dnac_telemetry(__file__.split('.py')[0],self.dnac_version_in_string)
 
     def validate_input_yml(self):
         """

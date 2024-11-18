@@ -298,7 +298,8 @@ import json
 from ansible_collections.cisco.dnac.plugins.module_utils.dnac import (
     DnacBase,
     validate_list_of_dicts,
-    validate_str
+    validate_str,
+    dnac_telemetry
 )
 from ansible.module_utils.basic import AnsibleModule
 import time
@@ -314,6 +315,7 @@ class DeviceReplacement(DnacBase):
         self.payload = module.params
         self.keymap = {}
         self.faulty_device, self.replacement_device = [], []
+        dnac_telemetry(__file__.split('.py')[0],self.dnac_version_in_string)
 
     def pprint(self, jsondata):
         return json.dumps(jsondata, indent=4, separators=(',', ': '))

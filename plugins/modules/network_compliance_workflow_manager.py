@@ -352,7 +352,8 @@ sample_response_3:
 from ansible.module_utils.basic import AnsibleModule
 from ansible_collections.cisco.dnac.plugins.module_utils.dnac import (
     DnacBase,
-    validate_list_of_dicts
+    validate_list_of_dicts,
+    dnac_telemetry
 )
 
 
@@ -370,6 +371,7 @@ class NetworkCompliance(DnacBase):
         super().__init__(module)
         self.skipped_run_compliance_devices_list = []
         self.skipped_sync_device_configs_list = []
+        dnac_telemetry(__file__.split('.py')[0],self.dnac_version_in_string)
 
     def validate_input(self):
         """

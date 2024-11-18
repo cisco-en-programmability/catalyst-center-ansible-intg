@@ -933,6 +933,7 @@ from ansible.module_utils.basic import AnsibleModule
 from ansible_collections.cisco.dnac.plugins.module_utils.dnac import (
     DnacBase,
     validate_list_of_dicts,
+    dnac_telemetry,
 )
 import re
 import time
@@ -947,7 +948,7 @@ class Events(DnacBase):
         self.create_dest, self.update_dest, self.no_update_dest = [], [], []
         self.create_notification, self.update_notification, self.no_update_notification = [], [], []
         self.delete_dest, self.delete_notification, self.absent_dest, self.absent_notification = [], [], [], []
-
+        dnac_telemetry(__file__.split('.py')[0],self.dnac_version_in_string)
     def validate_input(self):
         """
         Validate the fields provided in the playbook.

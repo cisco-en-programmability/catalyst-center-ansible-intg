@@ -334,6 +334,7 @@ from ansible_collections.cisco.dnac.plugins.module_utils.dnac import (
     validate_list_of_dicts,
     get_dict_result,
     dnac_compare_equality,
+    dnac_telemetry
 )
 
 
@@ -347,6 +348,7 @@ class FabricTransit(DnacBase):
         ]
         self.fabric_transits_obj_params = self.get_obj_params("fabricTransits")
         self.max_timeout = self.params.get('dnac_api_task_timeout')
+        dnac_telemetry(__file__.split('.py')[0],self.dnac_version_in_string)
 
     def validate_input(self):
         """

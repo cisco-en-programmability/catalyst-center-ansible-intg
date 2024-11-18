@@ -881,7 +881,8 @@ import re
 from ansible_collections.cisco.dnac.plugins.module_utils.dnac import (
     DnacBase,
     validate_list_of_dicts,
-    validate_list
+    validate_list,
+    dnac_telemetry
 )
 from ansible.module_utils.basic import AnsibleModule
 
@@ -896,6 +897,7 @@ class UserandRole(DnacBase):
         self.created_user, self.updated_user, self.no_update_user = [], [], []
         self.created_role, self.updated_role, self.no_update_role = [], [], []
         self.deleted_user, self.deleted_role = [], []
+        dnac_telemetry(__file__.split('.py')[0],self.dnac_version_in_string)
 
     def validate_input_yml(self, user_role_details):
         """

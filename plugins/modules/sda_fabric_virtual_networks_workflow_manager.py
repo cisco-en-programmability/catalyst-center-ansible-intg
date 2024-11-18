@@ -516,6 +516,7 @@ from ansible.module_utils.basic import AnsibleModule
 from ansible_collections.cisco.dnac.plugins.module_utils.dnac import (
     DnacBase,
     validate_list_of_dicts,
+    dnac_telemetry,
 )
 import copy
 import re
@@ -548,6 +549,8 @@ class VirtualNetwork(DnacBase):
 
         self.deleted_anycast_gateways = []
         self.absent_anycast_gateways = []
+
+        dnac_telemetry(__file__.split('.py')[0],self.dnac_version_in_string)
 
     def validate_input(self):
         """

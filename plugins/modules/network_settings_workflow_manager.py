@@ -677,6 +677,7 @@ from ansible_collections.cisco.dnac.plugins.module_utils.dnac import (
     validate_list_of_dicts,
     get_dict_result,
     dnac_compare_equality,
+    dnac_telemetry
 )
 
 
@@ -694,6 +695,7 @@ class NetworkSettings(DnacBase):
         self.reserve_pool_obj_params = self.get_obj_params("ReservePool")
         self.network_obj_params = self.get_obj_params("Network")
         self.all_reserved_pool_details = {}
+        dnac_telemetry(__file__.split('.py')[0],self.dnac_version_in_string)
 
     def validate_input(self):
         """

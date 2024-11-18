@@ -795,6 +795,7 @@ from ansible_collections.cisco.dnac.plugins.module_utils.dnac import (
     DnacBase,
     validate_list_of_dicts,
     get_dict_result,
+    dnac_telemetry,
 )
 
 
@@ -810,6 +811,7 @@ class DeviceCredential(DnacBase):
                 "apply_credential": {}
             }
         ]
+        dnac_telemetry(__file__.split('.py')[0],self.dnac_version_in_string)
 
     def validate_input(self):
         """

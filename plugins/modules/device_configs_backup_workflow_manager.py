@@ -381,7 +381,8 @@ except ImportError:
 from ansible.module_utils.basic import AnsibleModule
 from ansible_collections.cisco.dnac.plugins.module_utils.dnac import (
     DnacBase,
-    validate_list_of_dicts
+    validate_list_of_dicts,
+    dnac_telemetry
 )
 from io import BytesIO
 import random
@@ -398,6 +399,7 @@ class Device_configs_backup(DnacBase):
     def __init__(self, module):
         super().__init__(module)
         self.skipped_devices_list = []
+        dnac_telemetry(__file__.split('.py')[0],self.dnac_version_in_string)
 
     def validate_input(self):
         """

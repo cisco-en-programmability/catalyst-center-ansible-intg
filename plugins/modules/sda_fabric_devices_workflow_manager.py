@@ -926,6 +926,7 @@ from ansible_collections.cisco.dnac.plugins.module_utils.dnac import (
     DnacBase,
     validate_list_of_dicts,
     get_dict_result,
+    dnac_telemetry,
 )
 
 
@@ -939,6 +940,7 @@ class FabricDevices(DnacBase):
         self.fabric_l3_handoff_sda_obj_params = self.get_obj_params("fabricSdaL3Handoff")
         self.fabric_l3_handoff_ip_obj_params = self.get_obj_params("fabricIpL3Handoff")
         self.max_timeout = self.params.get('dnac_api_task_timeout')
+        dnac_telemetry(__file__.split('.py')[0],self.dnac_version_in_string)
 
     def validate_input(self):
         """

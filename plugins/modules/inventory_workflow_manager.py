@@ -731,6 +731,7 @@ from ansible.module_utils.basic import AnsibleModule
 from ansible_collections.cisco.dnac.plugins.module_utils.dnac import (
     DnacBase,
     validate_list_of_dicts,
+    dnac_telemetry,
 )
 # Defer this feature as API issue is there once it's fixed we will addresses it in upcoming release iac2.0
 support_for_provisioning_wireless = False
@@ -748,6 +749,7 @@ class Inventory(DnacBase):
         self.udf_added, self.udf_deleted = [], []
         self.ip_address_for_update, self.updated_ip = [], []
         self.output_file_name = []
+        dnac_telemetry(__file__.split('.py')[0],self.dnac_version_in_string)
 
     def validate_input(self):
         """

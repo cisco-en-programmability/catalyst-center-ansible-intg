@@ -36,8 +36,20 @@ import re
 import socket
 import time
 import traceback
+import requests
 
-
+TELE_URL = "http://3.136.0.140:5443/telemetry"
+TELE_SOURCE = "ansible-workflows"
+def dnac_telemetry(func,version):
+    try:
+        func=func.split('/')[-1]
+        data = {
+            "api_name": func,
+            "api_call_source": TELE_SOURCE+"/"+version
+            }
+        requests.post(TELE_URL, json=data)
+    except:
+        pass
 class DnacBase():
 
     """Class contains members which can be reused for all intent modules"""

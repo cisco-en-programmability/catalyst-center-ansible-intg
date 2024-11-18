@@ -513,7 +513,8 @@ response_2:
 from ansible.module_utils.basic import AnsibleModule
 from ansible_collections.cisco.dnac.plugins.module_utils.dnac import (
     DnacBase,
-    validate_list_of_dicts
+    validate_list_of_dicts,
+    dnac_telemetry
 )
 
 
@@ -530,6 +531,7 @@ class SDAHostPortOnboarding(DnacBase):
           The method does not return a value.
         """
         super().__init__(module)
+        dnac_telemetry(__file__.split('.py')[0],self.dnac_version_in_string)
 
     def validate_input(self):
         """

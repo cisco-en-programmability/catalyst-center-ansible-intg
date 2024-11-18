@@ -284,6 +284,7 @@ from ansible.module_utils.basic import AnsibleModule
 from ansible_collections.cisco.dnac.plugins.module_utils.dnac import (
     DnacBase,
     validate_list_of_dicts,
+    dnac_telemetry
 )
 
 
@@ -297,6 +298,7 @@ class FabricSitesZones(DnacBase):
         self.create_zone, self.update_zone, self.no_update_zone = [], [], []
         self.update_auth_profile, self.no_update_profile = [], []
         self.delete_site, self.delete_zone, self.absent_site, self.absent_zone = [], [], [], []
+        dnac_telemetry(__file__.split('.py')[0],self.dnac_version_in_string)
 
     def validate_input(self):
         """
