@@ -531,7 +531,7 @@ class SDAHostPortOnboarding(DnacBase):
           The method does not return a value.
         """
         super().__init__(module)
-        dnac_telemetry(__file__.split('.py')[0],self.dnac_version_in_string)
+        dnac_telemetry(__file__.split('.py')[0],self.dnac_version_in_string,self.dnac_host)
 
     def validate_input(self):
         """

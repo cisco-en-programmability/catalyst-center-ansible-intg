@@ -315,7 +315,7 @@ class DeviceReplacement(DnacBase):
         self.payload = module.params
         self.keymap = {}
         self.faulty_device, self.replacement_device = [], []
-        dnac_telemetry(__file__.split('.py')[0],self.dnac_version_in_string)
+        dnac_telemetry(__file__.split('.py')[0],self.dnac_version_in_string,self.dnac_host)
 
     def pprint(self, jsondata):
         return json.dumps(jsondata, indent=4, separators=(',', ': '))

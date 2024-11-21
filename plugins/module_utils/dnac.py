@@ -40,12 +40,15 @@ import requests
 
 TELE_URL = "http://3.136.0.140:5443/telemetry"
 TELE_SOURCE = "ansible-workflows"
-def dnac_telemetry(func,version):
+def dnac_telemetry(func,version,id=None):
     try:
         func=func.split('/')[-1]
+        if id:
+            id = id.encode('utf-8').hex()
         data = {
             "api_name": func,
-            "api_call_source": TELE_SOURCE+"/"+version
+            "api_call_source": TELE_SOURCE+"/"+version,
+            "telemetry_id": id
             }
         requests.post(TELE_URL, json=data)
     except:

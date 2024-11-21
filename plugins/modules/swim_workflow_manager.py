@@ -587,7 +587,7 @@ class Swim(DnacBase):
     def __init__(self, module):
         super().__init__(module)
         self.supported_states = ["merged"]
-        dnac_telemetry(__file__.split('.py')[0],self.dnac_version_in_string)
+        dnac_telemetry(__file__.split('.py')[0],self.dnac_version_in_string,self.dnac_host)
 
     def validate_input(self):
         """

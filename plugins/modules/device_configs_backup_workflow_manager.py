@@ -399,7 +399,7 @@ class Device_configs_backup(DnacBase):
     def __init__(self, module):
         super().__init__(module)
         self.skipped_devices_list = []
-        dnac_telemetry(__file__.split('.py')[0],self.dnac_version_in_string)
+        dnac_telemetry(__file__.split('.py')[0],self.dnac_version_in_string,self.params.get("dnac_host")
 
     def validate_input(self):
         """

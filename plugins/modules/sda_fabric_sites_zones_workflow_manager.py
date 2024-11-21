@@ -298,7 +298,7 @@ class FabricSitesZones(DnacBase):
         self.create_zone, self.update_zone, self.no_update_zone = [], [], []
         self.update_auth_profile, self.no_update_profile = [], []
         self.delete_site, self.delete_zone, self.absent_site, self.absent_zone = [], [], [], []
-        dnac_telemetry(__file__.split('.py')[0],self.dnac_version_in_string)
+        dnac_telemetry(__file__.split('.py')[0],self.dnac_version_in_string,self.dnac_host)
 
     def validate_input(self):
         """

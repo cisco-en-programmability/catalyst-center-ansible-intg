@@ -371,7 +371,7 @@ class NetworkCompliance(DnacBase):
         super().__init__(module)
         self.skipped_run_compliance_devices_list = []
         self.skipped_sync_device_configs_list = []
-        dnac_telemetry(__file__.split('.py')[0],self.dnac_version_in_string)
+        dnac_telemetry(__file__.split('.py')[0],self.dnac_version_in_string,self.params.get("dnac_host")
 
     def validate_input(self):
         """
