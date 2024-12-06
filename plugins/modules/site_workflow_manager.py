@@ -130,7 +130,8 @@ options:
               units_of_measure:
                 description: |
                     Specifies the unit of measurement for floor dimensions, typically 'feet' or 'meters'.
-                    This field is introduced from version 2.3.7.6 onwards.
+                    This field is introduced from version 2.3.7.6 onwards and it is optional field.
+                    default: feet
                 type: str
               upload_floor_image_path:
                 description: |
@@ -436,6 +437,17 @@ response_5:
     }
 
 """
+
+import copy
+import os
+from ansible_collections.cisco.dnac.plugins.module_utils.dnac import (
+    DnacBase,
+    validate_list_of_dicts,
+    get_dict_result,
+    validate_str
+)
+from ansible.module_utils.basic import AnsibleModule
+
 
 floor_plan = {
     '101101': 'Cubes And Walled Offices',
@@ -1274,8 +1286,8 @@ class Site(DnacBase):
                         "Drywall Office Only"
                     ]
                     if rf_model not in rf_model_list:
-                        errormsg.append("rf_model: Invalid value '{0}' for rf_model in playbook. Must be one of: '{1}'".
-                                        format(site_type, str(rf_model)))
+                        errormsg.append(
+                            "rf_model: Invalid value '{0}' for rf_model in playbook. Must be one of: '{1}'".format(site_type, str(rf_model)))
                         self.log("Invalid 'rf_model': " + str(rf_model), "ERROR")
                 else:
                     errormsg.append("RF should not be None or empty")
@@ -1312,8 +1324,8 @@ class Site(DnacBase):
                                     units_of_measure))
                             self.log("Invalid 'units_of_measure': {0}. Expected 'feet' or 'meters'.".format(units_of_measure), "ERROR")
                     else:
-                        errormsg.append("units_of_measure should not be None or empty")
-                        self.log("Missing 'units_of_measure' in floor entry.", "ERROR")
+                        site[site_type]["units_of_measure"] = "feet"
+                        self.log("Default value assigned for units_of_measure: feet.", "INFO")
 
                 upload_floor_image_path = site.get(site_type, {}).get("upload_floor_image_path")
                 if upload_floor_image_path:
@@ -2518,7 +2530,9 @@ def main():
     config_verify = ccc_site.params.get("config_verify")
     ccc_site.validate_site_input_data(ccc_site.validated_config, state).check_return_status()
 
-    if ccc_site.compare_dnac_versions(ccc_site.get_ccc_version(), "2.3.7.6") >= 0:
+    if ccc_site.compare_dnac_versions(
+            ccc_site.get_ccc_version(),
+            "2.3.7.6") >= 0:
         ccc_site.reset_values()
         ccc_site.get_want(ccc_site.validated_config).check_return_status()
         ccc_site.get_have(ccc_site.validated_config).check_return_status()
