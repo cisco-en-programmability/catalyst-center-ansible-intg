@@ -538,7 +538,7 @@ class LanAutomation(DnacBase):
         self.updated_hostname, self.no_hostname_updated = [], []
         self.added_link, self.no_link_added = [], []
         self.deleted_link, self.no_link_deleted = [], []
-        dnac_telemetry(__file__.split('.py')[0],self.dnac_version_in_string,self.params.get("dnac_host")
+        dnac_telemetry(__file__.split('.py')[0],self.dnac_version_in_string,self.params.get("dnac_host"))
     def validate_input(self):
         """
         Validate the fields provided in the playbook.  Checks the

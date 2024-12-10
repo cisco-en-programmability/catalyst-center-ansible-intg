@@ -1203,7 +1203,7 @@ class Template(DnacBase):
             {"export": {"response": {}}},
             {"import": {"response": {}}}
         ]
-        dnac_telemetry(__file__.split('.py')[0],self.dnac_version_in_string,self.dnac_host)
+        dnac_telemetry(__file__.split('.py')[0],self.dnac_version_in_string,self.params.get("dnac_host"))
 
     def validate_input(self):
         """

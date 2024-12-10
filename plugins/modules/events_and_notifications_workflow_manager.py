@@ -948,7 +948,7 @@ class Events(DnacBase):
         self.create_dest, self.update_dest, self.no_update_dest = [], [], []
         self.create_notification, self.update_notification, self.no_update_notification = [], [], []
         self.delete_dest, self.delete_notification, self.absent_dest, self.absent_notification = [], [], [], []
-        dnac_telemetry(__file__.split('.py')[0],self.dnac_version_in_string,self.params.get("dnac_host")
+        dnac_telemetry(__file__.split('.py')[0],self.dnac_version_in_string,self.params.get("dnac_host"))
     def validate_input(self):
         """
         Validate the fields provided in the playbook.

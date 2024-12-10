@@ -435,7 +435,7 @@ class IseRadiusIntegration(DnacBase):
         self.authentication_policy_server_obj_params = \
             self.get_obj_params("authenticationPolicyServer")
         self.validation_string = ""
-        dnac_telemetry(__file__.split('.py')[0],self.dnac_version_in_string,self.params.get("dnac_host")
+        dnac_telemetry(__file__.split('.py')[0],self.dnac_version_in_string,self.params.get("dnac_host"))
 
     def validate_input(self):
         """

@@ -644,7 +644,7 @@ class Discovery(DnacBase):
 
         super().__init__(module)
         self.creds_ids_list = []
-        dnac_telemetry(__file__.split('.py')[0],self.dnac_version_in_string,self.params.get("dnac_host")
+        dnac_telemetry(__file__.split('.py')[0],self.dnac_version_in_string,self.params.get("dnac_host"))
 
     def validate_input(self, state=None):
         """

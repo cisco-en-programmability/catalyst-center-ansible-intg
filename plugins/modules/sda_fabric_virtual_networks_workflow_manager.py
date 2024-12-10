@@ -550,7 +550,7 @@ class VirtualNetwork(DnacBase):
         self.deleted_anycast_gateways = []
         self.absent_anycast_gateways = []
 
-       dnac_telemetry(__file__.split('.py')[0],self.dnac_version_in_string,self.dnac_host)
+       dnac_telemetry(__file__.split('.py')[0],self.dnac_version_in_string,self.params.get("dnac_host"))
 
     def validate_input(self):
         """

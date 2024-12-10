@@ -897,7 +897,7 @@ class UserandRole(DnacBase):
         self.created_user, self.updated_user, self.no_update_user = [], [], []
         self.created_role, self.updated_role, self.no_update_role = [], [], []
         self.deleted_user, self.deleted_role = [], []
-        dnac_telemetry(__file__.split('.py')[0],self.dnac_version_in_string,self.dnac_host)
+        dnac_telemetry(__file__.split('.py')[0],self.dnac_version_in_string,self.params.get("dnac_host"))
 
     def validate_input_yml(self, user_role_details):
         """

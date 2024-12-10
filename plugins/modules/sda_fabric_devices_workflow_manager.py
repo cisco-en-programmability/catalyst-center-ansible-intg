@@ -940,7 +940,7 @@ class FabricDevices(DnacBase):
         self.fabric_l3_handoff_sda_obj_params = self.get_obj_params("fabricSdaL3Handoff")
         self.fabric_l3_handoff_ip_obj_params = self.get_obj_params("fabricIpL3Handoff")
         self.max_timeout = self.params.get('dnac_api_task_timeout')
-        dnac_telemetry(__file__.split('.py')[0],self.dnac_version_in_string,self.dnac_host)
+        dnac_telemetry(__file__.split('.py')[0],self.dnac_version_in_string,self.params.get("dnac_host"))
 
     def validate_input(self):
         """

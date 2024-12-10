@@ -749,7 +749,7 @@ class Inventory(DnacBase):
         self.udf_added, self.udf_deleted = [], []
         self.ip_address_for_update, self.updated_ip = [], []
         self.output_file_name = []
-        dnac_telemetry(__file__.split('.py')[0],self.dnac_version_in_string,self.params.get("dnac_host")
+        dnac_telemetry(__file__.split('.py')[0],self.dnac_version_in_string,self.params.get("dnac_host"))
 
     def validate_input(self):
         """

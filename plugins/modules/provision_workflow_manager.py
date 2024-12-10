@@ -355,7 +355,7 @@ class Provision(DnacBase):
     """
     def __init__(self, module):
         super().__init__(module)
-        dnac_telemetry(__file__.split('.py')[0],self.dnac_version_in_string,self.dnac_host)
+       dnac_telemetry(__file__.split('.py')[0],self.dnac_version_in_string,self.params.get("dnac_host"))
 
     def validate_input(self, state=None):
 

@@ -467,7 +467,7 @@ class Site(DnacBase):
         self.deleted_site_list, self.site_absent_list = [], []
         self.keymap = {}
         self.handle_config = {}
-        dnac_telemetry(__file__.split('.py')[0],self.dnac_version_in_string,self.dnac_host)
+        dnac_telemetry(__file__.split('.py')[0],self.dnac_version_in_string,self.params.get("dnac_host"))
 
     def validate_input(self):
         """

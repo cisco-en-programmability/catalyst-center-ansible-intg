@@ -1687,7 +1687,7 @@ class Accesspoint(DnacBase):
                            124, 128, 132, 136, 140, 144, 149, 153, 157, 161, 165, 169, 173),
             "6ghz_radio": list(range(1, 234, 4))
         }
-        dnac_telemetry(__file__.split('.py')[0],self.dnac_version_in_string,self.params.get("dnac_host")
+        dnac_telemetry(__file__.split('.py')[0],self.dnac_version_in_string,self.params.get("dnac_host"))
 
     def validate_input_yml(self):
         """
