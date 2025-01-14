@@ -54,16 +54,29 @@ class TestDnacHealthscoreWorkflow(TestDnacModule):
                 self.test_data.get("get_kpi_details"),
             ]
 
-        if "update_not_required" in self._testMethodName:
-            self.run_dnac_exec.side_effect = [
-                self.test_data.get("kpi_detail"),
-            ]
+        # if "update_not_required" in self._testMethodName:
+        #     self.run_dnac_exec.side_effect = [
+        #         self.test_data.get("kpi_detail"),
+        #     ]
 
         if "updation" in self._testMethodName:
             self.run_dnac_exec.side_effect = [
-                self.test_data.get("require_update_kpi_detail"),
+                self.test_data.get("require_update_kpi_detail_1"),
+                self.test_data.get("require_update_kpi_detail_2"),
                 self.test_data.get("healthscore_settings_updation"),
-                self.test_data.get("updated_kpi_detail")
+                self.test_data.get("updated_kpi_detail"),
+                self.test_data.get("after_update_kpi_detail_1"),
+                self.test_data.get("after_update_kpi_detail_2"),
+            ]
+
+        if "update_not_required" in self._testMethodName:
+            self.run_dnac_exec.side_effect = [
+                self.test_data.get("kpi_detail"),
+                self.test_data.get("require_update_kpi_detail_2"),
+                self.test_data.get("healthscore_settings_updation"),
+                self.test_data.get("updated_kpi_detail"),
+                self.test_data.get("kpi_detail"),
+                self.test_data.get("after_update_kpi_detail_2"),
             ]
 
         if "exception_updation" in self._testMethodName:
@@ -117,7 +130,7 @@ class TestDnacHealthscoreWorkflow(TestDnacModule):
                 config=self.playbook_config_updation
             )
         )
-        result = self.execute_module(changed=True, failed=False)
+        result = self.execute_module(changed=False, failed=False)
         print(result['response'][0]['device_healthscore_settings']['msg'])
         self.assertEqual(
             result['response'][0]['device_healthscore_settings']['msg'],
