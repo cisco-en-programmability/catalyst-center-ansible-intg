@@ -4,7 +4,7 @@
   vars_files:
     - "credentials.yml"
   connection: local
-  gather_facts: no
+  gather_facts: false
   tasks:
     - name: Update assurance healthscore settings KPI's
       cisco.dnac.assurance_healthscore_settings_workflow_manager:
@@ -15,12 +15,12 @@
         dnac_port: "{{dnac_port}}"
         dnac_version: "{{dnac_version}}"
         dnac_debug: "{{dnac_debug}}"
-        dnac_log: True
+        dnac_log: true
         dnac_log_level: DEBUG
         dnac_api_task_timeout: 1000
         dnac_task_poll_interval: 1
         state: merged
-        config_verify: True
+        config_verify: true
         config:
           - device_healthscore:
               - kpi_name: Interference 6 GHz

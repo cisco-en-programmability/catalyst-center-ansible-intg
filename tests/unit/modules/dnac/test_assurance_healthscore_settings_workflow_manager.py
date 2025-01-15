@@ -54,11 +54,6 @@ class TestDnacHealthscoreWorkflow(TestDnacModule):
                 self.test_data.get("get_kpi_details"),
             ]
 
-        # if "update_not_required" in self._testMethodName:
-        #     self.run_dnac_exec.side_effect = [
-        #         self.test_data.get("kpi_detail"),
-        #     ]
-
         if "updation" in self._testMethodName:
             self.run_dnac_exec.side_effect = [
                 self.test_data.get("require_update_kpi_detail_1"),

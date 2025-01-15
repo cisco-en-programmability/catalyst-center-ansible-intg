@@ -500,7 +500,6 @@ class Healthscore(DnacBase):
         based on the provided playbook details.
         """
         device_healthscore_details = config.get("device_healthscore")
-        self.log(device_healthscore_details)
 
         if not device_healthscore_details:
             self.msg = "No device_healthscore details provided in the configuration."
@@ -517,9 +516,8 @@ class Healthscore(DnacBase):
                 self.msg = "Missing required parameter 'device_family' in device_healthscore settings."
                 self.status = "failed"
                 return self
-            self.log(device_healthscore_details)
+
             kpi_details = self.get_kpi_details(device_family, healthscore_details)
-            self.log(kpi_details)
 
             if not kpi_details:
                 self.msg = "No KPI details found for device family '{0}'".format(device_family)
@@ -563,7 +561,6 @@ class Healthscore(DnacBase):
                 )
                 if isinstance(response.get("response"), list):
                     total_response.extend(response.get("response"))
-            self.log(total_response)
         except Exception as msg:
             self.msg = "Exception occurred while getting KPI details: {0}".format(msg)
             self.log(self.msg, "ERROR")
@@ -721,7 +718,6 @@ class Healthscore(DnacBase):
 
             for item in self.want.get("device_healthscore"):
                 device_healthscore_details = self.have[device_healthscore_index]
-                self.log(device_healthscore_details)
                 healthscore_obj_params = self.healthscore_obj_params("device_healthscore_settings")
 
                 if self.requires_update(device_healthscore_details, item, healthscore_obj_params):
