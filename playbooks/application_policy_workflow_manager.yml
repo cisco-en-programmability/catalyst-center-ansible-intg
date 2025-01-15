@@ -74,6 +74,6 @@
                     - relevance: "BUSINESS_RELEVANT"                            
                       application_set_name: ["file-sharing"]
                     - relevance: "BUSINESS_IRRELEVANT"
-                      application_set_name: ["email","backup-and-storage"]
+                      application_set_name: ["email", "backup-and-storage"]
                     - relevance: "DEFAULT"
-                      application_set_name: ["collaboration-apps","tunneling", "general-media"]
+                      application_set_name: ["collaboration-apps", "tunneling", "general-media"]
