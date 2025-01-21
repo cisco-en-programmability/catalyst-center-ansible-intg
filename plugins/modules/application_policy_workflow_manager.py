@@ -927,7 +927,7 @@ EXAMPLES = r"""
               traffic_class: "BROADCAST_VIDEO"
               ignore_conflict: true
               rank: "1"
-              engineId: "100"
+              engine_id: "100"
               application_set_name: "authentication_services"
 
 # Playbook 10 - create application - type server_ip
@@ -1797,7 +1797,7 @@ class ApplicationPolicy(DnacBase):
                     'traffic_class': {'type': 'str'},
                     'ignore_conflict': {'type': 'bool'},
                     'rank': {'type': 'str'},
-                    'engineId': {'type': 'str'},
+                    'engine_id': {'type': 'str'},
                     'application_set_name': {'type': 'str'},
                 },
             },
@@ -5022,6 +5022,7 @@ class ApplicationPolicy(DnacBase):
                          merge task may not have executed successfully.".format(application_policy_name), "INFO")
 
         return self
+
 
 
 def main():
