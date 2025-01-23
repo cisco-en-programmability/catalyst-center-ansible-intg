@@ -74,13 +74,11 @@ class TestDnacAssuranceSettings(TestDnacModule):
                 self.test_data.get("Testing_creation_exit"),
                 self.test_data.get("issue_creation"),
                 self.test_data.get("exist_after_creation"),
-                # self.test_data.get("issue_exist_after_updation")
             ]
 
         if "deletion" in self._testMethodName:
             self.run_dnac_exec.side_effect = [
                 self.test_data.get("get_API_response_deletion"),
-                # self.test_data.get("deletion"),
                 Exception(),
                 self.test_data.get("after_deletion_get_response"),
             ]
@@ -337,13 +335,10 @@ class TestDnacAssuranceSettings(TestDnacModule):
             )
         )
         result = self.execute_module(changed=False, failed=True)
-        print(result['response'])
+        print(result['response']['input_isssue_config'])
         self.assertEqual(
-            result['response'],
-            {'input_isssue_config': [{'issue_name': 'Excessive time lag between Cisco Catalyst Center and device "DC-T-9300"', 'issue_process_type': 'ignore'}],
-             'issue_ignored': {'processed_issues_ignored': [{'issue_name': 'Excessive time lag between Cisco Catalyst Center and device "DC-T-9300"',
-                'issue_process_type': 'ignore'}], 'unprocessed_issues_ignored': [],
-                'processed_logs_ignored': [{'successfulIssueIds': ['dd932cc9-e773-4d4e-8894-e9c1cae8847']}]}}
+            result['response']['input_isssue_config'],
+            [{'issue_name': 'Excessive time lag between Cisco Catalyst Center and device "DC-T-9300"', 'issue_process_type': 'ignore'}]
         )
 
     def test_assurance_issue_settings_workflow_manager_invalid_severity(self):

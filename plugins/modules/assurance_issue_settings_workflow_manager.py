@@ -118,24 +118,24 @@ requirements:
   - python >= 3.9
 
 notes:
-  - SDK Methods used:
-      - issues.AssuranceSettings.get_all_the_custom_issue_definitions_based_on_the_given_filters
-      - issues.AssuranceSettings.creates_a_new_user_defined_issue_definitions
-      - issues.AssuranceSettings.deletes_an_existing_custom_issue_definition
-      - issues.AssuranceSettings.resolve_the_given_lists_of_issues
-      - issues.AssuranceSettings.ignore_the_given_list_of_issues
-      - issues.AssuranceSettings.execute_suggested_action_commands
+  - SDK Methods used are
+      issues.AssuranceSettings.get_all_the_custom_issue_definitions_based_on_the_given_filters
+      issues.AssuranceSettings.creates_a_new_user_defined_issue_definitions
+      issues.AssuranceSettings.deletes_an_existing_custom_issue_definition
+      issues.AssuranceSettings.resolve_the_given_lists_of_issues
+      issues.AssuranceSettings.ignore_the_given_list_of_issues
+      issues.AssuranceSettings.execute_suggested_action_commands
 
-  - Paths used:
-      - POST /dna/intent/api/api/v1/customIssueDefinitions
-      - POST /dna/intent/api/v1/assuranceIssues/resolve
-      - POST /dna/intent/api/v1/execute-suggested-actions-commands
-      - POST /dna/intent/api/v1/assuranceIssues/ignore
-      - POST /dna/intent/api/v1/flow-analysis/${flowAnalysisId}
-      - POST /dna/intent/api/v1/flow-analysis
-      - PUT /dna/intent/api/v1/systemIssueDefinitions/${id}
-      - DELETE /dna/intent/api/v1/flow-analysis/{flowAnalysisId}
-      - DELETE /dna/intent/api/v1/customIssueDefinitions/{id}
+  - Paths used are
+      POST /dna/intent/api/api/v1/customIssueDefinitions
+      POST /dna/intent/api/v1/assuranceIssues/resolve
+      POST /dna/intent/api/v1/execute-suggested-actions-commands
+      POST /dna/intent/api/v1/assuranceIssues/ignore
+      POST /dna/intent/api/v1/flow-analysis/${flowAnalysisId}
+      POST /dna/intent/api/v1/flow-analysis
+      PUT /dna/intent/api/v1/systemIssueDefinitions/${id}
+      DELETE /dna/intent/api/v1/flow-analysis/{flowAnalysisId}
+      DELETE /dna/intent/api/v1/customIssueDefinitions/{id}
 """
 
 EXAMPLES = r"""
