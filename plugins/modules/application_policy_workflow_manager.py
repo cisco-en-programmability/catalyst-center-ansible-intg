@@ -320,6 +320,12 @@ options:
             description:
               - This field represent a name for the application policy.
             type: str
+          application_set_name:
+            description:
+              - This represents the application sets to be removed from the application policy.
+              - Only the sets mentioned here will be removed.
+              - This parameter will be applicable only in the deleted state.
+            type: str
           policy_details:
             description: |
               - Indicates the current status of the application policy. It helps track whether the policy is active, deleted, or restored.
@@ -3772,17 +3778,15 @@ class ApplicationPolicy(DnacBase):
             return self
 
         required_details = required_queuing_profile_details['application_queuing_details'][0]
-        self.log(required_details)
         current_profiles = queuing_profile.get('current_queuing_profile', [])
-        self.log(current_profiles)
         if required_details.get('bandwidth_settings', {}):
             is_common = required_details.get('bandwidth_settings', {}).get('is_common_between_all_interface_speeds')
 
         for item in current_profiles:
             for clause in item.get('clause', []):
-                self.log(clause)
                 if clause.get('isCommonBetweenAllInterfaceSpeeds') is True:
                     is_common = True
+                    break
                 else:
                     is_common = False
 
@@ -4578,9 +4582,9 @@ class ApplicationPolicy(DnacBase):
             and the method logs success or failure. If an error occurs, it is caught and handled appropriately.
         """
 
-        application_policy_details = self.config.get("application_policy_details")
-        self.log("Queuing Profile Details: {}".format(application_policy_details))
-        application_policy_name = application_policy_details.get("name")
+        want_application_policy_details = self.config.get("application_policy_details")
+        self.log("Queuing Profile Details: {0}".format(want_application_policy_details))
+        application_policy_name = want_application_policy_details.get("name")
         application_policy_details = self.have
 
         if application_policy_details.get("application_policy_exists") is False:
@@ -4594,11 +4598,40 @@ class ApplicationPolicy(DnacBase):
 
         get_ids = self.have
         ids_list = []
+        application_set_names = []
+        self.log(want_application_policy_details)
+        if not want_application_policy_details.get("application_set_name"):
+            if "current_application_policy" in get_ids:
+                for policy in get_ids["current_application_policy"]:
+                    if "id" in policy:
+                        ids_list.append(policy["id"])
+        else:
+            if "current_application_policy" in get_ids:
+                for policy in get_ids["current_application_policy"]:
+                    application_set_name = want_application_policy_details.get("application_set_name", [])
+                    for app_name in application_set_name:
+                        if app_name in policy.get('name', ''):
+                            application_set_names.append(app_name)
+                            ids_list.append(policy.get('id'))
+                            break
 
-        if "current_application_policy" in get_ids:
-            for policy in get_ids["current_application_policy"]:
-                if "id" in policy:
-                    ids_list.append(policy["id"])
+        if want_application_policy_details.get("application_set_name"):
+            if not application_set_names:
+                self.status = "success"
+                self.result['changed'] = False
+                self.msg = (
+                    "application set(s) '{0}' does not present in the application policy {1} "
+                    "or it's been already removed.".format(application_set_name, application_policy_name)
+                )
+                self.result['msg'] = self.msg
+                self.result['response'] = self.msg
+                self.log(self.msg, "INFO")
+                return self
+
+        application_set_name_not_available = [
+            app_name for app_name in application_set_name
+            if app_name not in [name.strip() for name in application_set_names]
+        ]
 
         try:
             response = self.dnac._exec(
@@ -4611,13 +4644,37 @@ class ApplicationPolicy(DnacBase):
             self.log("Received API response from 'application_policy_intent' for deletion: {}".format(response), "DEBUG")
             self.check_tasks_response_status(response, "application_policy_intent")
 
-            if self.status not in ["failed", "exited"]:
-                self.log("application policy '{0}' deleted successfully.".format(application_policy_name), "INFO")
-                self.status = "success"
-                self.result['changed'] = True
-                self.msg = ("application policy '{0}' deleted successfully.".format(application_policy_name))
-                self.result['response'] = self.msg
-                return self
+            if not want_application_policy_details.get("application_set_name"):
+                if self.status not in ["failed", "exited"]:
+                    self.log("application policy '{0}' deleted successfully.".format(application_policy_name), "INFO")
+                    self.status = "success"
+                    self.result['changed'] = True
+                    self.msg = ("application policy '{0}' deleted successfully.".format(application_policy_name))
+                    self.result['response'] = self.msg
+                    return self
+            else:
+                if self.status not in ["failed", "exited"]:
+                    self.log(
+                        "application set '{0}' has been removed from the application policy {1} successfully. "
+                        "and application set - {2} are not present in the policy".format(
+                            application_set_name, application_policy_name, application_set_name_not_available
+                        ),
+                        "INFO"
+                    )
+                    self.status = "success"
+                    self.result['changed'] = True
+                    if application_set_name_not_available:
+                        self.msg = (
+                            "application set '{0}' has been removed from the application policy {1} successfully. "
+                            "and application set - {2} are not present in the policy.".format(
+                                application_set_names, application_policy_name, application_set_name_not_available))
+                    else:
+                        self.msg = (
+                            "application set '{0}' has been removed from the application policy {1} successfully.".format(
+                                application_set_name, application_policy_name))
+
+                    self.result['response'] = self.msg
+                    return self
 
             if self.status == "failed":
                 fail_reason = self.msg
@@ -4796,7 +4853,7 @@ class ApplicationPolicy(DnacBase):
         if application_deatils.get("application_exists") is False:
             self.status = "success"
             self.result['changed'] = False
-            self.msg = "application set '{0}' does not present in the cisco catalyst center or its been already deleted".format(application_name)
+            self.msg = "application '{0}' does not present in the cisco catalyst center or its been already deleted".format(application_name)
             self.result['msg'] = self.msg
             self.result['response'] = self.msg
             self.log(self.msg, "INFO")
@@ -5020,15 +5077,12 @@ class ApplicationPolicy(DnacBase):
             else:
                 self.log("The playbook input for application policy {0} does not align with the Cisco Catalyst Center, indicating that the \
                          merge task may not have executed successfully.".format(application_policy_name), "INFO")
-
         return self
-
 
 
 def main():
     """ main entry point for module execution
     """
-
     element_spec = {'dnac_host': {'required': True, 'type': 'str'},
                     'dnac_port': {'type': 'str', 'default': '443'},
                     'dnac_username': {'type': 'str', 'default': 'admin', 'aliases': ['user']},

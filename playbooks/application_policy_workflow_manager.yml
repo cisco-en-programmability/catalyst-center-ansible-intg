@@ -31,7 +31,7 @@
               traffic_class: "BROADCAST_VIDEO"
               application_set_name: "new_for_test"
           - application_queuing_details:
-              - profile_name: ["test_profile_1"]
+              - profile_name: "test_profile_1"
                 profile_description: "sample 1223456787654"
                 bandwidth_settings:
                   is_common_between_all_interface_speeds: true
