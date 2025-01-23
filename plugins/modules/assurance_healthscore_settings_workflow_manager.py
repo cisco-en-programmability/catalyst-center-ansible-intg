@@ -368,7 +368,7 @@ class Healthscore(DnacBase):
                 errormsg.append("kpi_name: KPI Name is missing.")
             else:
                 if (kpi_name not in valid_kpis["include_for_overall_health"] and
-                        kpi_name not in valid_kpis["include_Threshold_and_sync"]):
+                        kpi_name not in valid_kpis["include_Threshold_and_sync"] and kpi_name not in valid_kpis["include_Threshold"]):
                     errormsg.append("kpi_name: Invalid KPI '{}' for Device Family '{}'.".format(kpi_name, device_family))
                 else:
                     category = (
@@ -442,53 +442,73 @@ class Healthscore(DnacBase):
             want["name"] = want.pop("kpi_name")
 
         kpi_name = {
-            "Link Error": "linkErrorThreshold",  # WIRED_CLIENT
-            "Connectivity RSSI": "rssiThreshold",  # WIRELESS_CLIENT
-            "Connectivity SNR": "snrThreshold",
-            "Air Quality 2.4 GHz": "rf_airQuality_2_4GThreshold",  # UNIFIED_AP
-            "Air Quality 5 GHz": "rf_airQuality_5GThreshold",
-            "Air Quality 6 GHz": "rf_airQuality_6GThreshold",
-            "CPU Utilization": "cpuUtilizationThreshold",
-            "Interference 2.4 GHz": 'rf_interference_2_4GThreshold',
-            "Interference 5 GHz": 'rf_interference_5GThreshold',
-            "Interference 6 GHz": 'rf_interference_6GThreshold',
-            "Noise 2.4 GHz": 'rf_noise_2_4GThreshold',
-            "Noise 5 GHz": 'rf_noise_5GThreshold',
-            "Noise 6 GHz": 'rf_noise_6GThreshold',
-            "RF Utilization 2.4 GHz": 'rf_utilization_2_4GThreshold',
-            "RF Utilization 5 GHz": 'rf_utilization_5GThreshold',
-            "RF Utilization 6 GHz": 'rf_utilization_6GThreshold',
-            "Free Mbuf": 'freeMbufThreshold',
-            "Free Timer": 'freeTimerThreshold',
-            "Packet Pool": "packetPoolThreshold",
-            "WQE Pool": 'WQEPool',
+            "Link Error": 'linkErrorThreshold',  # WIRED_CLIENT and # UNIFIED_AP and # WIRELESS_CLIENT
+            "Connectivity RSSI": 'rssiThreshold',  # WIRELESS_CLIENT
+            "Connectivity SNR": 'snrThreshold',  # WIRELESS_CLIENT
+            "Air Quality 2.4 GHz": 'rf_airQuality_2_4GThreshold',  # UNIFIED_AP
+            "Air Quality 5 GHz": 'rf_airQuality_5GThreshold',  # UNIFIED_AP
+            "Air Quality 6 GHz": 'rf_airQuality_6GThreshold',  # UNIFIED_AP
+            "CPU Utilization": 'cpuUtilizationThreshold',  # SWITCH_AND_HUB and # ROUTER and # UNIFIED_AP and # WIRELESS_CONTROLLER
+            "Interference 2.4 GHz": 'rf_interference_2_4GThreshold',  # UNIFIED_AP
+            "Interference 5 GHz": 'rf_interference_5GThreshold',  # UNIFIED_AP
+            "Interference 6 GHz": 'rf_interference_6GThreshold',  # UNIFIED_AP
+            "Noise 2.4 GHz": 'rf_noise_2_4GThreshold',  # UNIFIED_AP
+            "Noise 5 GHz": 'rf_noise_5GThreshold',  # UNIFIED_AP
+            "Noise 6 GHz": 'rf_noise_6GThreshold',  # UNIFIED_AP
+            "RF Utilization 2.4 GHz": 'rf_utilization_2_4GThreshold',  # UNIFIED_AP
+            "RF Utilization 5 GHz": 'rf_utilization_5GThreshold',  # UNIFIED_AP
+            "RF Utilization 6 GHz": 'rf_utilization_6GThreshold',  # UNIFIED_AP
+            "Free Mbuf": 'freeMbufThreshold',  # WIRELESS_CONTROLLER
+            "Free Timer": 'freeTimerThreshold',  # WIRELESS_CONTROLLER
+            "Packet Pool": 'packetPool',  # WIRELESS_CONTROLLER
+            "WQE Pool": 'WQEPool',  # WIRELESS_CONTROLLER
+            "AAA server reachability": 'aaaServerReachability',  # SWITCH_AND_HUB
             "BGP Session from Border to Control Plane (BGP)": 'bgpBgpSiteThreshold',  # SWITCH_AND_HUB and # ROUTER
-            "BGP Session from Border to Control Plane (PubSub)": "bgpPubsubSiteThreshold",  # SWITCH_AND_HUB and # ROUTER
-            "BGP Session from Border to Peer Node for INFRA VN": "bgpPeerInfraVnThreshold",  # SWITCH_AND_HUB and # ROUTER
+            "BGP Session from Border to Control Plane (PubSub)": 'bgpPubsubSiteThreshold',  # SWITCH_AND_HUB and # ROUTER
+            "BGP Session from Border to Peer Node for INFRA VN": 'bgpPeerInfraVnThreshold',  # SWITCH_AND_HUB and # ROUTER
             "BGP Session from Border to Peer Node": 'bgpPeerThreshold',  # SWITCH_AND_HUB and # ROUTER
             "BGP Session from Border to Transit Control Plane": 'bgpTcpThreshold',  # SWITCH_AND_HUB and # ROUTER
             "BGP Session to Spine": 'bgpEvpnThreshold',  # SWITCH_AND_HUB and # ROUTER
             "Cisco TrustSec environment data download status": 'ctsEnvDataThreshold',  # SWITCH_AND_HUB and # ROUTER
-            "Fabric Control Plane Reachability": 'fabricReachability',  # SWITCH_AND_HUB and # ROUTER
+            "Fabric Control Plane Reachability": 'fabricReachability',  # SWITCH_AND_HUB and # ROUTER and # WIRELESS_CONTROLLER
             "Fabric Multicast RP Reachability": 'multicastRPReachability',  # SWITCH_AND_HUB and # ROUTER
-            "Extended Node Connectivity": 'extendedNodeConnectivity',  # ROUTER
-            "Inter-device Link Availability": "infraLinkAvailabilityThreshold",
-            "Internet Availability": "internetAvailability",
-            "Link Discard": "linkDiscardThreshold",
-            "Link Utilization": "linkUtilizationThreshold",
-            "LISP Session from Border to Transit Site Control Plane": "lispTransitConnScoreThreshold",
-            "LISP Session Status": "lispCpConnScoreThreshold",
-            "Memory Utilization": "memoryUtilization",
-            "Peer Status": 'peerThreshold',
-            "Pub-Sub Session from Border to Transit Site Control Plane": "pubsubSessionThreshold",
-            "Pub-Sub Session Status for INFRA VN": "pubsubInfraVNSessionScoreThreshold",
-            "Pub-Sub Session Status": "pubsubSessionThreshold",
-            "Remote Internet Availability": "remoteRouteThreshold",
-            "VNI Status": "vniStatusThreshold",
+            "Extended Node Connectivity": 'fpcLinkScoreThreshold',  # ROUTER and # WIRELESS_CONTROLLER
+            "Inter-device Link Availability": 'infraLinkAvailabilityThreshold',  # SWITCH_AND_HUB
+            "Internet Availability": 'defaultRouteThreshold',  # SWITCH_AND_HUB and # ROUTER
+            "Link Discard": 'linkDiscardThreshold',  # SWITCH_AND_HUB and # ROUTER
+            "Link Utilization": 'linkUtilizationThreshold',  # SWITCH_AND_HUB and # ROUTER
+            "LISP Session from Border to Transit Site Control Plane": 'lispTransitConnScoreThreshold',  # SWITCH_AND_HUB and # ROUTER
+            "LISP Session Status": 'lispCpConnScoreThreshold',  # SWITCH_AND_HUB and # ROUTER and # WIRELESS_CONTROLLER
+            "Memory Utilization": 'memoryUtilizationThreshold',  # SWITCH_AND_HUB and # ROUTER and # WIRELESS_CONTROLLER and # UNIFIED_AP
+            "Peer Status": 'peerThreshold',  # SWITCH_AND_HUB and # ROUTER
+            "Pub-Sub Session from Border to Transit Site Control Plane": 'pubsubTransitSessionScoreThreshold',  # SWITCH_AND_HUB and # ROUTER
+            "Pub-Sub Session Status for INFRA VN": 'pubsubInfraVNSessionScoreThreshold',  # SWITCH_AND_HUB and # ROUTER
+            "Pub-Sub Session Status": 'pubsubSessionThreshold',  # SWITCH_AND_HUB and # ROUTER
+            "Remote Internet Availability": 'remoteRouteThreshold',  # SWITCH_AND_HUB and # ROUTER
+            "VNI Status": 'vniStatusThreshold',  # SWITCH_AND_HUB and # ROUTER
         }
+
         for healthscore in want["device_healthscore"]:
             name = healthscore["kpi_name"]
             healthscore["kpi_name"] = kpi_name[name]
+
+            # Check if kpi_name is "Connectivity RSSI" and device_family is "WIRELESS_CLIENT"
+            if name == "Connectivity RSSI" and healthscore.get("device_family") == "WIRELESS_CLIENT":
+                threshold_value = healthscore.get("threshold_value")
+                if not (-128 <= threshold_value <= 0):
+                    self.msg = "Threshold value for Connectivity RSSI should be between -128 and 0 dBm."
+                    self.log("Received exception: {0}".format(self.msg), "CRITICAL")
+                    self.status = "failed"
+                    return self
+
+            # Check if kpi_name is "Connectivity SNR" and device_family is "WIRELESS_CLIENT"
+            if name == "Connectivity SNR" and healthscore.get("device_family") == "WIRELESS_CLIENT":
+                threshold_value = healthscore.get("threshold_value")
+                if not (1 <= threshold_value <= 40):
+                    self.msg = "Threshold value for Connectivity SNR should be between 1 and 40 dBm."
+                    self.log("Received exception: {0}".format(self.msg), "CRITICAL")
+                    self.status = "failed"
+                    return self
 
         self.want = want
         self.log("Desired State (want): {0}".format(str(self.want)), "INFO")
@@ -500,6 +520,7 @@ class Healthscore(DnacBase):
         based on the provided playbook details.
         """
         device_healthscore_details = config.get("device_healthscore")
+        self.log(device_healthscore_details)
 
         if not device_healthscore_details:
             self.msg = "No device_healthscore details provided in the configuration."
@@ -516,8 +537,9 @@ class Healthscore(DnacBase):
                 self.msg = "Missing required parameter 'device_family' in device_healthscore settings."
                 self.status = "failed"
                 return self
-
+            self.log(device_healthscore_details)
             kpi_details = self.get_kpi_details(device_family, healthscore_details)
+            self.log(kpi_details)
 
             if not kpi_details:
                 self.msg = "No KPI details found for device family '{0}'".format(device_family)
@@ -561,6 +583,7 @@ class Healthscore(DnacBase):
                 )
                 if isinstance(response.get("response"), list):
                     total_response.extend(response.get("response"))
+            self.log(total_response)
         except Exception as msg:
             self.msg = "Exception occurred while getting KPI details: {0}".format(msg)
             self.log(self.msg, "ERROR")
@@ -643,7 +666,7 @@ class Healthscore(DnacBase):
             healthscore_obj_params = self.healthscore_obj_params("device_healthscore_settings")
 
             for item in self.have:
-                if healthscore_setting.get("name") == item.get("name"):
+                if healthscore_setting.get("name") == item.get("name") and healthscore_setting.get("device_family") == item.get("device_family"):
                     healthscore_params = {}
                     if not self.requires_update(item, healthscore_setting, healthscore_obj_params):
                         self.log(
@@ -718,6 +741,7 @@ class Healthscore(DnacBase):
 
             for item in self.want.get("device_healthscore"):
                 device_healthscore_details = self.have[device_healthscore_index]
+                self.log(device_healthscore_details)
                 healthscore_obj_params = self.healthscore_obj_params("device_healthscore_settings")
 
                 if self.requires_update(device_healthscore_details, item, healthscore_obj_params):
@@ -767,6 +791,14 @@ def main():
     if state not in ccc_assurance.supported_states:
         ccc_assurance.status = "invalid"
         ccc_assurance.msg = "State {0} is invalid".format(state)
+        ccc_assurance.check_return_status()
+
+    if ccc_assurance.compare_dnac_versions(ccc_assurance.get_ccc_version(), "2.3.7.9") < 0:
+        ccc_assurance.msg = (
+            "The specified version '{0}' does not support the assurance healthscore features. Supported versions start from '2.3.7.9' onwards. "
+            .format(ccc_assurance.get_ccc_version())
+        )
+        ccc_assurance.status = "failed"
         ccc_assurance.check_return_status()
 
     ccc_assurance.validate_input().check_return_status()

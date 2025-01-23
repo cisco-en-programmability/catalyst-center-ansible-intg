@@ -88,10 +88,12 @@ class TestDnacHealthscoreWorkflow(TestDnacModule):
 
     def test_healthscore_settings_workflow_manager_exception_updation(self):
         """
-        Test case for healthscore settings workflow manager when creating a device credential.
+        Test case for healthscore settings workflow manager exception handling during update.
 
-        This test case checks the behavior of the healthscore settings workflow manager when creating a new device credentials in the specified DNAC.
+        Verifies that the healthscore settings workflow manager correctly handles exceptions when attempting 
+        to update healthscore settings, ensuring the system behaves as expected under error conditions.
         """
+
         set_module_args(
             dict(
                 dnac_host="1.1.1.1",
@@ -111,10 +113,12 @@ class TestDnacHealthscoreWorkflow(TestDnacModule):
 
     def test_healthscore_settings_workflow_manager_update_not_required(self):
         """
-        Test case for healthscore settings workflow manager when creating a device credential.
+        Test case for healthscore settings workflow manager when update is not required.
 
-        This test case checks the behavior of the healthscore settings workflow manager when creating a new device credentials in the specified DNAC.
+        Verifies that the healthscore settings workflow manager correctly handles situations where no 
+        update is needed, ensuring the system behaves as expected when no changes are required.
         """
+
         set_module_args(
             dict(
                 dnac_host="1.1.1.1",
@@ -134,10 +138,12 @@ class TestDnacHealthscoreWorkflow(TestDnacModule):
 
     def test_healthscore_settings_workflow_manager_error_while_update(self):
         """
-        Test case for healthscore settings workflow manager when creating a device credential.
+        Test case for healthscore settings workflow manager when an error occurs during update.
 
-        This test case checks the behavior of the healthscore settings workflow manager when creating a new device credentials in the specified DNAC.
+        Verifies that the workflow manager properly handles errors and exceptions during the 
+        healthscore settings update process, ensuring the system remains stable.
         """
+
         set_module_args(
             dict(
                 dnac_host="1.1.1.1",
@@ -158,10 +164,12 @@ class TestDnacHealthscoreWorkflow(TestDnacModule):
 
     def test_healthscore_settings_workflow_manager_updation(self):
         """
-        Test case for healthscore settings workflow manager when creating a device credential.
+        Test case for healthscore settings workflow manager update process.
 
-        This test case checks the behavior of the healthscore settings workflow manager when creating a new device credentials in the specified DNAC.
+        Verifies that the healthscore settings workflow manager successfully handles the update process, 
+        ensuring proper behavior and data integrity during the update.
         """
+
         set_module_args(
             dict(
                 dnac_host="1.1.1.1",
@@ -182,10 +190,12 @@ class TestDnacHealthscoreWorkflow(TestDnacModule):
 
     def test_healthscore_settings_workflow_manager_verification_failure(self):
         """
-        Test case for healthscore settings workflow manager when creating a device credential.
+        Test case for healthscore settings workflow manager verification failure.
 
-        This test case checks the behavior of the healthscore settings workflow manager when creating a new device credentials in the specified DNAC.
+        Verifies that the healthscore settings workflow manager handles verification failures correctly,
+        ensuring the system responds appropriately when verification of settings fails.
         """
+
         set_module_args(
             dict(
                 dnac_host="1.1.1.1",
