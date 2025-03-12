@@ -1,0 +1,28 @@
+- hosts: localhost
+  connection: local
+  gather_facts: no
+  vars_files:
+    - "credentials.yml"
+  tasks:
+    - name: Registring smart account with virtual account
+      cisco.dnac.license_workflow_manager:
+        dnac_host: "{{dnac_host}}"
+        dnac_username: "{{dnac_username}}"
+        dnac_password: "{{dnac_password}}"
+        dnac_verify: "{{dnac_verify}}"
+        dnac_port: "{{dnac_port}}"
+        dnac_version: "{{dnac_version}}"
+        dnac_debug: "{{dnac_debug}}"
+        dnac_log: True
+        dnac_log_level: DEBUG
+        config_verify: True
+        state: merged
+        config:
+          - smart_account_name: "Solutions Team - IaC for CatC"
+            virtual_account_name: "DEFAULT"
+            update_virtual_account_name: "witsang_internaltesting1"
+            device_name: "NY-EN-9300"
+            device_ip_address: "204.1.2.2"
+            device_mac_address: "d4:ad:bd:c1:67:00"
+            smart_license_registration: False
+            device_registration: True
