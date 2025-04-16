@@ -52,6 +52,11 @@ options:
             type: bool
             required: false
             default: true
+        clean_config:
+            description:
+            type: bool
+            required: false
+            default: false
         force_provisioning:
             description:
                 - Determines whether to force reprovisioning of a device.
@@ -1873,7 +1878,7 @@ class Provision(DnacBase):
             This function is responsible for removing devices from the Cisco Catalyst Center PnP GUI and
             raise Exception if any error occured.
         """
-
+        device_ip = self.validated_config["management_ip_address"]
         device_type = self.want.get("device_type")
         if device_type is None:
             self.msg = (
@@ -1889,13 +1894,13 @@ class Provision(DnacBase):
             return self
 
         device_id = self.get_device_id()
-        provision_id , status = self.get_device_provision_status(device_id)
+        # provision_id , status = self.get_device_provision_status(device_id)
 
-        if status != "success":
-            self.result['msg'] = "Device associated with the passed IP address is not provisioned"
-            self.log(self.result['msg'], "CRITICAL")
-            self.result['response'] = self.want["prov_params"]
-            return self
+        # if status != "success":
+        #     self.result['msg'] = "Device associated with the passed IP address is not provisioned"
+        #     self.log(self.result['msg'], "CRITICAL")
+        #     self.result['response'] = self.want["prov_params"]
+        #     return self
 
         if self.compare_dnac_versions(self.get_ccc_version(), "2.3.5.3") <= 0:
 
@@ -1926,7 +1931,8 @@ class Provision(DnacBase):
                 self.result['response'] = self.msg
                 self.check_return_status()
 
-        else:
+        elif self.compare_dnac_versions(self.get_ccc_version(), "2.3.7.6") <= 0:
+            self.log("vesion - 2.3.7.6")
             try:
                 response = self.dnac._exec(
                     family="sda",
@@ -1960,6 +1966,47 @@ class Provision(DnacBase):
                 self.status = "failed"
                 self.result['response'] = self.msg
                 self.check_return_status()
+        else:
+            try:
+                clean_up = self.config[0].get("clean_config", True)
+
+                if clean_up:
+                    api_function = "delete_network_device_with_configuration_cleanup"
+                else:
+                    api_function = "delete_a_network_device_without_configuration_cleanup"
+
+                delete_param = {"id": device_id}
+
+                response = self.dnac._exec(
+                    family="devices",
+                    function= api_function,
+                    op_modifies=True,
+                    params=delete_param,
+                )
+                self.log("Received API response from '{0}': {1}".format(api_function,str(response)), "DEBUG")
+                self.check_tasks_response_status(response, api_name= device_id)
+
+                if self.status not in ["failed", "exited"]:
+                    self.result["changed"] = True
+                    self.result['msg'] = "Deletion done Successfully for the device '{0}' ".format(self.validated_config["management_ip_address"])
+                    self.result['diff'] = self.validated_config
+                    self.result['response'] = self.result['msg']
+                    self.log(self.result['msg'], "INFO")
+                    return self
+
+                if self.status in ['failed', 'exited']:
+                    fail_reason = self.msg
+                    self.log("Exception occurred during 'delete_provisioned_devices': {0}".format(str(fail_reason)), "ERROR")
+                    self.msg = "Error in delete provisioned device '{0}' due to {1}".format(self.device_ip, str(fail_reason))
+                    self.log(self.msg, "ERROR")
+                    self.status = "failed"
+                    self.result['response'] = self.msg
+                    self.check_return_status()
+
+            except Exception as e:
+                self.msg = "Failed to delete the device - ({0}) from Cisco Catalyst Center due to - {1}".format(device_ip, str(e))
+                self.set_operation_result("failed", False, self.msg, "ERROR").check_return_status()
+
 
     def verify_diff_merged(self):
         """
