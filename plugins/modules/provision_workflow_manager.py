@@ -394,9 +394,9 @@ class Provision(DnacBase):
             return self
 
         provision_spec = {
-            "management_ip_address": {'type': 'str', 'required': True},
-            "site_name_hierarchy": {'type': 'str', 'required': False},
+            "management_ip_address": {'type': 'str', 'required': False},
             "managed_ap_locations": {'type': 'list', 'required': False,
+            "site_name_hierarchy": {'type': 'str', 'required': False},
                                      'elements': 'str'},
             "primary_managed_ap_locations": {'type': 'list', 'required': False,
                                              'elements': 'str'},
@@ -407,21 +407,51 @@ class Provision(DnacBase):
             "skip_ap_provision": {'type': 'bool', 'required': False},
             "rolling_ap_upgrade": {'type': 'dict', 'required': False},
             "provisioning": {'type': 'bool', 'required': False, "default": True},
-            "force_provisioning": {'type': 'bool', 'required': False, "default": False}
-        }
-        if state == "merged":
-            provision_spec["site_name_hierarchy"] = {'type': 'str', 'required': True}
-            missing_params = []
-            for config_item in self.config:
-                if "site_name_hierarchy" not in config_item or config_item["site_name_hierarchy"] is None:
-                    missing_params.append("site_name_hierarchy")
-                if "management_ip_address" not in config_item or config_item["management_ip_address"] is None:
-                    missing_params.append("management_ip_address")
+            "force_provisioning": {'type': 'bool', 'required': False, "default": False},
+            "clean_config": {'type': 'bool', 'required': False, "default": False},
+            'application_telemetry': {
+                'type': 'list',
+                'elements': 'dict',
+                'options': {
+                    'device_ips': {'type': 'list', 'elements': 'str', 'required': True},
+                    'telemetry': {'type': 'str', 'required': True},
+                    'wlan_mode': {'type': 'str', 'required': False},
+                    'include_guest_ssid': {'type': 'bool', 'required': False}
+                }
+            }
+            }
 
-            if missing_params:
-                self.msg = "Missing or invalid required parameter(s): {0}".format(', '.join(missing_params))
-                self.status = "failed"
-                return self
+        if state == "merged":
+            application_telemetry_present = any("application_telemetry" in config_item for config_item in self.config)
+
+            if application_telemetry_present:
+                missing_params = []
+                for config_item in self.config:
+                    telemetry_list = config_item.get("application_telemetry", [])
+                    for telemetry_entry in telemetry_list:
+                        if "device_ips" not in telemetry_entry or not telemetry_entry["device_ips"]:
+                            missing_params.append("device_ips")
+                        if "telemetry" not in telemetry_entry or telemetry_entry["telemetry"] is None:
+                            missing_params.append("telemetry")
+                
+                if missing_params:
+                    self.msg = "Missing or invalid required parameter(s) in application_telemetry: {0}".format(', '.join(set(missing_params)))
+                    self.status = "failed"
+                    return self
+
+            else:
+                provision_spec["site_name_hierarchy"] = {'type': 'str', 'required': True}
+                missing_params = []
+                for config_item in self.config:
+                    if "site_name_hierarchy" not in config_item or config_item["site_name_hierarchy"] is None:
+                        missing_params.append("site_name_hierarchy")
+                    if "management_ip_address" not in config_item or config_item["management_ip_address"] is None:
+                        missing_params.append("management_ip_address")
+
+                if missing_params:
+                    self.msg = "Missing or invalid required parameter(s): {0}".format(', '.join(set(missing_params)))
+                    self.status = "failed"
+                    return self
 
         valid_provision, invalid_params = validate_list_of_dicts(
             self.config, provision_spec
@@ -962,6 +992,11 @@ class Provision(DnacBase):
         self.device_ip = self.validated_config["management_ip_address"]
         state = self.params.get("state")
 
+        application_telemetry = self.validated_config.get('application_telemetry', [])
+        if application_telemetry:
+            self.want["application_telemetry"] = application_telemetry
+            return self
+
         self.want["device_type"] = self.get_dev_type()
 
         if self.want["device_type"] == "wired":
@@ -1148,8 +1183,9 @@ class Provision(DnacBase):
             else:
                 self.msg = "Exception occurred while getting the device type, device '{0}' is not present in the cisco catalyst center".format(self.device_ip)
                 self.set_operation_result("failed", False, self.msg, "ERROR").check_return_status()
-
+        
         else:
+            self.log(self.want)
             self.log("Skipping individual provisioning. Initiating bulk provisioning for wired devices.", "INFO")
             self.provision_bulk_wired_device()
 
@@ -1968,7 +2004,7 @@ class Provision(DnacBase):
                 self.check_return_status()
         else:
             try:
-                clean_up = self.config[0].get("clean_config", True)
+                clean_up = self.config[0].get("clean_config", False)
 
                 if clean_up:
                     api_function = "delete_network_device_with_configuration_cleanup"
@@ -2183,6 +2219,7 @@ def main():
         ccc_provision.log("Fetching device types from Cisco Catalyst Center.", "INFO")
         device_dict = ccc_provision.get_device_type()
         ccc_provision.log("Device classification result: {0}".format(device_dict), "DEBUG")
+    ccc_provision.log(ccc_provision.validated_config)
 
     if is_version_valid and state == "merged":
         for device_type, devices in device_dict.items():
@@ -2200,7 +2237,8 @@ def main():
                 if config_verify:
                     ccc_provision.log("Verifying configuration for wired devices.", "INFO")
                     ccc_provision.verify_diff_state_apply[state]().check_return_status()
-            else:
+
+            elif device_type == "wireless":
                 ccc_provision.device_type = "wireless"
                 for config in ccc_provision.validated_config:
                     device_ip = config.get("management_ip_address")
@@ -2212,6 +2250,16 @@ def main():
                         if config_verify:
                             ccc_provision.log("Verifying configuration for wireless device: {0}".format(device_ip), "INFO")
                             ccc_provision.verify_diff_state_apply[state]().check_return_status()
+        ccc_provision.log("application_telemetry")
+        for config in ccc_provision.validated_config:
+            if "application_telemetry" in config:
+                ccc_provision.log("Applying telemetry configuration.", "INFO")
+                ccc_provision.reset_values()
+                ccc_provision.get_want(config).check_return_status()
+                ccc_provision.get_diff_state_apply[state]().check_return_status()
+                if config_verify:
+                    ccc_provision.log("Verifying telemetry config for device: {0}".format(config.get("device_ips", [])), "INFO")
+                    ccc_provision.verify_diff_state_apply[state]().check_return_status()
 
     else:
         for config in ccc_provision.validated_config:

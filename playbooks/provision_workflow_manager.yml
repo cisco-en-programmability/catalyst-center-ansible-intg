@@ -20,6 +20,29 @@
         config_verify: true
         dnac_api_task_timeout: 1000
         dnac_task_poll_interval: 1
-        state: deleted
+        state: merged
         config:
-          - management_ip_address: 204.1.1.22
+          # - management_ip_address: 1.1.1.1
+          #   site_name_hierarchy: "qwertyui"
+          # - management_ip_address: 1.1.1.1
+          #   site_name_hierarchy: "qwertyui"
+          # - management_ip_address: 1.1.1.1
+          #   site_name_hierarchy: "qwertyui"
+          # - management_ip_address: 1.1.1.1
+          #   site_name_hierarchy: "qwertyui"
+          # - management_ip_address: 1.1.1.1
+          #   site_name_hierarchy: "qwertyui"
+
+          - application_telemetry:
+              - device_ips:
+                  - "204.1.2.3"
+                  - "204.1.2.4"
+                telemetry: "enable"
+                wlan_mode: "some_wlan_mode"
+                include_guest_ssid: true
+              - device_ips:
+                  - "204.1.2.3"
+                  - "204.1.2.4"
+                telemetry: "enable"
+                wlan_mode: "some_wlan_mode"
+                include_guest_ssid: true
