@@ -2463,7 +2463,7 @@ def main():
         ccc_provision.log("Checking for telemetry configs...", "DEBUG")
         for config in ccc_provision.validated_config:
             ccc_provision.log("Inspecting config: {0}".format(config), "DEBUG")
-            
+
             application_telemetry = config.get("application_telemetry", None)
 
             if application_telemetry:
