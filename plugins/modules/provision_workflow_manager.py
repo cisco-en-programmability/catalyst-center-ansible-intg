@@ -193,7 +193,8 @@ notes:
     sda.Sda.re_provision_wired_device,
     sda.Sda.provision_wired_device,
     wireless.Wireless.provision,
-    
+    devices.Device.delete_network_device_with_configuration_cleanup,
+    devices.Device.delete_a_network_device_without_configuration_cleanup,
     application_policy.ApplicationPolicy.enable_application_telemetry_feature_on_multiple_network_devices_v1,
     application_policy.ApplicationPolicy.disable_application_telemetry_feature_on_multiple_network_devices_v1
 
@@ -205,6 +206,8 @@ notes:
     put /dna/intent/api/v1/business/sda/provision-device
     post /dna/intent/api/v1/business/sda/provision-device
     post /dna/intent/api/v1/wireless/provision
+    delete /dna/intent/api/v1/networkDevices/deleteWithCleanup
+    delete /dna/intent/api/v1/networkDevices/deleteWithoutCleanup
     post /dna/intent/api/v1/applicationVisibility/networkDevices/enableAppTelemetry
     post /dna/intent/api/v1/applicationVisibility/networkDevices/disableAppTelemetry
 
