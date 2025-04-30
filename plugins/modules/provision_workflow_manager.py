@@ -2136,13 +2136,13 @@ class Provision(DnacBase):
             return self
 
         device_id = self.get_device_id()
-        # provision_id , status = self.get_device_provision_status(device_id)
+        provision_id , status = self.get_device_provision_status(device_id)
 
-        # if status != "success":
-        #     self.result['msg'] = "Device associated with the passed IP address is not provisioned"
-        #     self.log(self.result['msg'], "CRITICAL")
-        #     self.result['response'] = self.want["prov_params"]
-        #     return self
+        if status != "success":
+            self.result['msg'] = "Device associated with the passed IP address is not provisioned"
+            self.log(self.result['msg'], "CRITICAL")
+            self.result['response'] = self.want["prov_params"]
+            return self
 
         if self.compare_dnac_versions(self.get_ccc_version(), "2.3.5.3") <= 0:
 
