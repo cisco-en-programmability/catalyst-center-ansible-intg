@@ -1,16 +1,13 @@
 #!/usr/bin/python
 # -*- coding: utf-8 -*-
-
 # Copyright (c) 2021, Cisco Systems
 # GNU General Public License v3.0+ (see LICENSE or https://www.gnu.org/licenses/gpl-3.0.txt)
-
-
 DOCUMENTATION = r"""
 ---
 module: wireless_settings_rf_profiles_info
 short_description: Information module for Wireless Settings Rf Profiles Info
 description:
-- This module represents an alias of the module wireless_settings_rf_profiles_v1_info
+  - This module represents an alias of the module wireless_settings_rf_profiles_v1_info
 version_added: '6.15.0'
 extends_documentation_fragment:
   - cisco.dnac.module_info
@@ -21,38 +18,51 @@ options:
     type: dict
   limit:
     description:
-    - Limit query parameter.
+      - >
+        Limit query parameter. The number of records to show for this page. Default
+        is 500 if not specified. Maximum
+        allowed limit is 500.
     type: float
   offset:
     description:
-    - Offset query parameter.
+      - Offset query parameter. The first record to show for this page; the first
+        record is numbered 1.
     type: float
+  rfProfileName:
+    description:
+      - RfProfileName query parameter. RF Profile Name.
+    type: str
+  enableRadioTypeA:
+    description:
+      - EnableRadioTypeA query parameter. Enable Radio TypeA.
+    type: bool
+  enableRadioTypeB:
+    description:
+      - EnableRadioTypeB query parameter. Enable Radio TypeB.
+    type: bool
+  enableRadioType6GHz:
+    description:
+      - EnableRadioType6GHz query parameter. Enable Radio Type6GHz.
+    type: bool
   id:
     description:
-    - Id path parameter. RF Profile ID.
+      - Id path parameter. RF Profile ID.
     type: str
 requirements:
-- dnacentersdk >= 2.4.9
-- python >= 3.5
+  - dnacentersdk >= 2.4.9
+  - python >= 3.5
 seealso:
-- name: Cisco DNA Center documentation for Wireless GetRFProfileByIDV1
-  description: Complete reference of the GetRFProfileByIDV1 API.
-  link: https://developer.cisco.com/docs/dna-center/#!get-rf-profile-by-id
-- name: Cisco DNA Center documentation for Wireless GetRFProfilesV1
-  description: Complete reference of the GetRFProfilesV1 API.
-  link: https://developer.cisco.com/docs/dna-center/#!get-rf-profiles
+  - name: Cisco DNA Center documentation for Wireless GetRFProfileByIDV1
+    description: Complete reference of the GetRFProfileByIDV1 API.
+    link: https://developer.cisco.com/docs/dna-center/#!get-rf-profile-by-id
+  - name: Cisco DNA Center documentation for Wireless GetRFProfilesV1
+    description: Complete reference of the GetRFProfilesV1 API.
+    link: https://developer.cisco.com/docs/dna-center/#!get-rf-profiles
 notes:
-  - SDK Method used are
-    wireless.Wireless.get_rf_profile_by_id_v1,
-    wireless.Wireless.get_rf_profiles_v1,
-
-  - Paths used are
-    get /dna/intent/api/v1/wirelessSettings/rfProfiles,
-    get /dna/intent/api/v1/wirelessSettings/rfProfiles/{id},
+  - SDK Method used are wireless.Wireless.get_rf_profile_by_id_v1, wireless.Wireless.get_rf_profiles_v1,
+  - Paths used are get /dna/intent/api/v1/wirelessSettings/rfProfiles, get /dna/intent/api/v1/wirelessSettings/rfProfiles/{id},
   - It should be noted that this module is an alias of wireless_settings_rf_profiles_v1_info
-
 """
-
 EXAMPLES = r"""
 - name: Get all Wireless Settings Rf Profiles Info
   cisco.dnac.wireless_settings_rf_profiles_info:
@@ -66,8 +76,11 @@ EXAMPLES = r"""
     headers: "{{my_headers | from_json}}"
     limit: 0
     offset: 0
+    rfProfileName: string
+    enableRadioTypeA: true
+    enableRadioTypeB: true
+    enableRadioType6GHz: true
   register: result
-
 - name: Get Wireless Settings Rf Profiles Info by id
   cisco.dnac.wireless_settings_rf_profiles_info:
     dnac_host: "{{dnac_host}}"
@@ -80,7 +93,6 @@ EXAMPLES = r"""
     headers: "{{my_headers | from_json}}"
     id: string
   register: result
-
 """
 RETURN = r"""
 dnac_response:
@@ -106,7 +118,28 @@ dnac_response:
           "minPowerLevel": 0,
           "maxPowerLevel": 0,
           "channelWidth": "string",
-          "preamblePuncture": true
+          "preamblePuncture": true,
+          "zeroWaitDfsEnable": true,
+          "customRxSopThreshold": 0,
+          "maxRadioClients": 0,
+          "fraProperties": {
+            "clientAware": true,
+            "clientSelect": 0,
+            "clientReset": 0
+          },
+          "coverageHoleDetectionProperties": {
+            "chdClientLevel": 0,
+            "chdDataRssiThreshold": 0,
+            "chdVoiceRssiThreshold": 0,
+            "chdExceptionLevel": 0
+          },
+          "spatialReuseProperties": {
+            "dot11axNonSrgObssPacketDetect": true,
+            "dot11axNonSrgObssPacketDetectMaxThreshold": 0,
+            "dot11axSrgObssPacketDetect": true,
+            "dot11axSrgObssPacketDetectMinThreshold": 0,
+            "dot11axSrgObssPacketDetectMaxThreshold": 0
+          }
         },
         "radioTypeBProperties": {
           "parentProfile": "string",
@@ -116,7 +149,22 @@ dnac_response:
           "powerThresholdV1": 0,
           "rxSopThreshold": "string",
           "minPowerLevel": 0,
-          "maxPowerLevel": 0
+          "maxPowerLevel": 0,
+          "customRxSopThreshold": 0,
+          "maxRadioClients": 0,
+          "coverageHoleDetectionProperties": {
+            "chdClientLevel": 0,
+            "chdDataRssiThreshold": 0,
+            "chdVoiceRssiThreshold": 0,
+            "chdExceptionLevel": 0
+          },
+          "spatialReuseProperties": {
+            "dot11axNonSrgObssPacketDetect": true,
+            "dot11axNonSrgObssPacketDetectMaxThreshold": 0,
+            "dot11axSrgObssPacketDetect": true,
+            "dot11axSrgObssPacketDetectMinThreshold": 0,
+            "dot11axSrgObssPacketDetectMaxThreshold": 0
+          }
         },
         "radioType6GHzProperties": {
           "parentProfile": "string",
@@ -147,7 +195,29 @@ dnac_response:
           },
           "preamblePuncture": true,
           "minDbsWidth": 0,
-          "maxDbsWidth": 0
+          "maxDbsWidth": 0,
+          "customRxSopThreshold": 0,
+          "maxRadioClients": 0,
+          "pscEnforcingEnabled": true,
+          "discoveryFrames6GHz": "string",
+          "broadcastProbeResponseInterval": 0,
+          "fraProperties": {
+            "clientResetCount": 0,
+            "clientUtilizationThreshold": 0
+          },
+          "coverageHoleDetectionProperties": {
+            "chdClientLevel": 0,
+            "chdDataRssiThreshold": 0,
+            "chdVoiceRssiThreshold": 0,
+            "chdExceptionLevel": 0
+          },
+          "spatialReuseProperties": {
+            "dot11axNonSrgObssPacketDetect": true,
+            "dot11axNonSrgObssPacketDetectMaxThreshold": 0,
+            "dot11axSrgObssPacketDetect": true,
+            "dot11axSrgObssPacketDetectMinThreshold": 0,
+            "dot11axSrgObssPacketDetectMaxThreshold": 0
+          }
         },
         "id": "string"
       },

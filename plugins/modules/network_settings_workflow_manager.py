@@ -2,51 +2,47 @@
 # -*- coding: utf-8 -*-
 # Copyright (c) 2024, Cisco Systems
 # GNU General Public License v3.0+ (see LICENSE or https://www.gnu.org/licenses/gpl-3.0.txt)
-
-
 """Ansible module to perform operations on global pool, reserve pool and network in Cisco Catalyst Center."""
 from __future__ import absolute_import, division, print_function
-
 __metaclass__ = type
 __author__ = ['Muthu Rakesh, Madhan Sankaranarayanan, Megha Kandari']
-
 DOCUMENTATION = r"""
 ---
 module: network_settings_workflow_manager
 short_description: Resource module for IP Address pools and network functions
 description:
- - Manage operations on Global Pool, Reserve Pool, Network resources.
- - API to create/update/delete global pool.
- - API to reserve/update/delete an ip subpool from the global pool.
- - API to update network settings for DHCP, Syslog, SNMP, NTP, Network AAA, Client and Endpoint AAA,
-  and/or DNS center server settings.
+  - Manage operations on Global Pool, Reserve Pool, Network resources.
+  - API to create/update/delete global pool.
+  - API to reserve/update/delete an ip subpool from the global pool.
+  - API to update network settings for DHCP, Syslog, SNMP, NTP, Network AAA, Client
+    and Endpoint AAA, and/or DNS center server settings.
 version_added: '6.6.0'
 extends_documentation_fragment:
- - cisco.dnac.workflow_manager_params
-author: Muthu Rakesh (@MUTHU-RAKESH-27)
-        Madhan Sankaranarayanan (@madhansansel)
-        Megha Kandari (@kandarimegha)
+  - cisco.dnac.workflow_manager_params
+author: Muthu Rakesh (@MUTHU-RAKESH-27) Madhan Sankaranarayanan (@madhansansel) Megha
+  Kandari (@kandarimegha)
 options:
- config_verify:
-   description: Set to True to verify the Cisco Catalyst Center after applying the playbook config.
-   type: bool
-   default: False
- state:
-   description: The state of Cisco Catalyst Center after module completion.
-   type: str
-   choices: [merged, deleted]
-   default: merged
- config:
-   description:
-    - List of details of global pool, reserved pool, network being managed.
-   type: list
-   elements: dict
-   required: true
-   suboptions:
-     global_pool_details:
-       description: Manages IPv4 and IPv6 IP pools in the global level.
-       type: dict
-       suboptions:
+  config_verify:
+    description: Set to True to verify the Cisco Catalyst Center after applying the
+      playbook config.
+    type: bool
+    default: false
+  state:
+    description: The state of Cisco Catalyst Center after module completion.
+    type: str
+    choices: [merged, deleted]
+    default: merged
+  config:
+    description:
+      - List of details of global pool, reserved pool, network being managed.
+    type: list
+    elements: dict
+    required: true
+    suboptions:
+      global_pool_details:
+        description: Manages IPv4 and IPv6 IP pools in the global level.
+        type: dict
+        suboptions:
           settings:
             description: Global Pool's settings.
             type: dict
@@ -58,17 +54,19 @@ options:
                 suboptions:
                   name:
                     description:
-                     - Specifies the name assigned to the Global IP Pool.
-                     - Required for the operations in the Global IP Pool.
-                     - Length should be less than or equal to 100.
-                     - Only letters, numbers and -_./ characters are allowed.
+                      - Specifies the name assigned to the Global IP Pool.
+                      - Required for the operations in the Global IP Pool.
+                      - Length should be less than or equal to 100.
+                      - Only letters, numbers and -_./ characters are allowed.
                     type: str
                   pool_type:
                     description: >
                       Includes both the Generic Ip Pool and Tunnel Ip Pool.
-                      Generic - Used for general purpose within the network such as device
+                      Generic - Used for general purpose within the network such as
+                      device
                                 management or communication between the network devices.
-                      Tunnel - Designated for the tunnel interfaces to encapsulate packets
+                      Tunnel - Designated for the tunnel interfaces to encapsulate
+                      packets
                                within the network protocol. It is used in VPN connections,
                                GRE tunnels, or other types of overlay networks.
                     default: Generic
@@ -83,16 +81,19 @@ options:
                       enabling systematic IP address distribution within a network.
                     type: str
                   gateway:
-                    description: Serves as an entry or exit point for data traffic between networks.
+                    description: Serves as an entry or exit point for data traffic
+                      between networks.
                     type: str
                   dhcp_server_ips:
                     description: >
-                      The DHCP server IPs responsible for automatically assigning IP addresses
+                      The DHCP server IPs responsible for automatically assigning
+                      IP addresses
                       and network configuration parameters to devices on a local network.
                     elements: str
                     type: list
                   dns_server_ips:
-                    description: Responsible for translating domain names into corresponding IP addresses.
+                    description: Responsible for translating domain names into corresponding
+                      IP addresses.
                     elements: str
                     type: list
                   prev_name:
@@ -100,8 +101,15 @@ options:
                       The former identifier for the global pool. It should be used
                       exclusively when you need to update the global pool's name.
                     type: str
-
-     reserve_pool_details:
+                  force_delete:
+                    description: >
+                      Forcefully delete all IP pools from the global level of the
+                      global pool.
+                      The default value is false.
+                    type: bool
+                    required: false
+                    default: false
+      reserve_pool_details:
         description: Reserved IP subpool details from the global pool.
         type: dict
         suboptions:
@@ -112,23 +120,23 @@ options:
             type: str
           name:
             description:
-             - Name of the reserve IP subpool.
-             - Required for the operations in the Reserve IP Pool.
-             - Length should be less than or equal to 100.
-             - Only letters, numbers and -_./ characters are allowed.
+              - Name of the reserve IP subpool.
+              - Required for the operations in the Reserve IP Pool.
+              - Length should be less than or equal to 100.
+              - Only letters, numbers and -_./ characters are allowed.
             type: str
           pool_type:
-            description: Type of the reserve ip sub pool.
-                Generic - Used for general purpose within the network such as device
-                          management or communication between the network devices.
-                LAN - Used for the devices and the resources within the Local Area Network
-                      such as device connectivity, internal communication, or services.
-                Management - Used for the management purposes such as device management interfaces,
-                             management access, or other administrative functions.
-                Service - Used for the network services and application such as DNS (Domain Name System),
-                          DHCP (Dynamic Host Configuration Protocol), NTP (Network Time Protocol).
-                WAN - Used for the devices and resources with the Wide Area Network such as remote
-                      sites interconnection with other network or services hosted within WAN.
+            description: Type of the reserve ip sub pool. Generic - Used for general
+              purpose within the network such as device management or communication
+              between the network devices. LAN - Used for the devices and the resources
+              within the Local Area Network such as device connectivity, internal
+              communication, or services. Management - Used for the management purposes
+              such as device management interfaces, management access, or other administrative
+              functions. Service - Used for the network services and application such
+              as DNS (Domain Name System), DHCP (Dynamic Host Configuration Protocol),
+              NTP (Network Time Protocol). WAN - Used for the devices and resources
+              with the Wide Area Network such as remote sites interconnection with
+              other network or services hosted within WAN.
             default: Generic
             choices: [Generic, LAN, Management, Service, WAN]
             type: str
@@ -140,37 +148,44 @@ options:
             type: bool
           ipv4_global_pool:
             description:
-             - IP v4 Global pool address with cidr, example 175.175.0.0/16.
-             - If both 'ipv6_global_pool' and 'ipv4_global_pool_name' are provided, the 'ipv4_global_pool' will be given priority.
+              - IP v4 Global pool address with cidr, example 175.175.0.0/16.
+              - If both 'ipv6_global_pool' and 'ipv4_global_pool_name' are provided,
+                the 'ipv4_global_pool' will be given priority.
             type: str
           ipv4_global_pool_name:
             description:
-             - Specifies the name to be associated with the IPv4 Global IP Pool.
-             - If both 'ipv4_global_pool' and 'ipv4_global_pool_name' are provided, the 'ipv4_global_pool' will be given priority.
+              - Specifies the name to be associated with the IPv4 Global IP Pool.
+              - If both 'ipv4_global_pool' and 'ipv4_global_pool_name' are provided,
+                the 'ipv4_global_pool' will be given priority.
             type: str
             version_added: 6.14.0
           ipv4_subnet:
             description: Indicates the IPv4 subnet address, for example, "175.175.0.0".
             type: str
           ipv4_prefix:
-            description: ip4 prefix length is enabled or ipv4 total Host input is enabled
+            description: ip4 prefix length is enabled or ipv4 total Host input is
+              enabled
             type: bool
           ipv4_prefix_length:
-            description: The ipv4 prefix length is required when ipv4_prefix value is true.
+            description: The ipv4 prefix length is required when ipv4_prefix value
+              is true.
             type: int
           ipv4_total_host:
-            description: The total number of hosts for IPv4, required when the 'ipv4_prefix' is set to false.
+            description: The total number of hosts for IPv4, required when the 'ipv4_prefix'
+              is set to false.
             type: int
           ipv4_gateway:
             description: Provides the gateway's IPv4 address, for example, "175.175.0.1".
             type: str
             version_added: 4.0.0
           ipv4_dhcp_servers:
-            description: Specifies the IPv4 addresses for DHCP servers, for example, "1.1.1.1".
+            description: Specifies the IPv4 addresses for DHCP servers, for example,
+              "1.1.1.1".
             elements: str
             type: list
           ipv4_dns_servers:
-            description: Specifies the IPv4 addresses for DNS servers, for example, "4.4.4.4".
+            description: Specifies the IPv4 addresses for DNS servers, for example,
+              "4.4.4.4".
             elements: str
             type: list
           ipv6_dhcp_servers:
@@ -192,14 +207,18 @@ options:
             type: str
           ipv6_global_pool:
             description:
-             - The ipv6_global_pool is a required when the ipv6_address_space is set to true.
-             - It specifies the global IPv6 address pool using CIDR notation, such as "2001:db8:85a3::/64".
-             - In cases where both ipv6_global_pool and ipv6_global_pool_name are specified, ipv6_global_pool will take precedence.
+              - The ipv6_global_pool is a required when the ipv6_address_space is
+                set to true.
+              - It specifies the global IPv6 address pool using CIDR notation, such
+                as "2001:db8:85a3::/64".
+              - In cases where both ipv6_global_pool and ipv6_global_pool_name are
+                specified, ipv6_global_pool will take precedence.
             type: str
           ipv6_global_pool_name:
             description:
-             - Specifies the name assigned to the Ip v6 Global IP Pool.
-             - If both 'ipv6_global_pool' and 'ipv6_global_pool_name' are provided, the 'ipv6_global_pool' will be given priority.
+              - Specifies the name assigned to the Ip v6 Global IP Pool.
+              - If both 'ipv6_global_pool' and 'ipv6_global_pool_name' are provided,
+                the 'ipv6_global_pool' will be given priority.
             type: str
             version_added: 6.14.0
           ipv6_subnet:
@@ -207,17 +226,21 @@ options:
             type: str
           ipv6_prefix:
             description: >
-              Determines whether to enable the 'ipv6_prefix_length' or 'ipv6_total_host' input field.
-              If IPv6 prefix value is true, the IPv6 prefix length input field is required,
+              Determines whether to enable the 'ipv6_prefix_length' or 'ipv6_total_host'
+              input field.
+              If IPv6 prefix value is true, the IPv6 prefix length input field is
+              required,
               If it is false ipv6 total Host input is required.
             type: bool
           ipv6_prefix_length:
-            description: Specifies the IPv6 prefix length. Required when 'ipv6_prefix' is set to true.
+            description: Specifies the IPv6 prefix length. Required when 'ipv6_prefix'
+              is set to true.
             type: int
           ipv6_total_host:
             description:
-            - Specifies the total number of IPv6 hosts. Required when 'ipv6_prefix' is set to false.
-            - Must specify a number of IPv6 IP addresses that is less than 256.
+              - Specifies the total number of IPv6 hosts. Required when 'ipv6_prefix'
+                is set to false.
+              - Must specify a number of IPv6 IP addresses that is less than 256.
             type: int
           prev_name:
             description: The former name associated with the reserved IP sub-pool.
@@ -227,7 +250,14 @@ options:
               Allows devices on IPv6 networks to self-configure their
               IP addresses autonomously, eliminating the need for manual setup.
             type: bool
-     network_management_details:
+          force_delete:
+            description: >
+              Forcefully delete all IP pools from the reserve level of the IP sub-pool.
+              The default value is false.
+            type: bool
+            required: false
+            default: false
+      network_management_details:
         description: Set default network settings for the site
         type: list
         elements: dict
@@ -242,7 +272,8 @@ options:
             type: dict
             suboptions:
               network_aaa:
-                description: Manages AAA (Authentication Authorization Accounting) for network devices.
+                description: Manages AAA (Authentication Authorization Accounting)
+                  for network devices.
                 suboptions:
                   server_type:
                     description: Server type for managing AAA for network devices.
@@ -255,34 +286,35 @@ options:
                     type: str
                   pan_address:
                     description:
-                    - PAN IP address for the ISE server.
-                    - For example, 1.1.1.1.
+                      - PAN IP address for the ISE server.
+                      - For example, 1.1.1.1.
                     type: str
                     version_added: 6.14.0
                   primary_server_address:
                     description:
-                    - Primary IP address for the ISE/AAA server.
-                    - For example, 1.1.1.2.
+                      - Primary IP address for the ISE/AAA server.
+                      - For example, 1.1.1.2.
                     type: str
                     version_added: 6.14.0
                   secondary_server_address:
                     description:
-                    - Secondary IP address for the AAA server.
-                    - For example, 1.1.1.3.
+                      - Secondary IP address for the AAA server.
+                      - For example, 1.1.1.3.
                     type: str
                     version_added: 6.14.0
                   shared_secret:
                     description:
-                    - Shared secret for ISE Server.
-                    - Length of the shared secret should be atleast 4 characters.
+                      - Shared secret for ISE Server.
+                      - Length of the shared secret should be atleast 4 characters.
                     type: str
                 type: dict
               client_and_endpoint_aaa:
-                description: Manages AAA (Authentication Authorization Accounting) for clients and endpoints.
+                description: Manages AAA (Authentication Authorization Accounting)
+                  for clients and endpoints.
                 suboptions:
                   server_type:
                     description:
-                    - Server type for managing AAA for client and endpoints.
+                      - Server type for managing AAA for client and endpoints.
                     choices: [AAA, ISE]
                     type: str
                   protocol:
@@ -292,26 +324,26 @@ options:
                     type: str
                   pan_address:
                     description:
-                    - PAN IP address for the ISE server.
-                    - For example, 1.1.1.1.
+                      - PAN IP address for the ISE server.
+                      - For example, 1.1.1.1.
                     type: str
                     version_added: 6.14.0
                   primary_server_address:
                     description:
-                    - Primary IP address for the ISE/AAA server.
-                    - For example, 1.1.1.2.
+                      - Primary IP address for the ISE/AAA server.
+                      - For example, 1.1.1.2.
                     type: str
                     version_added: 6.14.0
                   secondary_server_address:
                     description:
-                    - Secondary IP address for the AAA server.
-                    - For example, 1.1.1.3.
+                      - Secondary IP address for the AAA server.
+                      - For example, 1.1.1.3.
                     type: str
                     version_added: 6.14.0
                   shared_secret:
                     description:
-                    - Shared secret for ISE Server.
-                    - Length of the shared secret should be atleast 4 characters.
+                      - Shared secret for ISE Server.
+                      - Length of the shared secret should be atleast 4 characters.
                     type: str
                 type: dict
               dhcp_server:
@@ -350,51 +382,52 @@ options:
                 type: dict
               wired_data_collection:
                 description:
-                - Enables or disables the collection of data from wired network devices for telemetry and monitoring purposes.
-                - Applicable from Cisco Catalyst Center version 2.3.7.6 onwards.
+                  - Enables or disables the collection of data from wired network
+                    devices for telemetry and monitoring purposes.
+                  - Applicable from Cisco Catalyst Center version 2.3.7.6 onwards.
                 suboptions:
-                    enable_wired_data_collection:
-                      description: Enable or disable wired data collection.
-                      type: bool
-                      default: false
+                  enable_wired_data_collection:
+                    description: Enable or disable wired data collection.
+                    type: bool
                 type: dict
               wireless_telemetry:
                 description:
-                - Enables or disables the collection of telemetry data from wireless network devices for performance monitoring and analysis.
-                - Applicable from Cisco Catalyst Center version 2.3.7.6 onwards.
+                  - Enables or disables the collection of telemetry data from wireless
+                    network devices for performance monitoring and analysis.
+                  - Applicable from Cisco Catalyst Center version 2.3.7.6 onwards.
                 suboptions:
-                    enable_wireless_telemetry:
-                      description: Enable or disable wireless telemetry.
-                      type: bool
-                      default: false
+                  enable_wireless_telemetry:
+                    description: Enable or disable wireless telemetry.
+                    type: bool
                 type: dict
               netflow_collector:
                 description: NetFlow collector configuration for a specific site.
                 suboptions:
                   collector_type:
                     description:
-                    - Type of NetFlow collector.
-                    - Supported values include 'Builtin' and 'Telemetry_broker_or_UDP_director'.
-                    - Applicable from Cisco Catalyst Center version 2.3.7.6 onwards.
+                      - Type of NetFlow collector.
+                      - Supported values include 'Builtin' and 'Telemetry_broker_or_UDP_director'.
+                      - Applicable from Cisco Catalyst Center version 2.3.7.6 onwards.
                     type: str
                     choices: [Builtin, Telemetry_broker_or_UDP_director]
-                    default: Builtin
                   ip_address:
                     description: IP Address for NetFlow collector. For example, 3.3.3.1.
                     type: str
                   port:
-                    description: Port number used by the NetFlow collector. For example, 443.
+                    description: Port number used by the NetFlow collector. For example,
+                      443.
                     type: int
                   enable_on_wired_access_devices:
-                    description: Enable or disable wired access device. Applicable from Cisco Catalyst Center version 2.3.7.6 onwards..
+                    description: Enable or disable wired access device. Applicable
+                      from Cisco Catalyst Center version 2.3.7.6 onwards..
                     type: bool
-                    default: false
                 type: dict
               snmp_server:
                 description: Snmp Server details under a specific site.
                 suboptions:
                   configure_dnac_ip:
-                    description: Configuration Cisco Catalyst Center IP for SNMP Server (eg true).
+                    description: Configuration Cisco Catalyst Center IP for SNMP Server
+                      (eg true).
                     type: bool
                   ip_addresses:
                     description: IP Address for SNMP Server (eg 4.4.4.1).
@@ -405,7 +438,8 @@ options:
                 description: syslog Server details under a specific site.
                 suboptions:
                   configure_dnac_ip:
-                    description: Configuration Cisco Catalyst Center IP for syslog server (eg true).
+                    description: Configuration Cisco Catalyst Center IP for syslog
+                      server (eg true).
                     type: bool
                   ip_addresses:
                     description: IP Address for syslog server (eg 4.4.4.4).
@@ -413,27 +447,17 @@ options:
                     type: list
                 type: dict
 requirements:
-- dnacentersdk >= 2.7.2
-- python >= 3.9
+  - dnacentersdk >= 2.7.2
+  - python >= 3.9
 notes:
-  - SDK Method used are
-    network_settings.NetworkSettings.create_global_pool,
-    network_settings.NetworkSettings.delete_global_ip_pool,
-    network_settings.NetworkSettings.update_global_pool,
-    network_settings.NetworkSettings.release_reserve_ip_subpool,
-    network_settings.NetworkSettings.reserve_ip_subpool,
-    network_settings.NetworkSettings.update_reserve_ip_subpool,
+  - SDK Method used are network_settings.NetworkSettings.create_global_pool, network_settings.NetworkSettings.delete_global_ip_pool,
+    network_settings.NetworkSettings.update_global_pool, network_settings.NetworkSettings.release_reserve_ip_subpool,
+    network_settings.NetworkSettings.reserve_ip_subpool, network_settings.NetworkSettings.update_reserve_ip_subpool,
     network_settings.NetworkSettings.update_network_v2,
-
-  - Paths used are
-    post /dna/intent/api/v1/global-pool,
-    delete /dna/intent/api/v1/global-pool/{id},
-    put /dna/intent/api/v1/global-pool,
-    post /dna/intent/api/v1/reserve-ip-subpool/{siteId},
-    delete /dna/intent/api/v1/reserve-ip-subpool/{id},
-    put /dna/intent/api/v1/reserve-ip-subpool/{siteId},
+  - Paths used are post /dna/intent/api/v1/global-pool, delete /dna/intent/api/v1/global-pool/{id},
+    put /dna/intent/api/v1/global-pool, post /dna/intent/api/v1/reserve-ip-subpool/{siteId},
+    delete /dna/intent/api/v1/reserve-ip-subpool/{id}, put /dna/intent/api/v1/reserve-ip-subpool/{siteId},
     put /dna/intent/api/v2/network/{siteId},
-
 """
 EXAMPLES = r"""
 - name: Create global pool
@@ -445,22 +469,21 @@ EXAMPLES = r"""
     dnac_port: "{{dnac_port}}"
     dnac_version: "{{dnac_version}}"
     dnac_debug: "{{dnac_debug}}"
-    dnac_log: True
+    dnac_log: true
     dnac_log_level: "{{ dnac_log_level }}"
     state: merged
-    config_verify: True
+    config_verify: true
     config:
-    - global_pool_details:
-        settings:
-          ip_pool:
-          - name: string
-            pool_type: Generic
-            ip_address_space: string
-            cidr: string
-            gateway: string
-            dhcp_server_ips: list
-            dns_server_ips: list
-
+      - global_pool_details:
+          settings:
+            ip_pool:
+              - name: string
+                pool_type: Generic
+                ip_address_space: string
+                cidr: string
+                gateway: string
+                dhcp_server_ips: list
+                dns_server_ips: list
 - name: Create reserve an ip pool
   cisco.dnac.network_settings_workflow_manager:
     dnac_host: "{{dnac_host}}"
@@ -470,26 +493,25 @@ EXAMPLES = r"""
     dnac_port: "{{dnac_port}}"
     dnac_version: "{{dnac_version}}"
     dnac_debug: "{{dnac_debug}}"
-    dnac_log: True
+    dnac_log: true
     dnac_log_level: "{{ dnac_log_level }}"
     state: merged
-    config_verify: True
+    config_verify: true
     config:
-    - reserve_pool_details:
-      - site_name: string
-        name: string
-        pool_type: LAN
-        ipv6_address_space: True
-        ipv4_global_pool: string
-        ipv4_prefix: True
-        ipv4_prefix_length: 9
-        ipv4_subnet: string
-        ipv6_prefix: True
-        ipv6_prefix_length: 64
-        ipv6_global_pool: string
-        ipv6_subnet: string
-        slaac_support: True
-
+      - reserve_pool_details:
+          - site_name: string
+            name: string
+            pool_type: LAN
+            ipv6_address_space: true
+            ipv4_global_pool: string
+            ipv4_prefix: true
+            ipv4_prefix_length: 9
+            ipv4_subnet: string
+            ipv6_prefix: true
+            ipv6_prefix_length: 64
+            ipv6_global_pool: string
+            ipv6_subnet: string
+            slaac_support: true
 - name: Create reserve an ip pool using global pool name
   cisco.dnac.network_settings_workflow_manager:
     dnac_host: "{{dnac_host}}"
@@ -499,26 +521,25 @@ EXAMPLES = r"""
     dnac_port: "{{dnac_port}}"
     dnac_version: "{{dnac_version}}"
     dnac_debug: "{{dnac_debug}}"
-    dnac_log: True
+    dnac_log: true
     dnac_log_level: "{{ dnac_log_level }}"
     state: merged
-    config_verify: True
+    config_verify: true
     config:
-    - reserve_pool_details:
-      - name: string
-        site_name: string
-        pool_type: LAN
-        ipv6_address_space: True
-        ipv4_global_pool_name: string
-        ipv4_prefix: True
-        ipv4_prefix_length: 9
-        ipv4_subnet: string
-        ipv6_prefix: True
-        ipv6_prefix_length: 64
-        ipv6_global_pool_name: string
-        ipv6_subnet: string
-        slaac_support: True
-
+      - reserve_pool_details:
+          - name: string
+            site_name: string
+            pool_type: LAN
+            ipv6_address_space: true
+            ipv4_global_pool_name: string
+            ipv4_prefix: true
+            ipv4_prefix_length: 9
+            ipv4_subnet: string
+            ipv6_prefix: true
+            ipv6_prefix_length: 64
+            ipv6_global_pool_name: string
+            ipv6_subnet: string
+            slaac_support: true
 - name: Delete reserved pool
   cisco.dnac.network_settings_workflow_manager:
     dnac_host: "{{dnac_host}}"
@@ -528,15 +549,14 @@ EXAMPLES = r"""
     dnac_port: "{{dnac_port}}"
     dnac_version: "{{dnac_version}}"
     dnac_debug: "{{dnac_debug}}"
-    dnac_log: True
+    dnac_log: true
     dnac_log_level: "{{ dnac_log_level }}"
     state: deleted
-    config_verify: True
+    config_verify: true
     config:
-    - reserve_pool_details:
-      - site_name: string
-        name: string
-
+      - reserve_pool_details:
+          - site_name: string
+            name: string
 - name: Delete Global Pool
   cisco.dnac.network_settings_workflow_manager:
     dnac_host: "{{ dnac_host }}"
@@ -551,11 +571,10 @@ EXAMPLES = r"""
     state: deleted
     config_verify: true
     config:
-    - global_pool_details:
-        settings:
+      - global_pool_details:
+          settings:
             ip_pool:
-            - name: string
-
+              - name: string
 - name: Manage the network functions
   cisco.dnac.network_settings_workflow_manager:
     dnac_host: "{{dnac_host}}"
@@ -565,34 +584,33 @@ EXAMPLES = r"""
     dnac_port: "{{dnac_port}}"
     dnac_version: "{{dnac_version}}"
     dnac_debug: "{{dnac_debug}}"
-    dnac_log: True
+    dnac_log: true
     dnac_log_level: "{{ dnac_log_level }}"
     state: merged
-    config_verify: True
+    config_verify: true
     config:
-    - network_management_details:
-      - site_name: string
-        settings:
-          dhcp_server: list
-          dns_server:
-            domain_name: string
-            primary_ip_address: string
-            secondary_ip_address: string
-          ntp_server: list
-          timezone: string
-          message_of_the_day:
-            banner_message: string
-            retain_existing_banner: bool
-          netflow_collector:
-            ip_address: string
-            port: 443
-          snmp_server:
-            configure_dnac_ip: True
-            ip_addresses: list
-          syslog_server:
-            configure_dnac_ip: True
-            ip_addresses: list
-
+      - network_management_details:
+          - site_name: string
+            settings:
+              dhcp_server: list
+              dns_server:
+                domain_name: string
+                primary_ip_address: string
+                secondary_ip_address: string
+              ntp_server: list
+              timezone: string
+              message_of_the_day:
+                banner_message: string
+                retain_existing_banner: bool
+              netflow_collector:
+                ip_address: string
+                port: 443
+              snmp_server:
+                configure_dnac_ip: true
+                ip_addresses: list
+              syslog_server:
+                configure_dnac_ip: true
+                ip_addresses: list
 - name: Adding the network_aaa and client_and_endpoint_aaa AAA server
   cisco.dnac.network_settings_workflow_manager:
     dnac_host: "{{dnac_host}}"
@@ -602,25 +620,24 @@ EXAMPLES = r"""
     dnac_port: "{{dnac_port}}"
     dnac_version: "{{dnac_version}}"
     dnac_debug: "{{dnac_debug}}"
-    dnac_log: True
+    dnac_log: true
     dnac_log_level: "{{ dnac_log_level }}"
     state: merged
-    config_verify: True
+    config_verify: true
     config:
-    - network_management_details:
-      - site_name: string
-        settings:
-          network_aaa:
-            server_type: AAA
-            primary_server_address: string
-            secondary_server_address: string
-            protocol: string
-          client_and_endpoint_aaa:
-            server_type: AAA
-            primary_server_address: string
-            secondary_server_address: string
-            protocol: string
-
+      - network_management_details:
+          - site_name: string
+            settings:
+              network_aaa:
+                server_type: AAA
+                primary_server_address: string
+                secondary_server_address: string
+                protocol: string
+              client_and_endpoint_aaa:
+                server_type: AAA
+                primary_server_address: string
+                secondary_server_address: string
+                protocol: string
 - name: Adding the network_aaa and client_and_endpoint_aaa ISE server
   cisco.dnac.network_settings_workflow_manager:
     dnac_host: "{{dnac_host}}"
@@ -630,26 +647,25 @@ EXAMPLES = r"""
     dnac_port: "{{dnac_port}}"
     dnac_version: "{{dnac_version}}"
     dnac_debug: "{{dnac_debug}}"
-    dnac_log: True
+    dnac_log: true
     dnac_log_level: "{{ dnac_log_level }}"
     state: merged
-    config_verify: True
+    config_verify: true
     config:
-    - network_management_details:
-      - site_name: string
-        settings:
-          network_aaa:
-            server_type: ISE
-            pan_address: string
-            primary_server_address: string
-            protocol: string
-          client_and_endpoint_aaa:
-            server_type: ISE
-            pan_address: string
-            primary_server_address: string
-            protocol: string
+      - network_management_details:
+          - site_name: string
+            settings:
+              network_aaa:
+                server_type: ISE
+                pan_address: string
+                primary_server_address: string
+                protocol: string
+              client_and_endpoint_aaa:
+                server_type: ISE
+                pan_address: string
+                primary_server_address: string
+                protocol: string
 """
-
 RETURN = r"""
 # Case_1: Successful creation/updation/deletion of global pool
 response_1:
@@ -662,7 +678,6 @@ response_1:
       "executionStatusUrl": "string",
       "message": "string"
     }
-
 # Case_2: Successful creation/updation/deletion of reserve pool
 response_2:
   description: A dictionary or list with the response returned by the Cisco Catalyst Center Python SDK
@@ -674,7 +689,6 @@ response_2:
       "executionStatusUrl": "string",
       "message": "string"
     }
-
 # Case_3: Successful creation/updation of network
 response_3:
   description: A dictionary or list with the response returned by the Cisco Catalyst Center Python SDK
@@ -705,6 +719,7 @@ class NetworkSettings(DnacBase):
 
     def __init__(self, module):
         super().__init__(module)
+        self.supported_states = ["merged", "deleted"]
         self.result["response"] = [
             {"globalPool": {"response": {}, "msg": {}}},
             {"reservePool": {"response": {}, "msg": {}}},
@@ -714,6 +729,8 @@ class NetworkSettings(DnacBase):
         self.reserve_pool_obj_params = self.get_obj_params("ReservePool")
         self.network_obj_params = self.get_obj_params("Network")
         self.all_reserved_pool_details = {}
+        self.global_pool_response = {}
+        self.reserve_pool_response = {}
 
     def validate_input(self):
         """
@@ -743,45 +760,47 @@ class NetworkSettings(DnacBase):
                     "ip_pool": {
                         "type": 'list',
                         "elements": 'dict',
-                        "ip_address_space": {"type": 'string'},
+                        "ip_address_space": {"type": 'str'},
                         "dhcp_server_ips": {"type": 'list'},
                         "dns_server_ips": {"type": 'list'},
-                        "gateway": {"type": 'string'},
-                        "cidr": {"type": 'string'},
-                        "name": {"type": 'string'},
-                        "prev_name": {"type": 'string'},
-                        "pool_type": {"type": 'string', "choices": ["Generic", "Tunnel"]},
+                        "gateway": {"type": 'str'},
+                        "cidr": {"type": 'str'},
+                        "name": {"type": 'str'},
+                        "prev_name": {"type": 'str'},
+                        "pool_type": {"type": 'str', "choices": ["Generic", "Tunnel"]},
+                        'force_delete': {'type': 'bool', 'required': False, 'default': True},
                     }
                 }
             },
             "reserve_pool_details": {
                 "type": 'list',
                 "elements": 'dict',
-                "name": {"type": 'string'},
-                "prev_name": {"type": 'string'},
+                "name": {"type": 'str'},
+                "prev_name": {"type": 'str'},
                 "ipv6_address_space": {"type": 'bool'},
-                "ipv4_global_pool": {"type": 'string'},
+                "ipv4_global_pool": {"type": 'str'},
                 "ipv4_prefix": {"type": 'bool'},
-                "ipv4_prefix_length": {"type": 'string'},
-                "ipv4_subnet": {"type": 'string'},
-                "ipv4_gateway": {"type": 'string'},
+                "ipv4_prefix_length": {"type": 'str'},
+                "ipv4_subnet": {"type": 'str'},
+                "ipv4_gateway": {"type": 'str'},
                 "ipv4_dhcp_servers": {"type": 'list'},
                 "ipv4_dns_servers": {"type": 'list'},
-                "ipv6_global_pool": {"type": 'string'},
+                "ipv6_global_pool": {"type": 'str'},
                 "ipv6_prefix": {"type": 'bool'},
-                "ipv6_prefix_length": {"type": 'integer'},
-                "ipv6_subnet": {"type": 'string'},
-                "ipv6_gateway": {"type": 'string'},
+                "ipv6_prefix_length": {"type": 'int'},
+                "ipv6_subnet": {"type": 'str'},
+                "ipv6_gateway": {"type": 'str'},
                 "ipv6_dhcp_servers": {"type": 'list'},
                 "ipv6_dns_servers": {"type": 'list'},
-                "ipv4_total_host": {"type": 'integer'},
-                "ipv6_total_host": {"type": 'integer'},
+                "ipv4_total_host": {"type": 'int'},
+                "ipv6_total_host": {"type": 'int'},
                 "slaac_support": {"type": 'bool'},
-                "site_name": {"type": 'string'},
+                "site_name": {"type": 'str'},
                 "pool_type": {
-                    "type": 'string',
+                    "type": 'str',
                     "choices": ["Generic", "LAN", "Management", "Service", "WAN"]
                 },
+                'force_delete': {'type': 'bool', 'required': False, 'default': True},
             },
             "network_management_details": {
                 "type": 'list',
@@ -791,9 +810,9 @@ class NetworkSettings(DnacBase):
                     "dhcp_server": {"type": 'list'},
                     "dns_server": {
                         "type": 'dict',
-                        "domain_name": {"type": 'string'},
-                        "primary_ip_address": {"type": 'string'},
-                        "secondary_ip_address": {"type": 'string'}
+                        "domain_name": {"type": 'str'},
+                        "primary_ip_address": {"type": 'str'},
+                        "secondary_ip_address": {"type": 'str'}
                     },
                     "syslog_server": {
                         "type": 'dict',
@@ -805,38 +824,48 @@ class NetworkSettings(DnacBase):
                         "ip_addresses": {"type": 'list'},
                         "configure_dnac_ip": {"type": 'bool'}
                     },
+                    "wired_data_collection": {
+                        "type": 'dict',
+                        "enable_wired_data_collection": {"type": 'bool'}
+                    },
+                    "wireless_telemetry": {
+                        "type": 'dict',
+                        "enable_wireless_telemetry": {"type": 'bool'}
+                    },
                     "netflow_collector": {
                         "type": 'dict',
-                        "ip_address": {"type": 'string'},
-                        "port": {"type": 'integer'},
+                        "collector_type": {"type": 'str'},
+                        "ip_address": {"type": 'str'},
+                        "port": {"type": 'int'},
+                        "enable_on_wired_access_devices": {"type": 'bool'}
                     },
-                    "timezone": {"type": 'string'},
+                    "timezone": {"type": 'str'},
                     "ntp_server": {"type": 'list'},
                     "message_of_the_day": {
                         "type": 'dict',
-                        "banner_message": {"type": 'string'},
+                        "banner_message": {"type": 'str'},
                         "retain_existing_banner": {"type": 'bool'},
                     },
                     "network_aaa": {
                         "type": 'dict',
-                        "server_type": {"type": 'string', "choices": ["ISE", "AAA"]},
-                        "pan_address": {"type": 'string'},
-                        "primary_server_address": {"type": 'string'},
-                        "secondary_server_address": {"type": 'string'},
-                        "protocol": {"type": 'string', "choices": ["RADIUS", "TACACS"]},
-                        "shared_secret": {"type": 'string'}
+                        "server_type": {"type": 'str', "choices": ["ISE", "AAA"]},
+                        "pan_address": {"type": 'str'},
+                        "primary_server_address": {"type": 'str'},
+                        "secondary_server_address": {"type": 'str'},
+                        "protocol": {"type": 'str', "choices": ["RADIUS", "TACACS"]},
+                        "shared_secret": {"type": 'str'}
                     },
                     "client_and_endpoint_aaa": {
                         "type": 'dict',
-                        "server_type": {"type": 'string', "choices": ["ISE", "AAA"]},
-                        "pan_address": {"type": 'string'},
-                        "primary_server_address": {"type": 'string'},
-                        "secondary_server_address": {"type": 'string'},
-                        "protocol": {"type": 'string', "choices": ["RADIUS", "TACACS"]},
-                        "shared_secret": {"type": 'string'}
+                        "server_type": {"type": 'str', "choices": ["ISE", "AAA"]},
+                        "pan_address": {"type": 'str'},
+                        "primary_server_address": {"type": 'str'},
+                        "secondary_server_address": {"type": 'str'},
+                        "protocol": {"type": 'str', "choices": ["RADIUS", "TACACS"]},
+                        "shared_secret": {"type": 'str'}
                     }
                 },
-                "site_name": {"type": 'string'},
+                "site_name": {"type": 'str'},
             }
         }
 
@@ -1088,7 +1117,7 @@ class NetworkSettings(DnacBase):
                 family="network_settings",
                 function='retrieve_d_h_c_p_settings_for_a_site',
                 op_modifies=False,
-                params={"id": site_id}
+                params={"id": site_id, "_inherited": True}
             )
             # Extract DHCP details
             dhcp_details = dhcp_response.get("response", {}).get("dhcp")
@@ -1127,7 +1156,7 @@ class NetworkSettings(DnacBase):
                 family="network_settings",
                 function='retrieve_d_n_s_settings_for_a_site',
                 op_modifies=False,
-                params={"id": site_id}
+                params={"id": site_id, "_inherited": True}
             )
             # Extract DNS details
             dns_details = dns_response.get("response", {}).get("dns")
@@ -1166,8 +1195,9 @@ class NetworkSettings(DnacBase):
                 family="network_settings",
                 function='retrieve_telemetry_settings_for_a_site',
                 op_modifies=False,
-                params={"id": site_id}
+                params={"id": site_id, "_inherited": True}
             )
+
             # Extract telemetry details
             telemetry_details = telemetry_response.get("response", {})
 
@@ -1205,7 +1235,7 @@ class NetworkSettings(DnacBase):
                 family="network_settings",
                 function='retrieve_n_t_p_settings_for_a_site',
                 op_modifies=False,
-                params={"id": site_id}
+                params={"id": site_id, "_inherited": True}
             )
             # Extract NTP server details
             ntpserver_details = ntpserver_response.get("response", {}).get("ntp")
@@ -1213,6 +1243,9 @@ class NetworkSettings(DnacBase):
             if not ntpserver_details:
                 self.log("No NTP server settings found for site '{0}' (ID: {1})".format(site_name, site_id), "WARNING")
                 return None
+
+            if ntpserver_details.get("servers") is None:
+                ntpserver_details["servers"] = []
 
             self.log("Successfully retrieved NTP server settings for site '{0}' (ID: {1}): {2}".format(site_name, site_id, ntpserver_details), "DEBUG")
         except Exception as e:
@@ -1244,7 +1277,7 @@ class NetworkSettings(DnacBase):
                 family="network_settings",
                 function='retrieve_time_zone_settings_for_a_site',
                 op_modifies=False,
-                params={"id": site_id}
+                params={"id": site_id, "_inherited": True}
             )
             # Extract time zone details
             timezone_details = timezone_response.get("response", {}).get("timeZone")
@@ -1283,7 +1316,7 @@ class NetworkSettings(DnacBase):
                 family="network_settings",
                 function='retrieve_banner_settings_for_a_site',
                 op_modifies=False,
-                params={"id": site_id}
+                params={"id": site_id, "_inherited": True}
             )
             # Extract banner (Message of the Day) details
             messageoftheday_details = banner_response.get("response", {}).get("banner")
@@ -1324,7 +1357,7 @@ class NetworkSettings(DnacBase):
                 family="network_settings",
                 function='retrieve_aaa_settings_for_a_site',
                 op_modifies=False,
-                params={"id": site_id}
+                params={"id": site_id, "_inherited": True}
             )
             # Extract AAA network and client/endpoint settings
             response = aaa_network_response.get("response", {})
@@ -1622,8 +1655,16 @@ class NetworkSettings(DnacBase):
         dhcp_details = self.get_dhcp_settings_for_site(site_name, site_id)
         dns_details = self.get_dns_settings_for_site(site_name, site_id)
         telemetry_details = self.get_telemetry_settings_for_site(site_name, site_id)
-        wired_data_collection = telemetry_details.get("wiredDataCollection")
-        wireless_telemetry = telemetry_details.get("wirelessTelemetry")
+        if telemetry_details.get("wiredDataCollection") is None:
+            wired_data_collection = ""
+        else:
+            wired_data_collection = telemetry_details.get("wiredDataCollection")
+
+        if telemetry_details.get("wirelessTelemetry") is None:
+            wireless_telemetry = ""
+        else:
+            wireless_telemetry = telemetry_details.get("wirelessTelemetry")
+
         netflow_details = telemetry_details.get("applicationVisibility")
         snmp_details = telemetry_details.get("snmpTraps")
         syslog_details = telemetry_details.get("syslogs")
@@ -1684,13 +1725,24 @@ class NetworkSettings(DnacBase):
                 network_settings['dnsServer'] = {}
             if domain_name:
                 network_settings.get("dnsServer").update({"domainName": dns_details.get("domainName")})
+            else:
+                network_settings.get("dnsServer").update({"domainName": ""})
             dns_servers = dns_details.get("dnsServers", [])
-            if len(dns_servers) > 0:
+
+            # If there are no DNS servers, provide an empty list or handle it accordingly.
+            if len(dns_servers) == 0:
                 network_settings.get("dnsServer").update({
-                    "primaryIpAddress": dns_details.get("dnsServers")[0]})
-            if len(dns_servers) > 1:
-                network_settings.get("dnsServer").update({
-                    "secondaryIpAddress": dns_details.get("dnsServers")[1]})
+                    "primaryIpAddress": "",
+                    "secondaryIpAddress": ""
+                })
+            else:
+                if len(dns_servers) > 0:
+                    network_settings.get("dnsServer").update({
+                        "primaryIpAddress": dns_details.get("dnsServers")[0]})
+
+                    if len(dns_servers) > 1:
+                        network_settings.get("dnsServer").update({
+                            "secondaryIpAddress": dns_details.get("dnsServers")[1]})
         else:
             network_settings.update({
                 "dnsServer": {
@@ -1707,15 +1759,17 @@ class NetworkSettings(DnacBase):
 
         if netflow_details is not None:
             ip_address = netflow_details.get("collector").get("address")
+            if not ip_address:
+                ip_address = ""
             port = netflow_details.get("collector").get("port")
-            if port:
-                port = int(port)
+            if not port:
+                port = ""
 
             enable_on_wired_access_devices = netflow_details \
                 .get("enableOnWiredAccessDevices")
             collector_type = netflow_details.get("collector").get("collectorType")
 
-            if collector_type == "TelemetryBrokerOrUDPDirector":
+            if collector_type :
                 network_settings.update({
                     "netflowcollector": {
                         "collector": {
@@ -1725,16 +1779,8 @@ class NetworkSettings(DnacBase):
                         },
                         "enableOnWiredAccessDevices": enable_on_wired_access_devices
                     }})
-            else:
-                network_settings.update({
-                    "netflowcollector": {
-                        "collector": {
-                            "collectorType": collector_type,
-                        },
-                        "enableOnWiredAccessDevices": enable_on_wired_access_devices
-                    }})
         else:
-            netflow_details = {}
+            network_settings.update({"netflowcollector": {}})
 
         if messageoftheday_details is not None:
             network_settings.update({"messageOfTheday": messageoftheday_details})
@@ -1745,7 +1791,7 @@ class NetworkSettings(DnacBase):
 
         return network_details
 
-    def get_reserved_ip_subpool(self, site_id):
+    def get_reserved_ip_subpool(self, site_name, site_id):
         """
         Retrieve all the reserved IP subpool details from the Cisco Catalyst Center.
 
@@ -1757,7 +1803,7 @@ class NetworkSettings(DnacBase):
             self (object) - The current object with updated desired reserved subpool information.
         """
 
-        value = 1
+        offset = 1
         self.all_reserved_pool_details.update({site_id: []})
         start_time = time.time()
         while True:
@@ -1768,14 +1814,12 @@ class NetworkSettings(DnacBase):
                     op_modifies=True,
                     params={
                         "site_id": site_id,
-                        "offset": value
+                        "offset": offset
                     }
                 )
             except Exception as msg:
-                self.msg = (
-                    "Exception occurred while getting the reserved pool details "
-                    "from Cisco Catalyst Center: {msg}".format(msg=msg)
-                )
+                self.msg = "Exception occurred while fetching reserved pool details for site '{0}': {1}".format(
+                    site_name, site_id)
                 self.log(str(msg), "ERROR")
                 self.status = "failed"
                 return self
@@ -1787,12 +1831,19 @@ class NetworkSettings(DnacBase):
 
             reserve_pool_details = response.get("response")
             if not reserve_pool_details:
-                self.log("No subpools are reserved in the site with ID - '{0}'."
-                         .format(site_id), "DEBUG")
+                self.log("No subpools are reserved in the site with ID - '{0}': '{1}'."
+                         .format(site_id, site_name), "DEBUG")
                 return self
 
             self.all_reserved_pool_details.get(site_id).extend(reserve_pool_details)
-            value += 25
+
+            if len(reserve_pool_details) < 25:
+                self.log("Found {0} record(s), No more record available for the next offset"
+                         .format(str(len(reserve_pool_details))), "INFO")
+                break
+
+            offset += 25
+
             end_time = time.time()
             if (end_time - start_time) >= self.max_timeout:
                 self.msg = (
@@ -1823,13 +1874,16 @@ class NetworkSettings(DnacBase):
             "details": None,
             "id": None
         }
-        value = 1
+        all_global_pool = []
+        offset = 1
+        global_pool_details = None
+        response = None
         while True:
             try:
                 response = self.dnac._exec(
                     family="network_settings",
                     function="get_global_pool",
-                    params={"offset": value}
+                    params={"offset": offset}
                 )
             except Exception as msg:
                 self.msg = (
@@ -1837,29 +1891,55 @@ class NetworkSettings(DnacBase):
                     .format(name=name, msg=msg)
                 )
                 self.log(str(msg), "ERROR")
-                self.status = "failed"
-                return self
+                self.fail_and_exit(self.msg)
 
             if not isinstance(response, dict):
                 self.msg = "Failed to retrieve the global pool details - Response is not a dictionary"
                 self.log(self.msg, "CRITICAL")
-                self.status = "failed"
-                return self.check_return_status()
+                self.fail_and_exit(self.msg)
 
             all_global_pool_details = response.get("response")
             if not all_global_pool_details:
+                if name == "":
+                    self.log("Global pool '{0}' does not exist".format(all_global_pool), "INFO")
+                    return all_global_pool
                 self.log("Global pool '{0}' does not exist".format(name), "INFO")
                 return global_pool
 
-            global_pool_details = get_dict_result(all_global_pool_details, "ipPoolName", name)
-            if global_pool_details:
+            if name == "":
+                global_pool_details = all_global_pool_details
+            else:
+                global_pool_details = get_dict_result(all_global_pool_details, "ipPoolName", name)
+
+            if global_pool_details and isinstance(global_pool_details, dict):
                 self.log("Global pool found with name '{0}': {1}".format(name, global_pool_details), "INFO")
                 global_pool.update({"exists": True})
                 global_pool.update({"id": global_pool_details.get("id")})
                 global_pool["details"] = self.get_global_pool_params(global_pool_details)
                 break
 
-            value += 25
+            if global_pool_details and isinstance(global_pool_details, list) and name == "":
+                self.log("Global pool found {0}".format(
+                    self.pprint(global_pool_details)), "INFO")
+
+                for each_pool in global_pool_details:
+                    global_del_pool = {
+                        "exists": True,
+                        "id": each_pool.get("id"),
+                        "details": self.get_global_pool_params(each_pool)
+                    }
+                    all_global_pool.append(global_del_pool)
+
+            if len(all_global_pool_details) < 25:
+                self.log("Found {0} record(s), No more record available for the next offset"
+                         .format(str(len(all_global_pool_details))), "INFO")
+                if self.payload.get("state") == "deleted" and name == "":
+                    self.log("Formatted global pool details: {0}".format(
+                        self.pprint(all_global_pool)), "DEBUG")
+                    return all_global_pool
+                break
+
+            offset += 25
 
         self.log("Formatted global pool details: {0}".format(global_pool), "DEBUG")
         return global_pool
@@ -1895,23 +1975,52 @@ class NetworkSettings(DnacBase):
             return reserve_pool
 
         if not self.all_reserved_pool_details.get(site_id):
-            self.get_reserved_ip_subpool(site_id)
+            self.get_reserved_ip_subpool(site_name, site_id)
 
         if not self.all_reserved_pool_details.get(site_id):
             self.log("Reserved pool {0} does not exist in the site {1}"
                      .format(name, site_name), "DEBUG")
             return reserve_pool
 
-        reserve_pool_details = get_dict_result(self.all_reserved_pool_details.get(site_id), "groupName", name)
-        if reserve_pool_details:
-            self.log("Reserve pool found with name '{0}' in the site '{1}': {2}"
+        reserve_pool_details = None
+        if name == "":
+            reserve_pool_details = self.all_reserved_pool_details.get(site_id)
+        else:
+            reserve_pool_details = get_dict_result(
+                self.all_reserved_pool_details.get(site_id), "groupName", name)
+
+        if not reserve_pool_details:
+            self.log("Reserved pool {0} does not exist in the site {1}"
+                     .format(name, site_name), "DEBUG")
+            return reserve_pool
+
+        if isinstance(reserve_pool_details, dict):
+            self.log("Reserve pool found with name {0} in the site '{1}': {2}"
                      .format(name, site_name, reserve_pool_details), "INFO")
             reserve_pool.update({"exists": True})
             reserve_pool.update({"id": reserve_pool_details.get("id")})
             reserve_pool.update({"details": self.get_reserve_pool_params(reserve_pool_details)})
+            self.log("Reserved pool details: {0}".format(reserve_pool.get("details")), "DEBUG")
+            self.log("Reserved pool id: {0}".format(reserve_pool.get("id")), "DEBUG")
+            return reserve_pool
 
-        self.log("Reserved pool details: {0}".format(reserve_pool.get("details")), "DEBUG")
-        self.log("Reserved pool id: {0}".format(reserve_pool.get("id")), "DEBUG")
+        if isinstance(reserve_pool_details, list):
+            self.log("Found reserve pools for site '{0}': {1}"
+                     .format(site_name, self.pprint(reserve_pool_details)), "INFO")
+            all_reserve_pool = []
+            for each_pool in reserve_pool_details:
+                reserve_del_pool = {
+                    "exists": True,
+                    "id": each_pool.get("id"),
+                    "details": self.get_reserve_pool_params(each_pool),
+                    "success": True
+                }
+                all_reserve_pool.append(reserve_del_pool)
+
+            self.log("Reserved pool list details: {0}".format(
+                self.pprint(all_reserve_pool)), "DEBUG")
+            return all_reserve_pool
+
         return reserve_pool
 
     def get_have_global_pool(self, global_pool_details):
@@ -1944,22 +2053,26 @@ class NetworkSettings(DnacBase):
         errors = []  # To collect all error messages
 
         for pool_details in global_pool_ippool:
+            delete_all = pool_details.get("force_delete")
             name = pool_details.get("name")
-            if name is None:
-                errors.append("Missing required parameter 'name' in global_pool_details: {}".format(pool_details))
-                continue
+            if delete_all:
+                name = ""
+            else:
+                if name is None:
+                    errors.append("Missing required parameter 'name' in global_pool_details: {}".format(pool_details))
+                    continue
 
-            name_length = len(name)
-            if name_length > 100:
-                errors.append("The length of the 'name' in global_pool_details should be less or equal to 100. Invalid_config: {}".format(pool_details))
+                name_length = len(name)
+                if name_length > 100:
+                    errors.append("The length of the 'name' in global_pool_details should be less or equal to 100. Invalid_config: {}".format(pool_details))
 
-            if " " in name:
-                errors.append("The 'name' in global_pool_details should not contain any spaces. Invalid_config: {}".format(pool_details))
+                if " " in name:
+                    errors.append("The 'name' in global_pool_details should not contain any spaces. Invalid_config: {}".format(pool_details))
 
-            pattern = r'^[\w\-./]+$'
-            if not re.match(pattern, name):
-                errors.append("The 'name' in global_pool_details should contain only letters, numbers, and -_./ characters. Invalid_config: {}"
-                              .format(pool_details))
+                pattern = r'^[\w\-./]+$'
+                if not re.match(pattern, name):
+                    errors.append("The 'name' in global_pool_details should contain only letters, numbers, and -_./ characters. Invalid_config: {}"
+                                  .format(pool_details))
 
         if errors:
             # If there are errors, return a failure status with all messages
@@ -1967,19 +2080,32 @@ class NetworkSettings(DnacBase):
             self.status = "failed"
             return self
 
+        if name == "":
+            global_pool.append(self.global_pool_exists(name))
+            self.log("Global pool details: {0}".format(global_pool), "DEBUG")
+            self.have.update({"globalPool": global_pool})
+            self.msg = "Collected all global pool details from the Cisco Catalyst Center."
+            self.status = "success"
+            return self
+
         for pool_details in global_pool_ippool:
-            name = pool_details.get("name")
             # If the Global Pool doesn't exist and a previous name is provided
             # Else try using the previous name
+            name = pool_details.get("name")
+            if pool_details.get("force_delete"):
+                name = ""
+
             global_pool.append(self.global_pool_exists(name))
-            self.log("Global pool details of '{0}': {1}".format(name, global_pool[global_pool_index]), "DEBUG")
+            self.log("Global pool details of '{0}': {1}".format(
+                name, global_pool[global_pool_index]), "DEBUG")
             prev_name = pool_details.get("prev_name")
             if global_pool[global_pool_index].get("exists") is False and \
                     prev_name is not None:
                 global_pool.pop()
                 global_pool.append(self.global_pool_exists(prev_name))
                 if global_pool[global_pool_index].get("exists") is False:
-                    self.msg = "Prev name {0} doesn't exist in global_pool_details".format(prev_name)
+                    self.msg = "Prev name {0} doesn't exist in global_pool_details".format(
+                        prev_name)
                     self.status = "failed"
                     return self
 
@@ -2008,28 +2134,33 @@ class NetworkSettings(DnacBase):
         reserve_pool = []
         reserve_pool_index = 0
         for item in reserve_pool_details:
+            delete_all = item.get("force_delete")
             name = item.get("name")
-            if name is None:
-                self.msg = "Missing required parameter 'name' in reserve_pool_details."
-                self.status = "failed"
-                return self
+            site_name = item.get("site_name")
+            if delete_all:
+                name = ""
+            else:
+                if name is None:
+                    self.msg = "Missing required parameter 'name' in reserve_pool_details."
+                    self.status = "failed"
+                    return self
 
-            name_length = len(name)
-            if name_length > 100:
-                self.msg = "The length of the 'name' in reserve_pool_details should be less or equal to 100."
-                self.status = "failed"
-                return self
+                name_length = len(name)
+                if name_length > 100:
+                    self.msg = "The length of the 'name' in reserve_pool_details should be less or equal to 100."
+                    self.status = "failed"
+                    return self
 
-            if " " in name:
-                self.msg = "The 'name' in reserve_pool_details should not contain any spaces."
-                self.status = "failed"
-                return self
+                if " " in name:
+                    self.msg = "The 'name' in reserve_pool_details should not contain any spaces."
+                    self.status = "failed"
+                    return self
 
-            pattern = r'^[\w\-./]+$'
-            if not re.match(pattern, name):
-                self.msg = "The 'name' in reserve_pool_details should contain only letters, numbers and -_./ characters."
-                self.status = "failed"
-                return self
+                pattern = r'^[\w\-./]+$'
+                if not re.match(pattern, name):
+                    self.msg = "The 'name' in reserve_pool_details should contain only letters, numbers and -_./ characters."
+                    self.status = "failed"
+                    return self
 
             site_name = item.get("site_name")
             self.log("Site Name: {0}".format(site_name), "DEBUG")
@@ -2040,37 +2171,48 @@ class NetworkSettings(DnacBase):
 
             # Check if the Reserved Pool exists in Cisco Catalyst Center
             # based on the provided name and site name
-            reserve_pool.append(self.reserve_pool_exists(name, site_name))
-            if not reserve_pool[reserve_pool_index].get("success"):
+            if self.reserve_pool_exists(name, site_name):
+                reserve_pool.append(self.reserve_pool_exists(name, site_name))
+            else:
+                self.have.update({"reservePool": reserve_pool})
+                return self
+
+            if name != "" and not reserve_pool[reserve_pool_index].get("success"):
                 return self.check_return_status()
-            self.log("Reserved pool details for '{0}': {1}".format(name, reserve_pool[reserve_pool_index]), "DEBUG")
+            elif name == "" and len(reserve_pool[reserve_pool_index]) < 1:
+                return self.check_return_status()
 
-            # If the Reserved Pool doesn't exist and a previous name is provided
-            # Else try using the previous name
-            prev_name = item.get("prev_name")
-            if reserve_pool[reserve_pool_index].get("exists") is False and \
-                    prev_name is not None:
-                reserve_pool.pop()
-                reserve_pool.append(self.reserve_pool_exists(prev_name, site_name))
-                if not reserve_pool[reserve_pool_index].get("success"):
-                    return self.check_return_status()
+            self.log("Reserved pool details for {0}: {1}"
+                     .format(name, reserve_pool[reserve_pool_index]), "DEBUG")
 
-                # If the previous name doesn't exist in Cisco Catalyst Center, return with error
-                if reserve_pool[reserve_pool_index].get("exists") is False:
-                    self.msg = "Prev name {0} doesn't exist in reserve_pool_details".format(prev_name)
-                    self.status = "failed"
-                    return self
+            if name != "":
+                # If the Reserved Pool doesn't exist and a previous name is provided
+                # Else try using the previous name
+                prev_name = item.get("prev_name")
+                if reserve_pool[reserve_pool_index].get("exists") is False and prev_name is not None:
+                    self.log("Current pool does not exist. Checking for previous name '{0}'."
+                             .format(prev_name), "DEBUG")
+                    reserve_pool.pop()
+                    reserve_pool.append(self.reserve_pool_exists(prev_name, site_name))
+                    if not reserve_pool[reserve_pool_index].get("success"):
+                        return self.check_return_status()
 
-            self.log("Reserved pool exists: {0}".format(reserve_pool[reserve_pool_index].get("exists")), "DEBUG")
-            self.log("Reserved pool: {0}".format(reserve_pool[reserve_pool_index].get("details")), "DEBUG")
+                    # If the previous name doesn't exist in Cisco Catalyst Center, return with error
+                    if reserve_pool[reserve_pool_index].get("exists") is False:
+                        self.msg = "Prev name {0} doesn't exist in reserve_pool_details".format(prev_name)
+                        self.status = "failed"
+                        return self
 
-            # If reserve pool exist, convert ipv6AddressSpace to the required format (boolean)
-            if reserve_pool[reserve_pool_index].get("exists"):
-                reserve_pool_info = reserve_pool[reserve_pool_index].get("details")
-                if reserve_pool_info.get("ipv6AddressSpace") == "False":
-                    reserve_pool_info.update({"ipv6AddressSpace": False})
-                else:
-                    reserve_pool_info.update({"ipv6AddressSpace": True})
+                self.log("Reserved pool exists: {0}".format(reserve_pool[reserve_pool_index].get("exists")), "DEBUG")
+                self.log("Reserved pool: {0}".format(reserve_pool[reserve_pool_index].get("details")), "DEBUG")
+
+                # If reserve pool exist, convert ipv6AddressSpace to the required format (boolean)
+                if reserve_pool[reserve_pool_index].get("exists"):
+                    reserve_pool_info = reserve_pool[reserve_pool_index].get("details")
+                    if reserve_pool_info.get("ipv6AddressSpace") == "False":
+                        reserve_pool_info.update({"ipv6AddressSpace": False})
+                    else:
+                        reserve_pool_info.update({"ipv6AddressSpace": True})
 
             reserve_pool_index += 1
 
@@ -2450,7 +2592,7 @@ class NetworkSettings(DnacBase):
             }
             want_network_settings = want_network.get("settings")
             self.log("Current state (have): {0}".format(self.have), "DEBUG")
-
+            have_network_details = self.have.get("network")[network_management_index].get("net_details").get("settings")
             if self.compare_dnac_versions(self.get_ccc_version(), "2.3.5.3") <= 0:
                 if item.get("dhcp_server") is not None:
                     want_network_settings.update({
@@ -2632,7 +2774,7 @@ class NetworkSettings(DnacBase):
                             "sharedSecret": shared_secret
                         })
                 else:
-                    del want_network_settings["network_aaa"]
+                    want_network_settings["network_aaa"] = have_network_details.get("network_aaa")
 
                 client_and_endpoint_aaa = item.get("client_and_endpoint_aaa")
                 if client_and_endpoint_aaa:
@@ -2706,7 +2848,7 @@ class NetworkSettings(DnacBase):
                             "sharedSecret": shared_secret
                         })
                 else:
-                    del want_network_settings["client_and_endpoint_aaa"]
+                    want_network_settings["client_and_endpoint_aaa"] = have_network_details.get("client_and_endpoint_aaa")
 
                 network_aaa = want_network_settings.get("network_aaa")
                 client_and_endpoint_aaa = want_network_settings.get("client_and_endpoint_aaa")
@@ -2728,12 +2870,25 @@ class NetworkSettings(DnacBase):
                 else:
                     del want_network_settings["dhcpServer"]
 
-                if item.get("ntp_server") is not None:
-                    want_network_settings.update({
-                        "ntpServer": {"servers": item.get("ntp_server")}
-                    })
+                ntp_servers = item.get("ntp_server")
+
+                if ntp_servers:
+                    self.log("Validating 'ntp_server' input: {0}".format(ntp_servers), "DEBUG")
+
+                    if isinstance(ntp_servers, list) and any(ntp_servers):  # Ensure it's a list with at least one non-empty value
+                        want_network_settings["ntpServer"] = {"servers": ntp_servers}
+                        self.log("Updated 'want_network_settings' with NTP servers: {0}".format(ntp_servers), "INFO")
+                    else:
+                        self.msg = (
+                            "'ntp_servers' attribute must be a list containing at least one valid IPv4 or IPv6 address. "
+                            "Provided value: '{0}'.".format(ntp_servers)
+                        )
+                        self.log(self.msg, "CRITICAL")
+                        self.status = "failed"
+                        return self.check_return_status()
                 else:
-                    del want_network_settings["ntpServer"]
+                    self.log("'ntp_server' not provided. Removing 'ntpServer' from 'want_network_settings'.", "DEBUG")
+                    want_network_settings.pop("ntpServer", None)  # Use pop to avoid KeyError if key doesn't exist
 
                 if item.get("timezone") is not None:
                     want_network_settings.update({
@@ -2766,107 +2921,214 @@ class NetworkSettings(DnacBase):
 
                 snmp_server = item.get("snmp_server")
                 if snmp_server is not None:
-                    if snmp_server.get("configure_dnac_ip") is not None:
+                    self.log("Processing SNMP server configuration...", "DEBUG")
+
+                    # Check and update configure_dnac_ip
+                    configure_dnac_ip = snmp_server.get("configure_dnac_ip")
+                    if configure_dnac_ip is not None:
+                        self.log("Updating 'useBuiltinTrapServer' with provided configure_dnac_ip: {0}".format(configure_dnac_ip), "INFO")
                         want_network_settings.get("snmpServer").update({
-                            "useBuiltinTrapServer": snmp_server.get("configure_dnac_ip")
+                            "useBuiltinTrapServer": configure_dnac_ip
                         })
-                    if snmp_server.get("ip_addresses") is not None:
+                    else:
+                        have_configure_dnac_ip = have_network_details.get("snmpServer", {}).get("useBuiltinTrapServer")
+                        if have_configure_dnac_ip is not None:
+                            self.log("Retaining existing 'useBuiltinTrapServer' from current network details: {0}".format(have_configure_dnac_ip), "INFO")
+                            want_network_settings.get("snmpServer").update({
+                                "useBuiltinTrapServer": have_configure_dnac_ip
+                            })
+                        else:
+                            self.log("'useBuiltinTrapServer' not found in provided or existing configurations", "DEBUG")
+
+                    # Check and update ip_addresses
+                    ip_addresses = snmp_server.get("ip_addresses")
+                    if ip_addresses is not None:
+                        self.log("Updating 'externalTrapServers' with provided IP addresses: {0}".format(ip_addresses), "INFO")
                         want_network_settings.get("snmpServer").update({
-                            "externalTrapServers": snmp_server.get("ip_addresses")
+                            "externalTrapServers": ip_addresses
                         })
+                    else:
+                        have_ip_addresses = have_network_details.get("snmpServer", {}).get("externalTrapServers")
+                        if have_ip_addresses is not None:
+                            self.log("Retaining existing 'externalTrapServers' from current network details: {0}".format(have_ip_addresses), "INFO")
+                            want_network_settings.get("snmpServer").update({
+                                "externalTrapServers": have_ip_addresses
+                            })
+                        else:
+                            self.log("'externalTrapServers' not found in provided or existing configurations", "DEBUG")
+                elif have_network_details.get("snmpServer") != [""]:
+                    self.log("No SNMP server provided; using existing SNMP server configuration", "INFO")
+
+                    # If snmpServer is not defined in item, use have_network_details
+                    want_network_settings["snmpServer"] = have_network_details.get("snmpServer")
                 else:
-                    del want_network_settings["snmpServer"]
+                    self.log("No SNMP server provided and no existing SNMP configuration found; setting to None", "INFO")
+                    want_network_settings["snmpServer"] = None
 
                 syslog_server = item.get("syslog_server")
                 if syslog_server is not None:
-                    if syslog_server.get("configure_dnac_ip") is not None:
-                        want_network_settings.get("syslogServer").update({
-                            "useBuiltinSyslogServer": syslog_server.get("configure_dnac_ip")
-                        })
-                    if syslog_server.get("ip_addresses") is not None:
-                        want_network_settings.get("syslogServer").update({
-                            "externalSyslogServers": syslog_server.get("ip_addresses")
-                        })
-                else:
-                    del want_network_settings["syslogServer"]
+                    self.log("Processing Syslog server configuration...", "DEBUG")
 
-                netflow_collector = item.get("netflow_collector")
-                if netflow_collector is not None:
-                    netflowcollector = want_network_settings.get("netflowcollector")
-                    netflowcollector.update({"collector": {}})
-                    if netflow_collector.get("collector_type") is not None and netflow_collector.get("collectorType") != "Builtin":
-                        want_network_settings.get("netflowcollector").get("collector").update({
-                            "collectorType": "TelemetryBrokerOrUDPDirector"
+                    # Retrieve existing syslog details
+                    have_syslog_server = have_network_details.get("syslogServer", {})
+                    have_configure_dnac_ip = have_syslog_server.get("useBuiltinSyslogServer")
+                    have_ip_addresses = have_syslog_server.get("externalSyslogServers")
+
+                    # Update configure_dnac_ip if provided, else fallback to existing value
+                    configure_dnac_ip = syslog_server.get("configure_dnac_ip")
+                    if configure_dnac_ip is not None:
+                        self.log("Updating 'useBuiltinSyslogServer' with provided configure_dnac_ip: {0}".format(configure_dnac_ip), "INFO")
+                        want_network_settings.get("syslogServer").update({
+                            "useBuiltinSyslogServer": configure_dnac_ip
+                        })
+                    elif have_configure_dnac_ip is not None:
+                        self.log("Retaining existing 'useBuiltinSyslogServer': {0}".format(have_configure_dnac_ip), "INFO")
+                        want_network_settings.get("syslogServer").update({
+                            "useBuiltinSyslogServer": have_configure_dnac_ip
                         })
                     else:
-                        want_network_settings.get("netflowcollector").get("collector").update({
-                            "collectorType": "Builtin"
+                        self.log("'useBuiltinSyslogServer' not found in provided or existing configurations", "DEBUG")
+
+                    # Update ip_addresses if provided, else fallback to existing value
+                    ip_addresses = syslog_server.get("ip_addresses")
+                    if ip_addresses is not None:
+                        self.log("Updating 'externalSyslogServers' with provided IP addresses: {0}".format(ip_addresses), "INFO")
+                        want_network_settings.get("syslogServer").update({
+                            "externalSyslogServers": ip_addresses
                         })
-                    if netflow_collector.get("collector_type") == "Telemetry_broker_or_UDP_director" \
-                        and (netflow_collector.get("ip_address") is None
-                             or netflow_collector.get("port") is None):
-                        self.msg = "The 'ip_address' and 'port' for 'Telemetry_broker_or_UDP_director' is mandatory."
+                    elif have_ip_addresses is not None:
+                        self.log("Retaining existing 'externalSyslogServers': {0}".format(have_ip_addresses), "INFO")
+                        want_network_settings.get("syslogServer").update({
+                            "externalSyslogServers": have_ip_addresses
+                        })
+                    else:
+                        self.log("'externalSyslogServers' not found in provided or existing configurations", "DEBUG")
+                elif have_network_details.get("syslogServer") != [""]:
+                    self.log("No Syslog server provided; using existing Syslog server configuration", "INFO")
+
+                    # Use have value if syslogServer is not defined in the item
+                    want_network_settings["syslogServer"] = have_network_details.get("syslogServer")
+                else:
+                    self.log("No Syslog server provided and no existing configuration found; setting to None", "INFO")
+
+                    # Set to None if no value exists in item or have
+                    want_network_settings["syslogServer"] = None
+
+                netflow_collector_data = item.get("netflow_collector")
+                if netflow_collector_data is not None:
+                    have_netflowcollector = have_network_details.get("netflowcollector", {}).get("collector", {})
+                    netflow_collector = want_network_settings.get("netflowcollector")
+                    netflow_collector["collector"] = {}
+
+                    # Handle collectorType
+                    collector_type = netflow_collector_data.get("collector_type")
+
+                    # Check if collector_type is None and assign from 'have' if so
+                    if collector_type is None:
+                        collector_type = have_netflowcollector.get("collectorType")
+                        if collector_type != "":
+                            netflow_collector["collector"]["collectorType"] = collector_type
+                        else:
+                            netflow_collector["collector"]["collectorType"] = None
+                        self.log("Assigned collectorType from 'have': {}".format(collector_type), "INFO")
+
+                    if collector_type == "TelemetryBrokerOrUDPDirector" or collector_type == "Telemetry_broker_or_UDP_director":
+                        netflow_collector["collector"]["collectorType"] = "TelemetryBrokerOrUDPDirector"
+
+                        # Ensure mandatory fields for TelemetryBrokerOrUDPDirector
+                        ip_address = netflow_collector_data.get("ip_address")
+                        port = netflow_collector_data.get("port")
+
+                        if port:
+                            port = str(port)
+
+                        if not ip_address or not port:
+
+                            # Attempt to retrieve values from `have`
+
+                            if not ip_address and have_netflowcollector.get("ip_address") != "":
+                                ip_address = have_netflowcollector.get("ip_address")
+
+                            if not port and have_netflowcollector.get("port") != "":
+                                port = have_netflowcollector.get("port")
+
+                            # Log the values after attempting to assign from `have`
+                            self.log(
+                                "Assigned missing 'ip_address' and 'port' from 'have': ip_address={0}, port={1}".format(ip_address, port),
+                                "DEBUG"
+                            )
+
+                            # If still missing, log failure and set status
+                            if not ip_address or not port:
+                                self.msg = (
+                                    "The 'ip_address' and 'port' are mandatory when 'collector_type' is "
+                                    "'Telemetry_broker_or_UDP_director', and values could not be fetched from 'have'."
+                                )
+                                self.status = "failed"
+                                return self
+
+                        if port:
+                            if not (1 <= int(port) <= 65535):
+                                self.msg = (
+                                    "The 'port' value must be between 1 and 65535 for 'Telemetry_broker_or_UDP_director'."
+                                )
+                                self.status = "failed"
+                                return self
+
+                        # Add address and port
+                        netflow_collector["collector"]["address"] = ip_address
+                        self.log("Successfully added {0} and {1} to the netflow collector config.".format(ip_address, port), "INFO")
+                        netflow_collector["collector"]["port"] = port
+
+                    elif collector_type == "Builtin":
+                        netflow_collector["collector"]["collectorType"] = "Builtin"
+                    else:
+
+                        # Invalid collector_type
+                        self.msg = (
+                            "Invalid 'collector_type': {}. Expected values are 'Builtin' or "
+                            "'Telemetry_broker_or_UDP_director'.".format(collector_type)
+                        )
+                        self.log(self.msg, "ERROR")
                         self.status = "failed"
                         return self
 
-                    if netflow_collector.get("ip_address") is not None:
-                        want_network_settings.get("netflowcollector").get("collector").update({
-                            "address":
-                            netflow_collector.get("ip_address")
-                        })
-                    if netflow_collector.get("port") is not None:
-                        want_network_settings.get("netflowcollector").get("collector").update({
-                            "port":
-                            netflow_collector.get("port")
-                        })
-
-                    if netflow_collector.get("enable_on_wired_access_devices") is True:
-                        want_network_settings.get("netflowcollector").update({
-                            "enableOnWiredAccessDevices": True
-                        })
-                    else:
-                        want_network_settings.get("netflowcollector").update({
-                            "enableOnWiredAccessDevices": False
-                        })
-
-                    want_network_settings.update({
-                        "wired_data_collection": {},
-                        "wireless_telemetry": {}
-                    })
-
-                    wired_data_collection = item.get("wired_data_collection")
-                    if wired_data_collection is not None:
-                        if wired_data_collection.get("enable_wired_data_collection") is not None and \
-                           wired_data_collection.get("enable_wired_data_collection") is True:
-                            want_network_settings.get("wired_data_collection").update({
-                                "enableWiredDataCollection": True
-                            })
-                        else:
-                            want_network_settings.get("wired_data_collection").update({
-                                "enableWiredDataCollection": False
-                            })
-                    else:
-                        want_network_settings.get("wired_data_collection").update({
-                            "enableWiredDataCollection": False
-                        })
-
-                    wireless_telemetry = item.get("wireless_telemetry")
-                    if wireless_telemetry is not None:
-                        if wired_data_collection.get("enable_wireless_telemetry") is not None and \
-                           wired_data_collection.get("enable_wireless_telemetry") is True:
-                            want_network_settings.get("wireless_telemetry").update({
-                                "enableWirelessTelemetry": True
-                            })
-                        else:
-                            want_network_settings.get("wireless_telemetry").update({
-                                "enableWirelessTelemetry": False
-                            })
-                    else:
-                        want_network_settings.get("wireless_telemetry").update({
-                            "enableWirelessTelemetry": False
-                        })
+                    # Handle enableOnWiredAccessDevices (optional boolean field)
+                    enable_on_wired_access_devices = netflow_collector_data.get("enable_on_wired_access_devices")
+                    if enable_on_wired_access_devices is not None:
+                        netflow_collector["enableOnWiredAccessDevices"] = enable_on_wired_access_devices
+                        self.log("Added enableOnWiredAccessDevices field to the netflow collector config.", "INFO")
+                    elif have_network_details.get("netflowcollector", {}).get("enableOnWiredAccessDevices") != "":
+                        netflow_collector["enableOnWiredAccessDevices"] = have_network_details.get("netflowcollector", {}).get("enableOnWiredAccessDevices")
+                elif have_network_details.get("netflowcollector") != {}:
+                    want_network_settings["netflowcollector"] = have_network_details.get("netflowcollector")
                 else:
-                    del want_network_settings["netflowcollector"]
+                    want_network_settings["netflowcollector"] = None
+                    self.log("netflow_collector is not provided, setting netflowcollector as None in network settings.", "INFO")
+
+                wired_data_collection = item.get("wired_data_collection")
+                if wired_data_collection is not None:
+                    enable_wired_data_collection = wired_data_collection.get("enable_wired_data_collection")
+                    if enable_wired_data_collection is not None:
+                        want_network_settings["wired_data_collection"] = {
+                            "enableWiredDataCollection": enable_wired_data_collection
+                        }
+                elif have_network_details.get("wired_data_collection") != "":
+                    want_network_settings["wired_data_collection"] = have_network_details.get("wired_data_collection")
+                else:
+                    want_network_settings["wired_data_collection"] = None
+
+                wireless_telemetry = item.get("wireless_telemetry")
+                if wireless_telemetry is not None:
+                    enable_wireless_telemetry = wireless_telemetry.get("enable_wireless_telemetry")
+                    if enable_wireless_telemetry is not None:
+                        want_network_settings["wireless_telemetry"] = {
+                            "enableWirelessTelemetry": enable_wireless_telemetry
+                        }
+                elif have_network_details.get("wireless_telemetry") != "":
+                    want_network_settings["wireless_telemetry"] = have_network_details.get("wireless_telemetry")
+                else:
+                    want_network_settings["wireless_telemetry"] = None
 
                 message_of_the_day = item.get("message_of_the_day")
                 if message_of_the_day is not None:
@@ -3102,6 +3364,7 @@ class NetworkSettings(DnacBase):
         result_global_pool = self.result.get("response")[0].get("globalPool")
         want_global_pool = self.want.get("wantGlobal").get("settings").get("ippool")
         self.log("Global pool playbook details: {0}".format(global_pool), "DEBUG")
+
         for item in self.have.get("globalPool"):
             result_global_pool.get("msg") \
                 .update({want_global_pool[global_pool_index].get("ipPoolName"): {}})
@@ -3112,89 +3375,115 @@ class NetworkSettings(DnacBase):
 
             global_pool_index += 1
 
-        # Check create_global_pool; if yes, create the global pool
+        # Check create_global_pool; if yes, create the global pool in batches
         if create_global_pool:
             self.log("Global pool(s) details to be created: {0}".format(create_global_pool), "INFO")
-            pool_params = {
-                "settings": {
-                    "ippool": copy.deepcopy(create_global_pool)
-                }
-            }
-            try:
-                response = self.dnac._exec(
-                    family="network_settings",
-                    function="create_global_pool",
-                    op_modifies=True,
-                    params=pool_params,
-                )
-            except Exception as msg:
-                self.msg = (
-                    "Exception occurred while creating the global pools: {msg}"
-                    .format(msg=msg)
-                )
-                self.log(str(msg), "ERROR")
-                self.status = "failed"
-                return self
 
-            self.check_execution_response_status(response, "create_global_pool").check_return_status()
-            self.log("Successfully created global pool successfully.", "INFO")
-            for item in pool_params.get("settings").get("ippool"):
-                name = item.get("ipPoolName")
-                self.log("Global pool '{0}' created successfully.".format(name), "INFO")
-                result_global_pool.get("response").update({"created": pool_params})
-                result_global_pool.get("msg").update({name: "Global Pool Created Successfully"})
-
-        if update_global_pool:
-            final_update_global_pool = []
-            # Pool exists, check update is required
-            for item in update_global_pool:
-                name = item.get("ipPoolName")
-                for pool_value in self.have.get("globalPool"):
-                    if pool_value.get("exists") and (pool_value.get("details").get("ipPoolName") == name or pool_value.get("prev_name") == name):
-                        if not self.requires_update(pool_value.get("details"), item, self.global_pool_obj_params):
-                            self.log("Global pool '{0}' doesn't require an update".format(name), "INFO")
-                            result_global_pool.get("msg").update({name: "Global pool doesn't require an update"})
-                        elif item not in final_update_global_pool:
-                            final_update_global_pool.append(item)
-
-            if final_update_global_pool:
-                self.log("Global pool requires update", "INFO")
-
-                # Pool(s) needs update
+            batch_size = 25  # Define batch size
+            for i in range(0, len(create_global_pool), batch_size):
+                batch = create_global_pool[i:i + batch_size]
                 pool_params = {
                     "settings": {
-                        "ippool": copy.deepcopy(final_update_global_pool)
+                        "ippool": copy.deepcopy(batch)
                     }
                 }
-                self.log("Desired State for global pool (want): {0}".format(pool_params), "DEBUG")
-                keys_to_remove = ["IpAddressSpace", "ipPoolCidr", "type"]
-                for item in pool_params["settings"]["ippool"]:
-                    for key in keys_to_remove:
-                        del item[key]
-
-                self.log("Desired global pool details (want): {0}".format(pool_params), "DEBUG")
+                self.log("Creating global pool batch: {0}".format(batch), "INFO")
                 try:
                     response = self.dnac._exec(
                         family="network_settings",
-                        function="update_global_pool",
+                        function="create_global_pool",
                         op_modifies=True,
                         params=pool_params,
                     )
                 except Exception as msg:
                     self.msg = (
-                        "Exception occurred while updating the global pools: {msg}"
+                        "Exception occurred while creating the global pools: {msg}"
                         .format(msg=msg)
                     )
                     self.log(str(msg), "ERROR")
                     self.status = "failed"
                     return self
 
-                self.check_execution_response_status(response, "update_global_pool").check_return_status()
-                for item in pool_params.get("settings").get("ippool"):
-                    name = item.get("ipPoolName")
-                    self.log("Global pool '{0}' Updated successfully.".format(name), "INFO")
-                    result_global_pool.get("response").update({"globalPool Details": pool_params})
-                    result_global_pool.get("msg").update({name: "Global Pool Updated Successfully"})
+                self.check_execution_response_status(response, "create_global_pool").check_return_status()
+                self.log("Successfully created the following global pool batch: {0}".format(batch), "INFO")
+
+                for pool in pool_params.get("settings").get("ippool"):
+                    pool_name = pool.get("ipPoolName")
+                    self.log("Global pool '{0}' created successfully.".format(pool_name), "INFO")
+                    result_global_pool.get("response").update({"created": pool_params})
+                    result_global_pool.get("msg").update({pool_name: "Global Pool Created Successfully"})
+
+        # Check update_global_pool; if yes, update the global pool in batches
+        if update_global_pool:
+            pools_to_update = []
+
+            for item in update_global_pool:
+                pool_name = item.get("ipPoolName")
+                self.log("Checking global pool '{0}' for updates...".format(pool_name), "DEBUG")
+                for pool in self.have.get("globalPool", []):
+                    if not pool.get("exists"):
+                        self.log("Skipping global pool '{0}' as it does not exist".format(pool_name), "DEBUG")
+                        continue
+
+                    pool_details = pool.get("details", {})
+                    prev_name = pool.get("prev_name")
+
+                    if pool_details.get("ipPoolName") == pool_name or prev_name == pool_name:
+                        if not self.requires_update(pool_details, item, self.global_pool_obj_params):
+                            self.log("Global pool '{0}' doesn't require an update".format(pool_name), "INFO")
+                            result_global_pool["msg"][pool_name] = "Global pool doesn't require an update"
+                        else:
+                            self.log("Global pool '{0}' requires an update. Adding to update list.".format(pool_name), "INFO")
+                            pools_to_update.append(item)
+
+            if pools_to_update:
+                self.log("Total global pools requiring updates: {0}".format(len(pools_to_update)), "INFO")
+
+                batch_size = 25  # Define batch size
+                for i in range(0, len(pools_to_update), batch_size):
+                    batch = pools_to_update[i : i + batch_size]
+                    batch_number = i // batch_size + 1
+                    total_batches = (len(pools_to_update) // batch_size) + 1
+                    self.log("Processing batch {0} of {1}".format(batch_number, total_batches), "INFO")
+                    pool_params = {
+                        "settings": {
+                            "ippool": copy.deepcopy(batch)
+                        }
+                    }
+
+                    self.log("Desired State for global pool (want): {0}".format(pool_params), "DEBUG")
+
+                    # Remove unnecessary keys
+                    keys_to_remove = {"IpAddressSpace", "ipPoolCidr", "type"}
+                    for pool in pool_params["settings"]["ippool"]:
+                        for key in keys_to_remove:
+                            pool.pop(key, None)
+
+                    self.log("Final global pool update details: {0}".format(pool_params), "DEBUG")
+                    try:
+                        self.log("Executing API call to update global pools...", "INFO")
+                        response = self.dnac._exec(
+                            family="network_settings",
+                            function="update_global_pool",
+                            op_modifies=True,
+                            params=pool_params,
+                        )
+                        self.log("Received API response: {0}".format(response), "DEBUG")
+                    except Exception as msg:
+                        self.msg = (
+                            "Exception occurred while updating the global pools: {msg}"
+                            .format(msg=msg)
+                        )
+                        self.log(str(msg), "ERROR")
+                        self.status = "failed"
+                        return self
+
+                    self.check_execution_response_status(response, "update_global_pool").check_return_status()
+                    for pool in pool_params.get("settings").get("ippool"):
+                        pool_name = pool.get("ipPoolName")
+                        self.log("Global pool '{0}' Updated successfully.".format(pool_name), "INFO")
+                        result_global_pool.get("response").update({"globalPool Details": pool_params})
+                        result_global_pool.get("msg").update({pool_name: "Global Pool Updated Successfully"})
 
         self.log("Global pool configuration operations completed successfully.", "INFO")
         return self
@@ -3659,7 +3948,7 @@ class NetworkSettings(DnacBase):
                     self.log("Received API response of 'set_banner_settings_for_a_site': {0}".format(response), "DEBUG")
                     self.check_tasks_response_status(response, "set_banner_settings_for_a_site").check_return_status()
 
-                if all([
+                if any([
                     net_params.get("settings", {}).get("snmpServer"),
                     net_params.get("settings", {}).get("syslogServer"),
                     net_params.get("settings", {}).get("netflowcollector"),
@@ -3719,6 +4008,72 @@ class NetworkSettings(DnacBase):
             self.update_network(network_management).check_return_status()
         return self
 
+    def delete_ip_pool(self, name, pool_id, function_name, pool_type):
+        """
+        Delete single reserve/global pool from based on the pool ID and return
+        execution id and status message.
+
+        Parameters:
+            name (str) - name contains ip pool name for release ip pool
+            pool_id (str) - ID contails IP pool id from get ip pool
+            function_name (str) - contains execution of sdk function name either
+                                release_reserve_ip_subpool or delete_global_ip_pool
+            pool_type (str) - contains string message for log either Reserve or Global
+
+        Returns:
+            execution_details (dict) - contains response for the delete execution
+            contains name, execution id and status message.
+        """
+        self.log("{0} IP pool scheduled for deletion: {1}".format(pool_type, name), "INFO")
+        self.log("{0} pool '{1}' id: {2}".format(pool_type, name, pool_id), "DEBUG")
+        try:
+            response = self.dnac._exec(
+                family="network_settings",
+                function=function_name,
+                op_modifies=True,
+                params={"id": pool_id},
+            )
+            self.check_execution_response_status(response, function_name)
+            self.log("Response received from delete {0} pool API: {1}".
+                     format(pool_type, self.pprint(response)), "DEBUG")
+            execution_id = response.get("executionId")
+            success_msg, failed_msg = None, None
+
+            if pool_type == "Global":
+                success_msg = "Global pool deleted successfully."
+                failed_msg = "Unable to delete global pool reservation. "
+            else:
+                success_msg = "Ip subpool reservation released successfully."
+                failed_msg = "Unable to release subpool reservation. "
+
+            if execution_id and self.status == "success":
+                return {
+                    "name": name,
+                    "execution_id": execution_id,
+                    "msg": success_msg,
+                    "status": "success"
+                }
+            self.log("No execution ID received for '{name}'".format(name=name), "ERROR")
+            return {
+                "name": name,
+                "execution_id": execution_id,
+                "msg": failed_msg + self.msg,
+                "status": "failed"
+            }
+
+        except Exception as e:
+            error_msg = (
+                "Exception occurred while deleting the {type} pool with the name '{name}': {error}"
+                .format(name=name, error=str(e), type=pool_type)
+            )
+            self.log(error_msg, "ERROR")
+            return {
+                "name": name,
+                "execution_id": None,
+                "msg": error_msg,
+                "status": "failed"
+            }
+
     def delete_reserve_pool(self, reserve_pool_details):
         """
         Delete a Reserve Pool by name in Cisco Catalyst Center
@@ -3729,47 +4084,70 @@ class NetworkSettings(DnacBase):
         Returns:
             self - The current object with Global Pool, Reserved Pool, Network Servers information.
         """
-
         reserve_pool_index = -1
         for item in reserve_pool_details:
             reserve_pool_index += 1
-            name = item.get("name")
-            reserve_pool_exists = self.have.get("reservePool")[reserve_pool_index].get("exists")
+            delete_all = item.get("force_delete")
+            site_name = item.get("site_name")
             result_reserve_pool = self.result.get("response")[1].get("reservePool")
+            if delete_all:
+                self.log("Delete all reserved pools operation initiated for site '{0}'"
+                         .format(site_name), "INFO")
+                have_reserve_pool = reserve_pool = self.have.get("reservePool")[reserve_pool_index]
+                result_reserve_pool.get("response").update({site_name: []})
+                if have_reserve_pool:
+                    if isinstance(have_reserve_pool, dict):
+                        self.log("Found reserved pools for site '{0}': {1}"
+                                 .format(site_name, self.pprint(have_reserve_pool)), "DEBUG")
+                        reserve_pool = have_reserve_pool.get("exists")
+                        if not reserve_pool:
+                            result_reserve_pool.get("msg").update({site_name: "Reserve Pool not found"})
+                            self.log("Reserved IP Subpool '{0}' not found".format(site_name), "INFO")
+                            continue
 
-            if not reserve_pool_exists:
-                result_reserve_pool.get("msg").update({name: "Reserve Pool not found"})
-                self.log("Reserved Ip Subpool '{0}' not found".format(name), "INFO")
-                continue
+                    for each_pool in have_reserve_pool:
+                        if not each_pool.get("exists"):
+                            result_reserve_pool["msg"].update({site_name: "Reserve Pool not found"})
+                            self.log("Reserved IP Subpool '{0}' not found for deletion".format(site_name), "INFO")
+                            continue
 
-            self.log("Reserved IP pool scheduled for deletion: {0}"
-                     .format(self.have.get("reservePool")[reserve_pool_index].get("name")), "INFO")
-            _id = self.have.get("reservePool")[reserve_pool_index].get("id")
-            self.log("Reserved pool '{0}' id: {1}".format(name, _id), "DEBUG")
-            try:
-                response = self.dnac._exec(
-                    family="network_settings",
-                    function="release_reserve_ip_subpool",
-                    op_modifies=True,
-                    params={"id": _id},
+                        pool_name = each_pool.get("details", {}).get("name")
+                        pool_id = each_pool.get("id")
+                        self.log("Processing deletion for reserved pool '{0}' with ID '{1}'"
+                                 .format(pool_name, pool_id), "INFO")
+                        execution_details = self.delete_ip_pool(pool_name, pool_id,
+                                                                "release_reserve_ip_subpool",
+                                                                "Reserve")
+                        result_reserve_pool["response"][site_name].append(execution_details)
+                        self.log("Deletion completed for reserved pool '{0}' with ID '{1}'"
+                                 .format(pool_name, pool_id), "DEBUG")
+                    self.reserve_pool_response = result_reserve_pool["response"]
+                else:
+                    result_reserve_pool["msg"].update({site_name: "No Reserve Pools available"})
+                    self.log("No Reserved IP Subpools found for site '{0}'. Skipping deletion."
+                             .format(site_name), "INFO")
+            else:
+                pool_name = item.get("name")
+                pool_id = self.have.get("reservePool")[reserve_pool_index].get("id")
+                self.log("Delete operation initiated for specific reserved pool '{0}'".format(pool_name), "INFO")
+
+                reserve_pool = None
+                if self.have.get("reservePool"):
+                    reserve_pool = self.have.get("reservePool")[reserve_pool_index].get("exists")
+
+                if not reserve_pool:
+                    result_reserve_pool.get("msg").update({pool_name: "Reserve Pool not found"})
+                    self.log("Reserved IP Subpool '{0}' not found. Skipping deletion.".format(pool_name), "INFO")
+                    continue
+
+                self.log("Reserved IP pool '{0}' scheduled for deletion".format(pool_name), "INFO")
+                self.log("Reserved pool '{0}' ID: {1}".format(pool_name, pool_id), "DEBUG")
+                execution_details = self.delete_ip_pool(
+                    pool_name, pool_id, "release_reserve_ip_subpool", "Reserve"
                 )
-            except Exception as msg:
-                self.msg = (
-                    "Exception occurred while updating the reserved pool with the name '{name}': {msg}"
-                    .format(name=name, msg=msg)
-                )
-                self.log(str(msg), "ERROR")
-                self.status = "failed"
-                return self
-
-            self.check_execution_response_status(response, "release_reserve_ip_subpool").check_return_status()
-            executionid = response.get("executionId")
-            result_reserve_pool = self.result.get("response")[1].get("reservePool")
-            result_reserve_pool.get("response").update({name: {}})
-            result_reserve_pool.get("response").get(name) \
-                .update({"Execution Id": executionid})
-            result_reserve_pool.get("msg") \
-                .update({name: "Ip subpool reservation released successfully"})
+                self.log("Deletion completed for reserved pool '{0}' with ID '{1}'".format(pool_name, pool_id), "DEBUG")
+                result_reserve_pool["response"].update({pool_name: execution_details})
+                self.reserve_pool_response = result_reserve_pool["response"]
 
         self.msg = "Reserved pool(s) released successfully"
         self.status = "success"
@@ -3789,40 +4167,47 @@ class NetworkSettings(DnacBase):
         result_global_pool = self.result.get("response")[0].get("globalPool")
         global_pool_index = 0
         for item in self.have.get("globalPool"):
-            global_pool_exists = item.get("exists")
-            name = global_pool_details.get("settings").get("ip_pool")[global_pool_index].get("name")
-            global_pool_index += 1
-            if not global_pool_exists:
-                result_global_pool.get("msg").update({name: "Global Pool not found"})
-                self.log("Global pool '{0}' not found".format(name), "INFO")
-                continue
+            if isinstance(item, list):
+                self.log("Processing global pool deletion for a list of items", "INFO")
+                for each_item in item:
+                    global_pool_exists = each_item.get("exists")
+                    pool_name = each_item.get("details", {}).get("ipPoolName")
+                    global_pool_index += 1
 
-            id = item.get("id")
-            try:
-                response = self.dnac._exec(
-                    family="network_settings",
-                    function="delete_global_ip_pool",
-                    op_modifies=True,
-                    params={"id": id},
-                )
-            except Exception as msg:
-                self.msg = (
-                    "Exception occurred while deleting the global pool with '{name}': {msg}"
-                    .format(name=name, msg=msg)
-                )
-                self.log(str(msg), "ERROR")
-                self.status = "failed"
-                return self
+                    if not global_pool_exists:
+                        result_global_pool.get("msg").update({pool_name: "Global Pool not found"})
+                        self.log("Global pool '{0}' not found".format(pool_name), "INFO")
+                        continue
 
-            # Check the execution status
-            self.check_execution_response_status(response, "delete_global_ip_pool").check_return_status()
-            executionid = response.get("executionId")
+                    execution_details = {}
+                    pool_id = each_item.get("id")
+                    execution_details = self.delete_ip_pool(pool_name, pool_id,
+                                                            "delete_global_ip_pool",
+                                                            "Global")
+                    self.log("Deletion completed for global pool '{0}' execution details: '{1}'".
+                             format(pool_name, self.pprint(execution_details)), "DEBUG")
+                    result_global_pool["response"][pool_name] = execution_details
 
-            # Update result information
-            result_global_pool = self.result.get("response")[0].get("globalPool")
-            result_global_pool.get("response").update({name: {}})
-            result_global_pool.get("response").get(name).update({"Execution Id": executionid})
-            result_global_pool.get("msg").update({name: "Global pool deleted successfully"})
+                self.log("Deletion completed for global pool all:'{0}'".format(
+                    self.pprint(result_global_pool["response"])), "DEBUG")
+                self.global_pool_response = result_global_pool["response"]
+            else:
+                self.log("Processing global pool deletion for a single item", "INFO")
+                global_pool_exists = item.get("exists")
+                pool_name = global_pool_details.get("settings").get("ip_pool")[global_pool_index].get("name")
+                global_pool_index += 1
+                if not global_pool_exists:
+                    result_global_pool.get("msg").update({pool_name: "Global Pool not found"})
+                    self.log("Global pool '{0}' not found. Skipping deletion.".format(pool_name), "INFO")
+                    continue
+
+                self.log("Global pool '{0}' exists. Proceeding with deletion.".format(pool_name), "INFO")
+                id = item.get("id")
+                execution_details = self.delete_ip_pool(pool_name, id,
+                                                        "delete_global_ip_pool",
+                                                        "Global")
+                result_global_pool.get("response").update({pool_name: execution_details})
+                self.global_pool_response = result_global_pool.get("response")
 
         self.msg = "Global pools deleted successfully"
         self.status = "success"
@@ -3949,37 +4334,118 @@ class NetworkSettings(DnacBase):
         self.get_have(config)
         self.log("Current State (have): {0}".format(self.have), "INFO")
         self.log("Desired State (want): {0}".format(self.want), "INFO")
+        delete_all = []
         if config.get("global_pool_details") is not None:
+            self.log("Starting validation for Global Pool absence.", "INFO")
             global_pool_index = 0
             global_pool_details = self.have.get("globalPool")
             for item in global_pool_details:
-                global_pool_exists = item.get("exists")
-                name = config.get("global_pool_details").get("settings") \
-                             .get("ip_pool")[global_pool_index].get("name")
-                if global_pool_exists:
-                    self.msg = "Global Pool Config '{0}' is not applied to the Cisco Catalyst Center" \
-                               .format(name)
-                    self.status = "failed"
-                    return self
+                if isinstance(item, dict):
+                    global_pool_exists = item.get("exists")
+                    name = config.get("global_pool_details").get("settings")\
+                        .get("ip_pool")[global_pool_index].get("name")
+                    if global_pool_exists:
+                        self.msg = "Global Pool Config '{0}' is not applied to the Cisco Catalyst Center".format(name)
+                        self.status = "failed"
+                        return self
 
-                self.log("Successfully validated absence of Global Pool '{0}'.".format(name), "INFO")
+                    self.log("Successfully validated absence of Global Pool '{0}'.".
+                             format(name), "INFO")
+                else:
+                    if len(item) > 0:
+                        for each_ip_pool in item:
+                            each_pool_validation = {}
+                            global_pool_exists = each_ip_pool.get("exists")
+                            name = each_ip_pool.get("details", {}).get("ipPoolName")
+                            if global_pool_exists:
+                                each_pool_validation = {
+                                    "name": name,
+                                    "msg": "Global Pool Config is not applied to the Catalyst Center.",
+                                    "validation": "failed",
+                                }
+                            delete_all.append(each_pool_validation)
+
                 global_pool_index += 1
+
+            if delete_all:
+                self.msg = "Global Pool Config is not applied to the Catalyst Center"
+                self.set_operation_result("failed", False, self.msg,
+                                          "ERROR", self.global_pool_response).check_return_status()
+                return self
+
+            if not delete_all and not self.global_pool_response:
+                self.msg = "Global Pool Config does not exist or already deleted from the Catalyst Center"
+                self.set_operation_result("success", False, self.msg,
+                                          "ERROR").check_return_status()
+                return self
+
             self.result.get("response")[0].get("globalPool").update({"Validation": "Success"})
+            self.msg = "Successfully validated the absence of Global Pool."
+            self.log(self.msg, "INFO")
+            self.log("Last Check {0}".format(self.result.get("response")[0].get("globalPool")), "INFO")
+            del_response = self.result.get("response")[0].get("globalPool").get("response")
+            delete_all.append(del_response)
+            self.set_operation_result("success", True, self.msg,
+                                      "INFO", self.global_pool_response).check_return_status()
 
         if config.get("reserve_pool_details") is not None:
+            self.log("Starting validation for Reserve Pool absence.", "INFO")
             reserve_pool_index = 0
             reserve_pool_details = self.have.get("reservePool")
-            for item in reserve_pool_details:
-                reserve_pool_exists = item.get("exists")
-                name = config.get("reserve_pool_details")[reserve_pool_index].get("name")
-                if reserve_pool_exists:
-                    self.msg = "Reserved Pool Config '{0}' is not applied to the Catalyst Center" \
-                               .format(name)
-                    self.status = "failed"
-                    return self
 
-                self.log("Successfully validated the absence of Reserve Pool '{0}'.".format(name), "INFO")
-                self.result.get("response")[1].get("reservePool").update({"Validation": "Success"})
+            for item in reserve_pool_details:
+                site_name = config.get("reserve_pool_details")[reserve_pool_index].get("site_name")
+                if isinstance(item, dict):
+                    reserve_pool_exists = item.get("exists")
+                    name = config.get("reserve_pool_details")[reserve_pool_index].get("name")
+
+                    if reserve_pool_exists:
+                        self.msg = "Reserved Pool Config '{0}' is not applied to the Catalyst Center"\
+                            .format(name)
+                        self.fail_and_exit(self.msg)
+                        return self
+
+                    self.log("Successfully validated the absence of Reserve Pool '{0}'.".format(name), "INFO")
+                    reserve_pool_index += 1
+
+                    if self.result.get("response"):
+                        self.result.get("response")[1].get("reservePool").update({"Validation": "Success"})
+
+                else:
+                    if len(item) > 0:
+                        for each_ip_pool in item:
+                            each_pool_validation = {}
+                            reserve_pool_exists = each_ip_pool.get("exists")
+                            if reserve_pool_exists:
+                                self.log("Reserve Pool '{0}' found. Marking as failed validation."
+                                         .format(name), "ERROR")
+                                each_pool_validation = {
+                                    "site_name": site_name,
+                                    "name": each_ip_pool.get("details", {}).get("name"),
+                                    "msg": "Reserved Pool Config is not applied to the Catalyst Center",
+                                    "validation": "failed",
+                                }
+                            delete_all.append(each_pool_validation)
+
+                    reserve_pool_index += 1
+
+            if delete_all:
+                self.msg = "Reserved Pool Config is not applied to the Catalyst Center"
+                self.set_operation_result("failed", False, self.msg,
+                                          "ERROR", delete_all).check_return_status()
+
+            if not delete_all and not self.reserve_pool_response:
+                self.msg = "Reserve Pool Config does not exist or already deleted from the Catalyst Center"
+                self.set_operation_result("success", False, self.msg,
+                                          "ERROR").check_return_status()
+                return self
+
+            self.msg = "Successfully validated the absence of Reserve Pool."
+            self.log(self.msg, "INFO")
+            del_response = self.result.get("response")[1].get("reservePool").get("response")
+            delete_all.append(del_response)
+            self.set_operation_result("success", True, self.msg,
+                                      "INFO", self.reserve_pool_response).check_return_status()
 
         self.msg = "Successfully validated the absence of Global Pool/Reserve Pool"
         self.status = "success"

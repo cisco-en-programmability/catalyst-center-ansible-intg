@@ -1,44 +1,47 @@
 #!/usr/bin/python
 # -*- coding: utf-8 -*-
-
 # Copyright (c) 2021, Cisco Systems
 # GNU General Public License v3.0+ (see LICENSE or https://www.gnu.org/licenses/gpl-3.0.txt)
-
 DOCUMENTATION = r"""
 ---
 module: network_profiles_for_sites_site_assignments_bulk_create_v1
-short_description: Resource module for Network Profiles For Sites Site Assignments Bulk Create V1
+short_description: Resource module for Network Profiles For Sites Site Assignments
+  Bulk Create V1
 description:
-- Manage operation create of the resource Network Profiles For Sites Site Assignments Bulk Create V1.
-- Assign a network profile for sites to a list of sites. Also assigns the profile to child sites.
+  - Manage operation create of the resource Network Profiles For Sites Site Assignments
+    Bulk Create V1.
+  - Assign a network profile for sites to a list of sites. Also assigns the profile
+    to child sites.
 version_added: '6.15.0'
 extends_documentation_fragment:
   - cisco.dnac.module
 author: Rafael Campos (@racampos)
 options:
+  items:
+    description: Items.
+    elements: dict
+    suboptions:
+      id:
+        description: Id.
+        type: str
+    type: list
   profileId:
     description: ProfileId path parameter. The `id` of the network profile, retrievable
       from `GET /intent/api/v1/networkProfilesForSites`.
     type: str
-  type:
-    description: Network Profiles For Sites Site Assignments Bulk Create's type.
-    type: dict
 requirements:
-- dnacentersdk >= 2.4.9
-- python >= 3.5
+  - dnacentersdk >= 2.4.9
+  - python >= 3.5
 seealso:
-- name: Cisco DNA Center documentation for Site Design AssignANetworkProfileForSitesToAListOfSitesV1
-  description: Complete reference of the AssignANetworkProfileForSitesToAListOfSitesV1 API.
-  link: https://developer.cisco.com/docs/dna-center/#!assign-a-network-profile-for-sites-to-a-list-of-sites
+  - name: Cisco DNA Center documentation for Site Design AssignANetworkProfileForSitesToAListOfSitesV1
+    description: Complete reference of the AssignANetworkProfileForSitesToAListOfSitesV1
+      API.
+    link:
+      https://developer.cisco.com/docs/dna-center/#!assign-a-network-profile-for-sites-to-a-list-of-sites
 notes:
-  - SDK Method used are
-    site_design.SiteDesign.assign_a_network_profile_for_sites_to_a_list_of_sites_v1,
-
-  - Paths used are
-    post /dna/intent/api/v1/networkProfilesForSites/{profileId}/siteAssignments/bulk,
-
+  - SDK Method used are site_design.SiteDesign.assign_a_network_profile_for_sites_to_a_list_of_sites_v1,
+  - Paths used are post /dna/intent/api/v1/networkProfilesForSites/{profileId}/siteAssignments/bulk,
 """
-
 EXAMPLES = r"""
 - name: Create
   cisco.dnac.network_profiles_for_sites_site_assignments_bulk_create_v1:
@@ -49,9 +52,9 @@ EXAMPLES = r"""
     dnac_port: "{{dnac_port}}"
     dnac_version: "{{dnac_version}}"
     dnac_debug: "{{dnac_debug}}"
+    items:
+      - id: string
     profileId: string
-    type: {}
-
 """
 RETURN = r"""
 dnac_response:

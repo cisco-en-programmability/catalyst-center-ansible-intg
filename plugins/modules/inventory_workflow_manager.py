@@ -1,72 +1,77 @@
 #!/usr/bin/python
 # -*- coding: utf-8 -*-
-
 # Copyright (c) 2024, Cisco Systems
 # GNU General Public License v3.0+ (see LICENSE or https://www.gnu.org/licenses/gpl-3.0.txt)
-
 from __future__ import absolute_import, division, print_function
-
 __metaclass__ = type
 __author__ = ("Madhan Sankaranarayanan, Abhishek Maheshwari, Syed Khadeer Ahmed, Ajith Andrew J")
-
 DOCUMENTATION = r"""
 ---
 module: inventory_workflow_manager
 short_description: Resource module for Network Device
 description:
-- Manage operations create, update and delete of the resource Network Device.
-- Adds the device with given credential.
-- Deletes the network device for the given Id.
-- Sync the devices provided as input.
+  - Manage operations create, update and delete of the resource Network Device.
+  - Adds the device with given credential.
+  - Deletes the network device for the given Id.
+  - Sync the devices provided as input.
 version_added: '6.8.0'
 extends_documentation_fragment:
   - cisco.dnac.workflow_manager_params
-author: Abhishek Maheshwari (@abmahesh)
-        Madhan Sankaranarayanan (@madhansansel)
-        Syed Khadeer Ahmed (@syed-khadeerahmed)
-        Ajith andrew j (ajithandrewj)
+author: Abhishek Maheshwari (@abmahesh) Madhan Sankaranarayanan (@madhansansel) Syed
+  Khadeer Ahmed (@syed-khadeerahmed) Ajith andrew j (ajithandrewj)
 options:
   config_verify:
-    description: Set to True to verify the Cisco Catalyst Center config after applying the playbook config.
+    description: Set to True to verify the Cisco Catalyst Center config after applying
+      the playbook config.
     type: bool
-    default: False
+    default: false
   state:
     description: The state of Cisco Catalyst Center after module completion.
     type: str
-    choices: [ merged, deleted ]
+    choices: [merged, deleted]
     default: merged
   config:
-    description: List of devices with credentails to perform Add/Update/Delete/Resync operation
+    description: List of devices with credentails to perform Add/Update/Delete/Resync
+      operation
     type: list
     elements: dict
-    required: True
+    required: true
     suboptions:
       type:
-        description: Select Device's type from NETWORK_DEVICE, COMPUTE_DEVICE, MERAKI_DASHBOARD, THIRD_PARTY_DEVICE, FIREPOWER_MANAGEMENT_SYSTEM.
-            NETWORK_DEVICE - This refers to traditional networking equipment such as routers, switches, access points, and firewalls. These devices
-                are responsible for routing, switching, and providing connectivity within the network.
-            COMPUTE_DEVICE - These are computing resources such as servers, virtual machines, or containers that are part of the network infrastructure.
-                Cisco Catalyst Center can integrate with compute devices to provide visibility and management capabilities, ensuring that the network and
-                 compute resources work together seamlessly to support applications and services.
-            MERAKI_DASHBOARD - It is cloud-based platform used to manage Meraki networking devices, including wireless access points, switches, security
-                appliances, and cameras.
-            THIRD_PARTY_DEVICE - This category encompasses devices from vendors other than Cisco or Meraki. Cisco Catalyst Center is designed to support
-                integration with third-party devices through open standards and APIs. This allows organizations to manage heterogeneous network
-                environments efficiently using Cisco Catalyst Center's centralized management and automation capabilities.
-            FIREPOWER_MANAGEMENT_SYSTEM - It is a centralized management console used to manage Cisco's Firepower Next-Generation Firewall (NGFW) devices.
-                It provides features such as policy management, threat detection, and advanced security analytics.
+        description: Select Device's type from NETWORK_DEVICE, COMPUTE_DEVICE, MERAKI_DASHBOARD,
+          THIRD_PARTY_DEVICE, FIREPOWER_MANAGEMENT_SYSTEM. NETWORK_DEVICE - This refers
+          to traditional networking equipment such as routers, switches, access points,
+          and firewalls. These devices are responsible for routing, switching, and
+          providing connectivity within the network. COMPUTE_DEVICE - These are computing
+          resources such as servers, virtual machines, or containers that are part
+          of the network infrastructure. Cisco Catalyst Center can integrate with
+          compute devices to provide visibility and management capabilities, ensuring
+          that the network and compute resources work together seamlessly to support
+          applications and services. MERAKI_DASHBOARD - It is cloud-based platform
+          used to manage Meraki networking devices, including wireless access points,
+          switches, security appliances, and cameras. THIRD_PARTY_DEVICE - This category
+          encompasses devices from vendors other than Cisco or Meraki. Cisco Catalyst
+          Center is designed to support integration with third-party devices through
+          open standards and APIs. This allows organizations to manage heterogeneous
+          network environments efficiently using Cisco Catalyst Center's centralized
+          management and automation capabilities. FIREPOWER_MANAGEMENT_SYSTEM - It
+          is a centralized management console used to manage Cisco's Firepower Next-Generation
+          Firewall (NGFW) devices. It provides features such as policy management,
+          threat detection, and advanced security analytics.
         type: str
         default: "NETWORK_DEVICE"
       cli_transport:
-        description: The essential prerequisite for adding Network devices is the specification of the transport
-            protocol (either ssh or telnet) used by the device.
+        description: The essential prerequisite for adding Network devices is the
+          specification of the transport protocol (either ssh or telnet) used by the
+          device.
         type: str
       compute_device:
         description: Indicates whether a device is a compute device.
         type: bool
       password:
-        description: Password for accessing the device and for file encryption during device export. Required for
-            adding Network Device. Also needed for file encryption while exporting device in a csv file.
+        description: Password for accessing the device and for file encryption during
+          device export. Required for adding Network Device. Also needed for file
+          encryption while exporting device in a csv file.
         type: str
       enable_password:
         description: Password required for enabling configurations on the device.
@@ -75,72 +80,92 @@ options:
         description: Additional discovery information for the device.
         type: str
       http_password:
-        description: HTTP password required for adding compute, Meraki, and Firepower Management Devices.
+        description: HTTP password required for adding compute, Meraki, and Firepower
+          Management Devices.
         type: str
       http_port:
-        description: HTTP port number required for adding compute and Firepower Management Devices.
+        description: HTTP port number required for adding compute and Firepower Management
+          Devices.
         type: str
       http_secure:
         description: Flag indicating HTTP security.
         type: bool
       http_username:
-        description: HTTP username required for adding compute and Firepower Management Devices.
+        description: HTTP username required for adding compute and Firepower Management
+          Devices.
         type: str
       ip_address_list:
-        description: A list of the IP addresses for the devices. It is required for tasks such as adding, updating, deleting,
-            or resyncing devices, with Meraki devices being the exception.
+        description: A list of the IP addresses for the devices. It is required for
+          tasks such as adding, updating, deleting, or resyncing devices, with Meraki
+          devices being the exception.
         elements: str
         type: list
       hostname_list:
-        description: "A list of hostnames representing devices. Operations such as updating, deleting, resyncing, or rebooting
-            can be performed as alternatives to using IP addresses."
+        description: "A list of hostnames representing devices. Operations such as
+          updating, deleting, resyncing, or rebooting can be performed as alternatives
+          to using IP addresses."
         type: list
         elements: str
       serial_number_list:
-        description: A list of serial numbers representing devices. Operations such as updating, deleting, resyncing, or rebooting
-            can be performed as alternatives to using IP addresses.
+        description: A list of serial numbers representing devices. Operations such
+          as updating, deleting, resyncing, or rebooting can be performed as alternatives
+          to using IP addresses.
         type: list
         elements: str
       mac_address_list:
-        description:  "A list of MAC addresses representing devices. Operations such as updating, deleting, resyncing, or rebooting
-            can be performed as alternatives to using IP addresses."
+        description: "A list of MAC addresses representing devices. Operations such
+          as updating, deleting, resyncing, or rebooting can be performed as alternatives
+          to using IP addresses."
         type: list
         elements: str
       netconf_port:
-        description: Specifies the port number for connecting to devices using the Netconf protocol. Netconf (Network Configuration Protocol)
-            is used for managing network devices. Ensure that the provided port number corresponds to the Netconf service port configured
-            on your network devices.
-            NETCONF with user privilege 15 is mandatory for enabling Wireless Services on Wireless capable devices such as Catalyst 9000 series
-            Switches and C9800 Series Wireless Controllers. The NETCONF credentials are required to connect to C9800 Series Wireless Controllers
-            as the majority of data collection is done using NETCONF for these Devices.
+        description: Specifies the port number for connecting to devices using the
+          Netconf protocol. Netconf (Network Configuration Protocol) is used for managing
+          network devices. Ensure that the provided port number corresponds to the
+          Netconf service port configured on your network devices. NETCONF with user
+          privilege 15 is mandatory for enabling Wireless Services on Wireless capable
+          devices such as Catalyst 9000 series Switches and C9800 Series Wireless
+          Controllers. The NETCONF credentials are required to connect to C9800 Series
+          Wireless Controllers as the majority of data collection is done using NETCONF
+          for these Devices.
         type: str
       username:
-        description: Username for accessing the device. Required for Adding Network Device.
+        description: Username for accessing the device. Required for Adding Network
+          Device.
         type: str
       snmp_auth_passphrase:
-        description: SNMP authentication passphrase required for adding network, compute, and third-party devices.
+        description: SNMP authentication passphrase required for adding network, compute,
+          and third-party devices.
         type: str
       snmp_auth_protocol:
-        description: SNMP authentication protocol.
-            SHA (Secure Hash Algorithm) - cryptographic hash function commonly used for data integrity verification and authentication purposes.
+        description: SNMP authentication protocol. SHA (Secure Hash Algorithm) - cryptographic
+          hash function commonly used for data integrity verification and authentication
+          purposes.
         type: str
         default: "SHA"
       snmp_mode:
-        description: Device's snmp Mode refer to different SNMP (Simple Network Management Protocol) versions and their corresponding security levels.
-            NOAUTHNOPRIV - This mode provides no authentication or encryption for SNMP messages. It means that devices communicating using SNMPv1 do
-                not require any authentication (username/password) or encryption (data confidentiality). This makes it the least secure option.
-            AUTHNOPRIV - This mode provides authentication but no encryption for SNMP messages. Authentication involves validating the source of the
-                SNMP messages using a community string (similar to a password). However, the data transmitted between devices is not encrypted,
-                so it's susceptible to eavesdropping.
-            AUTHPRIV - This mode provides both authentication and encryption for SNMP messages. It offers the highest level of security among the three
-                options. Authentication ensures that the source of the messages is genuine, and encryption ensures that the data exchanged between
-                devices is confidential and cannot be intercepted by unauthorized parties.
+        description: Device's snmp Mode refer to different SNMP (Simple Network Management
+          Protocol) versions and their corresponding security levels. NOAUTHNOPRIV
+          - This mode provides no authentication or encryption for SNMP messages.
+          It means that devices communicating using SNMPv1 do not require any authentication
+          (username/password) or encryption (data confidentiality). This makes it
+          the least secure option. AUTHNOPRIV - This mode provides authentication
+          but no encryption for SNMP messages. Authentication involves validating
+          the source of the SNMP messages using a community string (similar to a password).
+          However, the data transmitted between devices is not encrypted, so it's
+          susceptible to eavesdropping. AUTHPRIV - This mode provides both authentication
+          and encryption for SNMP messages. It offers the highest level of security
+          among the three options. Authentication ensures that the source of the messages
+          is genuine, and encryption ensures that the data exchanged between devices
+          is confidential and cannot be intercepted by unauthorized parties.
         type: str
       snmp_priv_passphrase:
-        description: SNMP private passphrase required for adding network, compute, and third-party devices.
+        description: SNMP private passphrase required for adding network, compute,
+          and third-party devices.
         type: str
       snmp_priv_protocol:
-        description: SNMP private protocol required for adding network, compute, and third-party devices.
+        description: SNMP private protocol required for adding network, compute, and
+          third-party devices.
         type: str
       snmp_ro_community:
         description: SNMP Read-Only community required for adding V2C devices.
@@ -157,16 +182,19 @@ options:
         type: int
         default: 5
       snmp_username:
-        description: SNMP username required for adding network, compute, and third-party devices.
+        description: SNMP username required for adding network, compute, and third-party
+          devices.
         type: str
       snmp_version:
-        description: It is a standard protocol used for managing and monitoring network devices.
-            v2 - In this communication between the SNMP manager (such as Cisco Catalyst) and the managed devices
-                (such as routers, switches, or access points) is based on community strings.Community strings serve
-                as form of authentication and they are transmitted in clear text, providing no encryption.
-            v3 - It is the most secure version of SNMP, providing authentication, integrity, and encryption features.
-                It allows for the use of usernames, authentication passwords, and encryption keys, providing stronger
-                security compared to v2.
+        description: It is a standard protocol used for managing and monitoring network
+          devices. v2 - In this communication between the SNMP manager (such as Cisco
+          Catalyst) and the managed devices (such as routers, switches, or access
+          points) is based on community strings.Community strings serve as form of
+          authentication and they are transmitted in clear text, providing no encryption.
+          v3 - It is the most secure version of SNMP, providing authentication, integrity,
+          and encryption features. It allows for the use of usernames, authentication
+          passwords, and encryption keys, providing stronger security compared to
+          v2.
         type: str
       update_mgmt_ipaddresslist:
         description: List of updated management IP addresses for network devices.
@@ -180,214 +208,610 @@ options:
             description: Device's new Mgmt IpAddress.
             type: str
       force_sync:
-        description: If forcesync is true then device sync would run in high priority thread if available, else the sync will fail.
+        description: If forcesync is true then device sync would run in high priority
+          thread if available, else the sync will fail.
         type: bool
-        default: False
+        default: false
       device_resync:
         description: Make this as true needed for the resyncing of device.
         type: bool
-        default: False
+        default: false
       resync_device_count:
-        description: Specifies the maximum number of devices to be resynced in the inventory. Ensure this count does not exceed 200,
-                as attempting to resync more than 200 devices may cause the 'sync_devices_using_forcesync' API to enter an
-                infinite loop.
+        description: Specifies the maximum number of devices to be resynced in the
+          inventory. Ensure this count does not exceed 200, as attempting to resync
+          more than 200 devices may cause the 'sync_devices_using_forcesync' API to
+          enter an infinite loop.
         type: int
         default: 200
       resync_max_timeout:
-        description: Sets the maximum timeout for the device resync process in the inventory, in seconds. The default is 600 seconds,
-                which helps prevent infinite loops.
+        description: Sets the maximum timeout for the device resync process in the
+          inventory, in seconds. The default is 600 seconds, which helps prevent infinite
+          loops.
         type: int
         default: 600
       reboot_device:
         description: Make this as true needed for the Rebooting of Access Points.
         type: bool
-        default: False
+        default: false
       export_device_details_limit:
-        description: Specifies the limit for updating device details or exporting device details/credentials to a file.
-                The default limit is set to 500 devices. This limit is applied when exporting device details/credentials
-                and editing device details.
-                The maximum number of device details/credentials that can be exported in a single API call is 800.
+        description: Specifies the limit for updating device details or exporting
+          device details/credentials to a file. The default limit is set to 500 devices.
+          This limit is applied when exporting device details/credentials and editing
+          device details. The maximum number of device details/credentials that can
+          be exported in a single API call is 800.
         type: int
         default: 500
       credential_update:
-        description: Set this to 'True' to update device credentials and other device details. When this parameter is 'True', ensure that
-                the devices are present in Cisco Catalyst Center; only then can update operations be performed on the respective devices.
-                If the parameter is 'True' and any device is not present, the module will attempt to add it.  If required parameters are
-                missing during this addition, the module will fail and stop execution, preventing update operations for devices that are
-                already present.
+        description: Set this to 'True' to update device credentials and other device
+          details. When this parameter is 'True', ensure that the devices are present
+          in Cisco Catalyst Center; only then can update operations be performed on
+          the respective devices. If the parameter is 'True' and any device is not
+          present, the module will attempt to add it.  If required parameters are
+          missing during this addition, the module will fail and stop execution, preventing
+          update operations for devices that are already present.
         type: bool
-        default: False
+        default: false
       clean_config:
-        description: Required if need to delete the Provisioned device by clearing current configuration.
+        description: Required if need to delete the Provisioned device by clearing
+          current configuration.
         type: bool
-        default: False
+        default: false
       role:
-        description: Role of device which can be ACCESS, CORE, DISTRIBUTION, BORDER ROUTER, UNKNOWN.
-            ALL - This role typically represents all devices within the network, regardless of their specific roles or functions.
-            UNKNOWN - This role is assigned to devices whose roles or functions have not been identified or classified within Cisco Catalsyt Center.
-                This could happen if the platform is unable to determine the device's role based on available information.
-            ACCESS - This role typically represents switches or access points that serve as access points for end-user devices to connect to the network.
-                These devices are often located at the edge of the network and provide connectivity to end-user devices.
-            BORDER ROUTER - These are devices that connect different network domains or segments together. They often serve as
-                gateways between different networks, such as connecting an enterprise network to the internet or connecting
-                multiple branch offices.
-            DISTRIBUTION - This role represents function as distribution switches or routers in hierarchical network designs. They aggregate traffic
-                from access switches and route it toward the core of the network or toward other distribution switches.
-            CORE - This role typically represents high-capacity switches or routers that form the backbone of the network. They handle large volumes
-                of traffic and provide connectivity between different parts of network, such as connecting distribution switches or
-                providing interconnection between different network segments.
+        description: Role of device which can be ACCESS, CORE, DISTRIBUTION, BORDER
+          ROUTER, UNKNOWN. ALL - This role typically represents all devices within
+          the network, regardless of their specific roles or functions. UNKNOWN -
+          This role is assigned to devices whose roles or functions have not been
+          identified or classified within Cisco Catalsyt Center. This could happen
+          if the platform is unable to determine the device's role based on available
+          information. ACCESS - This role typically represents switches or access
+          points that serve as access points for end-user devices to connect to the
+          network. These devices are often located at the edge of the network and
+          provide connectivity to end-user devices. BORDER ROUTER - These are devices
+          that connect different network domains or segments together. They often
+          serve as gateways between different networks, such as connecting an enterprise
+          network to the internet or connecting multiple branch offices. DISTRIBUTION
+          - This role represents function as distribution switches or routers in hierarchical
+          network designs. They aggregate traffic from access switches and route it
+          toward the core of the network or toward other distribution switches. CORE
+          - This role typically represents high-capacity switches or routers that
+          form the backbone of the network. They handle large volumes of traffic and
+          provide connectivity between different parts of network, such as connecting
+          distribution switches or providing interconnection between different network
+          segments.
         type: str
       add_user_defined_field:
-        description: This operation will take dictionary as a parameter and in this we give details to
-            create/update/delete/assign multiple UDF to a device.
+        description: This operation will take dictionary as a parameter and in this
+          we give details to create/update/delete/assign multiple UDF to a device.
         type: dict
         suboptions:
           name:
-            description: Name of Global User Defined Field. Required for creating/deleting UDF and then assigning it to device.
+            description: Name of Global User Defined Field. Required for creating/deleting
+              UDF and then assigning it to device.
             type: str
           description:
-            description: Info about the global user defined field. Also used while updating interface details.
+            description: Info about the global user defined field. Also used while
+              updating interface details.
             type: str
           value:
-            description: Value to assign to tag with or without the same user defined field name.
+            description: Value to assign to tag with or without the same user defined
+              field name.
             type: str
       update_interface_details:
-        description: This operation will take dictionary as a parameter and in this we give details to update interface details of device.
+        description: This operation will take dictionary as a parameter and in this
+          we give details to update interface details of device.
         type: dict
         suboptions:
           description:
             description: Specifies the description of the interface of the device.
             type: str
           interface_name:
-            description: Specify the list of interface names to update the details of the device interface.
-                (For example, GigabitEthernet1/0/11, FortyGigabitEthernet1/1/2)
+            description: Specify the list of interface names to update the details
+              of the device interface. (For example, GigabitEthernet1/0/11, FortyGigabitEthernet1/1/2)
             type: list
             elements: str
           vlan_id:
-            description: Unique Id number assigned to a VLAN within a network used only while updating interface details.
+            description: Unique Id number assigned to a VLAN within a network used
+              only while updating interface details.
             type: int
           voice_vlan_id:
-            description: Identifier used to distinguish a specific VLAN that is dedicated to voice traffic used only while updating interface details.
+            description: Identifier used to distinguish a specific VLAN that is dedicated
+              to voice traffic used only while updating interface details.
             type: int
           deployment_mode:
-            description: Preview/Deploy [Preview means the configuration is not pushed to the device. Deploy makes the configuration pushed to the device]
+            description: Preview/Deploy [Preview means the configuration is not pushed
+              to the device. Deploy makes the configuration pushed to the device]
             type: str
             default: "Deploy"
           clear_mac_address_table:
-            description: Set this to true if you need to clear the MAC address table for a specific device's interface. It's a boolean type,
-                with a default value of False.
+            description: Set this to true if you need to clear the MAC address table
+              for a specific device's interface. It's a boolean type, with a default
+              value of False.
             type: bool
-            default: False
+            default: false
           admin_status:
             description: Status of Interface of a device, it can be (UP/DOWN).
             type: str
       export_device_list:
-        description: This operation take dictionary as parameter and export the device details as well as device credentials
-            details in a csv file.
+        description: This operation take dictionary as parameter and export the device
+          details as well as device credentials details in a csv file.
         type: dict
         suboptions:
           password:
-            description: Specifies the password for the encryption of file while exporting the device credentails into the file.
+            description: Specifies the password for the encryption of file while exporting
+              the device credentails into the file.
             type: str
           site_name:
-            description: Indicates the exact location where the wired device will be provisioned. This is a string value that should
-                represent the complete hierarchical path of the site (For example, "Global/USA/San Francisco/BGL_18/floor_pnp").
+            description: Indicates the exact location where the wired device will
+              be provisioned. This is a string value that should represent the complete
+              hierarchical path of the site (For example, "Global/USA/San Francisco/BGL_18/floor_pnp").
             type: str
           operation_enum:
-            description: enum(CREDENTIALDETAILS, DEVICEDETAILS) 0 to export Device Credential Details Or 1 to export Device Details.
-                CREDENTIALDETAILS - Used for exporting device credentials details like snpm credntials, device crdentails etc.
-                DEVICEDETAILS - Used for exporting device specific details like device hostname, serial number, type, family etc.
+            description: enum(CREDENTIALDETAILS, DEVICEDETAILS) 0 to export Device
+              Credential Details Or 1 to export Device Details. CREDENTIALDETAILS
+              - Used for exporting device credentials details like snpm credntials,
+              device crdentails etc. DEVICEDETAILS - Used for exporting device specific
+              details like device hostname, serial number, type, family etc.
             type: str
           parameters:
-            description: List of device parameters that needs to be exported to file.(For example, ["componentName", "SerialNumber", "Last Sync Status"])
+            description: List of device parameters that needs to be exported to file.(For
+              example, ["componentName", "SerialNumber", "Last Sync Status"])
             type: list
             elements: str
       provision_wired_device:
-        description: This parameter takes a list of dictionaries. Each dictionary provides the IP address of a wired device and
-            the name of the site where the device will be provisioned.
+        description: This parameter takes a list of dictionaries. Each dictionary
+          provides the IP address of a wired device and the name of the site where
+          the device will be provisioned.
         type: list
         elements: dict
         suboptions:
           device_ip:
-            description: Specifies the IP address of the wired device. This is a string value that should be in the format of
-                standard IPv4 or IPv6 addresses.
+            description: Specifies the IP address of the wired device. This is a string
+              value that should be in the format of standard IPv4 or IPv6 addresses.
             type: str
             version_added: 6.12.0
           site_name:
-            description: Indicates the exact location where the wired device will be provisioned. This is a string value that should
-                represent the complete hierarchical path of the site (For example, "Global/USA/San Francisco/BGL_18/floor_pnp").
+            description: Indicates the exact location where the wired device will
+              be provisioned. This is a string value that should represent the complete
+              hierarchical path of the site (For example, "Global/USA/San Francisco/BGL_18/floor_pnp").
             type: str
           resync_retry_count:
-            description: Determines the total number of retry attempts for checking if the device has reached a managed state during
-                the provisioning process. If unspecified, the default value is set to 200 retries.
+            description: Determines the total number of retry attempts for checking
+              if the device has reached a managed state during the provisioning process.
+              If unspecified, the default value is set to 200 retries.
             type: int
             default: 200
             version_added: 6.12.0
           resync_retry_interval:
-            description: Sets the interval, in seconds, at which the system will recheck the device status throughout the provisioning
-                process. If unspecified, the system will check the device status every 2 seconds by default.
+            description: Sets the interval, in seconds, at which the system will recheck
+              the device status throughout the provisioning process. If unspecified,
+              the system will check the device status every 2 seconds by default.
             type: int
             default: 2
             version_added: 6.12.0
+      devices_maintenance_schedule:
+        description: Defines the maintenance schedule for a list of devices, specifying
+            the time frame and recurrence details for scheduled maintenance tasks or deleting them.
+        type: list
+        elements: dict
+        suboptions:
+          device_ips:
+            description: >
+                A list of network device IPs.
+                This field is applicable only during the creation or deletion of schedules.
+                For updates, this field is read-only, and devices cannot be added or removed.
+            type: str
+          description:
+            description: A brief description of the maintenance schedule, specifying its purpose or any relevant details.
+            type: str
+          start_time:
+            description: >
+                The scheduled start time of the maintenance window.
+                For one-time schedules, this must be later than the current time.
+                The expected format is "YYYY-MM-DD HH:MM:SS" (for example, "2025-04-05 10:00:00").
+            type: str
+          end_time:
+            description: >
+                The scheduled end time of the maintenance window.
+                For one-time schedules, this must be later than the current time.
+                The expected format is "YYYY-MM-DD HH:MM:SS" (for example, "2025-04-05 10:30:00").
+            type: str
+          time_zone:
+            description: >
+                Time zone in which the maintenance schedule is defined (for example, "Africa/Nairobi", "America/New_York",
+                "Asia/Kolkata", "Europe/London", "Australia/Sydney", etc.).
+                Supported time zones for the device maintenance schedule include:
+                Africa/Abidjan
+                Africa/Accra
+                Africa/Addis_Ababa
+                Africa/Algiers
+                Africa/Asmara
+                Africa/Bamako
+                Africa/Bangui
+                Africa/Banjul
+                Africa/Bissau
+                Africa/Blantyre
+                Africa/Brazzaville
+                Africa/Bujumbura
+                Africa/Cairo
+                Africa/Casablanca
+                Africa/Conakry
+                Africa/Dakar
+                Africa/Dar_es_Salaam
+                Africa/Djibouti
+                Africa/Douala
+                Africa/El_Aaiun
+                Africa/Freetown
+                Africa/Gaborone
+                Africa/Harare
+                Africa/Johannesburg
+                Africa/Juba
+                Africa/Kampala
+                Africa/Khartoum
+                Africa/Kigali
+                Africa/Kinshasa
+                Africa/Lagos
+                Africa/Libreville
+                Africa/Lome
+                Africa/Luanda
+                Africa/Lubumbashi
+                Africa/Lusaka
+                Africa/Malabo
+                Africa/Maputo
+                Africa/Maseru
+                Africa/Mbabane
+                Africa/Mogadishu
+                Africa/Monrovia
+                Africa/Nairobi
+                Africa/Ndjamena
+                Africa/Niamey
+                Africa/Nouakchott
+                Africa/Ouagadougou
+                Africa/Porto-Novo
+                Africa/Sao_Tome
+                Africa/Tripoli
+                Africa/Tunis
+                Africa/Windhoek
+                America/Adak
+                America/Anchorage
+                America/Anguilla
+                America/Antigua
+                America/Argentina/Buenos_Aires
+                America/Aruba
+                America/Asuncion
+                America/Atikokan
+                America/Barbados
+                America/Belize
+                America/Blanc-Sablon
+                America/Bogota
+                America/Cancun
+                America/Caracas
+                America/Cayenne
+                America/Cayman
+                America/Chicago
+                America/Costa_Rica
+                America/Curacao
+                America/Danmarkshavn
+                America/Denver
+                America/Dominica
+                America/Edmonton
+                America/El_Salvador
+                America/Grand_Turk
+                America/Grenada
+                America/Guadeloupe
+                America/Guatemala
+                America/Guayaquil
+                America/Guyana
+                America/Halifax
+                America/Havana
+                America/Hermosillo
+                America/Jamaica
+                America/Kralendijk
+                America/La_Paz
+                America/Lima
+                America/Los_Angeles
+                America/Lower_Princes
+                America/Managua
+                America/Manaus
+                America/Marigot
+                America/Martinique
+                America/Mexico_City
+                America/Miquelon
+                America/Montevideo
+                America/Montserrat
+                America/Nassau
+                America/New_York
+                America/Noronha
+                America/Nuuk
+                America/Ojinaga
+                America/Panama
+                America/Paramaribo
+                America/Phoenix
+                America/Port-au-Prince
+                America/Port_of_Spain
+                America/Puerto_Rico
+                America/Punta_Arenas
+                America/Regina
+                America/Rio_Branco
+                America/Santiago
+                America/Santo_Domingo
+                America/Sao_Paulo
+                America/Scoresbysund
+                America/St_Barthelemy
+                America/St_Johns
+                America/St_Kitts
+                America/St_Lucia
+                America/St_Thomas
+                America/St_Vincent
+                America/Tegucigalpa
+                America/Thule
+                America/Tijuana
+                America/Toronto
+                America/Tortola
+                America/Vancouver
+                America/Whitehorse
+                America/Winnipeg
+                Antarctica/Casey
+                Antarctica/Davis
+                Antarctica/DumontDUrville
+                Antarctica/Mawson
+                Antarctica/McMurdo
+                Antarctica/Palmer
+                Antarctica/Syowa
+                Antarctica/Troll
+                Antarctica/Vostok
+                Arctic/Longyearbyen
+                Asia/Aden
+                Asia/Almaty
+                Asia/Amman
+                Asia/Ashgabat
+                Asia/Baghdad
+                Asia/Bahrain
+                Asia/Baku
+                Asia/Bangkok
+                Asia/Beirut
+                Asia/Bishkek
+                Asia/Brunei
+                Asia/Calcutta
+                Asia/Chita
+                Asia/Colombo
+                Asia/Damascus
+                Asia/Dhaka
+                Asia/Dili
+                Asia/Dubai
+                Asia/Dushanbe
+                Asia/Hebron
+                Asia/Ho_Chi_Minh
+                Asia/Hong_Kong
+                Asia/Hovd
+                Asia/Irkutsk
+                Asia/Jakarta
+                Asia/Jayapura
+                Asia/Jerusalem
+                Asia/Kabul
+                Asia/Kamchatka
+                Asia/Karachi
+                Asia/Kathmandu
+                Asia/Kuala_Lumpur
+                Asia/Kuwait
+                Asia/Macau
+                Asia/Makassar
+                Asia/Manila
+                Asia/Muscat
+                Asia/Nicosia
+                Asia/Novosibirsk
+                Asia/Omsk
+                Asia/Phnom_Penh
+                Asia/Pyongyang
+                Asia/Qatar
+                Asia/Qyzylorda
+                Asia/Riyadh
+                Asia/Sakhalin
+                Asia/Seoul
+                Asia/Shanghai
+                Asia/Singapore
+                Asia/Taipei
+                Asia/Tashkent
+                Asia/Tbilisi
+                Asia/Tehran
+                Asia/Thimphu
+                Asia/Tokyo
+                Asia/Ulaanbaatar
+                Asia/Urumqi
+                Asia/Vientiane
+                Asia/Vladivostok
+                Asia/Yangon
+                Asia/Yekaterinburg
+                Asia/Yerevan
+                Atlantic/Azores
+                Atlantic/Bermuda
+                Atlantic/Canary
+                Atlantic/Cape_Verde
+                Atlantic/Faroe
+                Atlantic/Reykjavik
+                Atlantic/South_Georgia
+                Atlantic/St_Helena
+                Atlantic/Stanley
+                Australia/Adelaide
+                Australia/Brisbane
+                Australia/Darwin
+                Australia/Eucla
+                Australia/Lord_Howe
+                Australia/Perth
+                Australia/Sydney
+                Europe/Amsterdam
+                Europe/Andorra
+                Europe/Athens
+                Europe/Belgrade
+                Europe/Berlin
+                Europe/Bratislava
+                Europe/Brussels
+                Europe/Bucharest
+                Europe/Budapest
+                Europe/Chisinau
+                Europe/Copenhagen
+                Europe/Dublin
+                GMT
+                Europe/Gibraltar
+                Europe/Guernsey
+                Europe/Helsinki
+                Europe/Isle_of_Man
+                Europe/Istanbul
+                Europe/Jersey
+                Europe/Kaliningrad
+                Europe/Kyiv
+                Europe/Lisbon
+                Europe/Ljubljana
+                Europe/London
+                Europe/Luxembourg
+                Europe/Madrid
+                Europe/Malta
+                Europe/Mariehamn
+                Europe/Minsk
+                Europe/Monaco
+                Europe/Moscow
+                Europe/Oslo
+                Europe/Paris
+                Europe/Podgorica
+                Europe/Prague
+                Europe/Riga
+                Europe/Rome
+                Europe/Samara
+                Europe/San_Marino
+                Europe/Sarajevo
+                Europe/Simferopol
+                Europe/Skopje
+                Europe/Sofia
+                Europe/Stockholm
+                Europe/Tallinn
+                Europe/Tirane
+                Europe/Vaduz
+                Europe/Vatican
+                Europe/Vienna
+                Europe/Vilnius
+                Europe/Warsaw
+                Europe/Zagreb
+                Europe/Zurich
+                Indian/Antananarivo
+                Indian/Chagos
+                Indian/Christmas
+                Indian/Cocos
+                Indian/Comoro
+                Indian/Kerguelen
+                Indian/Mahe
+                Indian/Maldives
+                Indian/Mauritius
+                Indian/Mayotte
+                Indian/Reunion
+                Pacific/Apia
+                Pacific/Auckland
+                Pacific/Bougainville
+                Pacific/Chatham
+                Pacific/Chuuk
+                Pacific/Easter
+                Pacific/Efate
+                Pacific/Fakaofo
+                Pacific/Fiji
+                Pacific/Funafuti
+                Pacific/Galapagos
+                Pacific/Gambier
+                Pacific/Guadalcanal
+                Pacific/Guam
+                Pacific/Honolulu
+                Pacific/Kiritimati
+                Pacific/Kosrae
+                Pacific/Majuro
+                Pacific/Marquesas
+                Pacific/Midway
+                Pacific/Nauru
+                Pacific/Niue
+                Pacific/Norfolk
+                Pacific/Noumea
+                Pacific/Pago_Pago
+                Pacific/Palau
+                Pacific/Pitcairn
+                Pacific/Port_Moresby
+                Pacific/Rarotonga
+                Pacific/Saipan
+                Pacific/Tahiti
+                Pacific/Tarawa
+                Pacific/Tongatapu
+                Pacific/Wake
+                Pacific/Wallis
+            type: str
+          recurrence_end_time:
+            description: >
+                The timestamp indicating when the recurring maintenance schedule should end.
+                It must be greater than both the maintenance end date/time and the current time.
+                The format should be a recognizable timestamp (For example, "YYYY-MM-DD HH:MM:SS" like "2025-04-05 10:30:00").
+            type: str
+          recurrence_interval:
+            description: >
+                Interval for recurrence in days.
+                The interval must be longer than the duration of the maintenance schedules and must be within the range 1 to 365 (inclusive).
+            type: int
+
 
 requirements:
-- dnacentersdk >= 2.7.2
-- python >= 3.9
+  - dnacentersdk >= 2.7.2
+  - python >= 3.9
 seealso:
-- name: Cisco Catalyst Center documentation for Devices AddDevice2
-  description: Complete reference of the AddDevice2 API.
-  link: https://developer.cisco.com/docs/dna-center/#!add-device
-- name: Cisco Catalyst Center documentation for Devices DeleteDeviceById
-  description: Complete reference of the DeleteDeviceById API.
-  link: https://developer.cisco.com/docs/dna-center/#!delete-device-by-id
-- name: Cisco Catalyst Center documentation for Devices SyncDevices2
-  description: Complete reference of the SyncDevices2 API.
-  link: https://developer.cisco.com/docs/dna-center/#!sync-devices
+  - name: Cisco Catalyst Center documentation for Devices AddDevice2
+    description: Complete reference of the AddDevice2 API.
+    link: https://developer.cisco.com/docs/dna-center/#!add-device
+  - name: Cisco Catalyst Center documentation for Devices DeleteDeviceById
+    description: Complete reference of the DeleteDeviceById API.
+    link: https://developer.cisco.com/docs/dna-center/#!delete-device-by-id
+  - name: Cisco Catalyst Center documentation for Devices SyncDevices2
+    description: Complete reference of the SyncDevices2 API.
+    link: https://developer.cisco.com/docs/dna-center/#!sync-devices
 notes:
-  - SDK Method used are
-    devices.Devices.add_device,
-    devices.Devices.delete_device_by_id,
+  - SDK Method used are devices.Devices.add_device, devices.Devices.delete_device_by_id,
     devices.Devices.sync_devices,
-
-  - Paths used are
-    post /dna/intent/api/v1/network-device,
-    delete /dna/intent/api/v1/network-device/{id},
+  - Paths used are post /dna/intent/api/v1/network-device, delete /dna/intent/api/v1/network-device/{id},
     put /dna/intent/api/v1/network-device,
-
   - Removed 'managementIpAddress' options in v4.3.0.
   - Renamed argument 'ip_address' to 'ip_address_list' option in v6.12.0.
   - Removed 'serial_number', 'device_added', 'role_source', options in v6.12.0.
-  - Added 'add_user_defined_field', 'update_interface_details', 'export_device_list' options in v6.13.1.
+  - Added 'add_user_defined_field', 'update_interface_details', 'export_device_list'
+    options in v6.13.1.
   - Removed 'provision_wireless_device', 'reprovision_wired_device' options in v6.13.1.
   - Added the parameter 'admin_status' options in v6.13.1.
   - Removed 'device_updated' options in v6.13.1.
+  - The maintenance scheduling feature for network devices was introduced in version 2.3.7.9.
+    To use this functionality, ensure the Catalyst Center is upgraded to at least version 2.3.7.9.
+  - It is recommended to specify the complete time zone when scheduling maintenance for network devices.
+    For a list of supported time zones, please refer to the relevant documentation detailing all available options.
+  - By default, when deleting network devices, the 'clean_config' flag is set to False, which retains the device
+    configuration. To delete a device along with its configuration, the 'clean_config' flag must be explicitly
+    set to True.
 
 """
-
 EXAMPLES = r"""
 - name: Add new device in Inventory with full credentials
   cisco.dnac.inventory_workflow_manager:
-    dnac_host: "{{dnac_host}}"
-    dnac_username: "{{dnac_username}}"
-    dnac_password: "{{dnac_password}}"
-    dnac_verify: "{{dnac_verify}}"
-    dnac_port: "{{dnac_port}}"
-    dnac_version: "{{dnac_version}}"
-    dnac_debug: "{{dnac_debug}}"
-    dnac_log_level: "{{dnac_log_level}}"
-    dnac_log: False
+    dnac_host: "{{ dnac_host }}"
+    dnac_username: "{{ dnac_username }}"
+    dnac_password: "{{ dnac_password }}"
+    dnac_verify: "{{ dnac_verify }}"
+    dnac_port: "{{ dnac_port }}"
+    dnac_version: "{{ dnac_version }}"
+    dnac_debug: "{{ dnac_debug }}"
+    dnac_log_level: "{{ dnac_log_level }}"
+    dnac_log: false
     state: merged
     config:
-      - cli_transport: ssh
-        compute_device: False
+      - ip_address_list:
+          - "204.1.2.2"
+          - "204.1.2.3"
+        cli_transport: ssh
+        compute_device: false
         password: Test@123
         enable_password: Test@1234
         extended_discovery_info: test
         http_username: "testuser"
         http_password: "test"
         http_port: "443"
-        http_secure: False
-        ip_address_list: ["1.1.1.1", "2.2.2.2"]
+        http_secure: false
         netconf_port: 830
         snmp_auth_passphrase: "Lablab@12"
         snmp_auth_protocol: SHA
@@ -400,21 +824,23 @@ EXAMPLES = r"""
         snmp_version: v3
         type: NETWORK_DEVICE
         username: cisco
-
-- name: Add new Compute device in Inventory with full credentials.Inputs needed for Compute Device
+- name: Add new Compute device in Inventory with full credentials.Inputs needed
+    for Compute Device
   cisco.dnac.inventory_workflow_manager:
-    dnac_host: "{{dnac_host}}"
-    dnac_username: "{{dnac_username}}"
-    dnac_password: "{{dnac_password}}"
-    dnac_verify: "{{dnac_verify}}"
-    dnac_port: "{{dnac_port}}"
-    dnac_version: "{{dnac_version}}"
-    dnac_debug: "{{dnac_debug}}"
-    dnac_log_level: "{{dnac_log_level}}"
-    dnac_log: False
+    dnac_host: "{{ dnac_host }}"
+    dnac_username: "{{ dnac_username }}"
+    dnac_password: "{{ dnac_password }}"
+    dnac_verify: "{{ dnac_verify }}"
+    dnac_port: "{{ dnac_port }}"
+    dnac_version: "{{ dnac_version }}"
+    dnac_debug: "{{ dnac_debug }}"
+    dnac_log_level: "{{ dnac_log_level }}"
+    dnac_log: false
     state: merged
     config:
-      - ip_address_list: ["1.1.1.1", "2.2.2.2"]
+      - ip_address_list:
+          - "204.1.2.2"
+          - "204.1.2.3"
         http_username: "testuser"
         http_password: "test"
         http_port: "443"
@@ -423,165 +849,172 @@ EXAMPLES = r"""
         snmp_mode: AUTHPRIV
         snmp_priv_passphrase: "Lablab@123"
         snmp_priv_protocol: AES256
-        snmp_retry:  3
+        snmp_retry: 3
         snmp_timeout: 5
         snmp_username: v3Public
-        compute_device: True
+        compute_device: true
         username: cisco
         type: "COMPUTE_DEVICE"
-
-- name: Add new Meraki device in Inventory with full credentials.Inputs needed for Meraki Device.
+- name: Add new Meraki device in Inventory with full credentials.Inputs needed for
+    Meraki Device.
   cisco.dnac.inventory_workflow_manager:
-    dnac_host: "{{dnac_host}}"
-    dnac_username: "{{dnac_username}}"
-    dnac_password: "{{dnac_password}}"
-    dnac_verify: "{{dnac_verify}}"
-    dnac_port: "{{dnac_port}}"
-    dnac_version: "{{dnac_version}}"
-    dnac_debug: "{{dnac_debug}}"
-    dnac_log_level: "{{dnac_log_level}}"
-    dnac_log: False
+    dnac_host: "{{ dnac_host }}"
+    dnac_username: "{{ dnac_username }}"
+    dnac_password: "{{ dnac_password }}"
+    dnac_verify: "{{ dnac_verify }}"
+    dnac_port: "{{ dnac_port }}"
+    dnac_version: "{{ dnac_version }}"
+    dnac_debug: "{{ dnac_debug }}"
+    dnac_log_level: "{{ dnac_log_level }}"
+    dnac_log: false
     state: merged
     config:
       - http_password: "test"
         type: "MERAKI_DASHBOARD"
-
-- name: Add new Firepower Management device in Inventory with full credentials.Input needed to add Device.
+- name: Add new Firepower Management device in Inventory with full credentials.Input
+    needed to add Device.
   cisco.dnac.inventory_workflow_manager:
-    dnac_host: "{{dnac_host}}"
-    dnac_username: "{{dnac_username}}"
-    dnac_password: "{{dnac_password}}"
-    dnac_verify: "{{dnac_verify}}"
-    dnac_port: "{{dnac_port}}"
-    dnac_version: "{{dnac_version}}"
-    dnac_debug: "{{dnac_debug}}"
-    dnac_log_level: "{{dnac_log_level}}"
-    dnac_log: False
+    dnac_host: "{{ dnac_host }}"
+    dnac_username: "{{ dnac_username }}"
+    dnac_password: "{{ dnac_password }}"
+    dnac_verify: "{{ dnac_verify }}"
+    dnac_port: "{{ dnac_port }}"
+    dnac_version: "{{ dnac_version }}"
+    dnac_debug: "{{ dnac_debug }}"
+    dnac_log_level: "{{ dnac_log_level }}"
+    dnac_log: false
     state: merged
     config:
-      - ip_address_list: ["1.1.1.1", "2.2.2.2"]
+      - ip_address_list:
+          - "204.1.2.2"
+          - "204.1.2.3"
         http_username: "testuser"
         http_password: "test"
         http_port: "443"
         type: "FIREPOWER_MANAGEMENT_SYSTEM"
-
-- name: Add new Third Party device in Inventory with full credentials.Input needed to add Device.
+- name: Add new Third Party device in Inventory with full credentials.Input needed
+    to add Device.
   cisco.dnac.inventory_workflow_manager:
-    dnac_host: "{{dnac_host}}"
-    dnac_username: "{{dnac_username}}"
-    dnac_password: "{{dnac_password}}"
-    dnac_verify: "{{dnac_verify}}"
-    dnac_port: "{{dnac_port}}"
-    dnac_version: "{{dnac_version}}"
-    dnac_debug: "{{dnac_debug}}"
-    dnac_log_level: "{{dnac_log_level}}"
-    dnac_log: False
+    dnac_host: "{{ dnac_host }}"
+    dnac_username: "{{ dnac_username }}"
+    dnac_password: "{{ dnac_password }}"
+    dnac_verify: "{{ dnac_verify }}"
+    dnac_port: "{{ dnac_port }}"
+    dnac_version: "{{ dnac_version }}"
+    dnac_debug: "{{ dnac_debug }}"
+    dnac_log_level: "{{ dnac_log_level }}"
+    dnac_log: false
     state: merged
     config:
-      - ip_address_list: ["1.1.1.1", "2.2.2.2"]
+      - ip_address_list:
+          - "204.1.2.2"
+          - "204.1.2.3"
         snmp_auth_passphrase: "Lablab@12"
         snmp_auth_protocol: SHA
         snmp_mode: AUTHPRIV
         snmp_priv_passphrase: "Lablab@123"
         snmp_priv_protocol: AES256
-        snmp_retry:  3
+        snmp_retry: 3
         snmp_timeout: 5
         snmp_username: v3Public
         type: "THIRD_PARTY_DEVICE"
-
 - name: Update device details or credentails in Inventory
   cisco.dnac.inventory_workflow_manager:
-    dnac_host: "{{dnac_host}}"
-    dnac_username: "{{dnac_username}}"
-    dnac_password: "{{dnac_password}}"
-    dnac_verify: "{{dnac_verify}}"
-    dnac_port: "{{dnac_port}}"
-    dnac_version: "{{dnac_version}}"
-    dnac_debug: "{{dnac_debug}}"
-    dnac_log_level: "{{dnac_log_level}}"
-    dnac_log: False
+    dnac_host: "{{ dnac_host }}"
+    dnac_username: "{{ dnac_username }}"
+    dnac_password: "{{ dnac_password }}"
+    dnac_verify: "{{ dnac_verify }}"
+    dnac_port: "{{ dnac_port }}"
+    dnac_version: "{{ dnac_version }}"
+    dnac_debug: "{{ dnac_debug }}"
+    dnac_log_level: "{{ dnac_log_level }}"
+    dnac_log: false
     state: merged
     config:
-      - cli_transport: telnet
-        compute_device: False
+      - ip_address_list:
+          - "204.1.2.2"
+          - "204.1.2.3"
+        cli_transport: telnet
+        compute_device: false
         password: newtest123
         enable_password: newtest1233
-        ip_address_list: ["1.1.1.1", "2.2.2.2"]
         type: NETWORK_DEVICE
-        credential_update: True
-
+        credential_update: true
 - name: Update new management IP address of device in inventory
   cisco.dnac.inventory_workflow_manager:
-    dnac_host: "{{dnac_host}}"
-    dnac_username: "{{dnac_username}}"
-    dnac_password: "{{dnac_password}}"
-    dnac_verify: "{{dnac_verify}}"
-    dnac_port: "{{dnac_port}}"
-    dnac_version: "{{dnac_version}}"
-    dnac_debug: "{{dnac_debug}}"
-    dnac_log_level: "{{dnac_log_level}}"
-    dnac_log: False
+    dnac_host: "{{ dnac_host }}"
+    dnac_username: "{{ dnac_username }}"
+    dnac_password: "{{ dnac_password }}"
+    dnac_verify: "{{ dnac_verify }}"
+    dnac_port: "{{ dnac_port }}"
+    dnac_version: "{{ dnac_version }}"
+    dnac_debug: "{{ dnac_debug }}"
+    dnac_log_level: "{{ dnac_log_level }}"
+    dnac_log: false
     state: merged
     config:
-      - ip_address_list: ["1.1.1.1"]
-        credential_update: True
+      - ip_address_list:
+          - "204.1.2.2"
+          - "204.1.2.3"
+        credential_update: true
         update_mgmt_ipaddresslist:
-        - exist_mgmt_ipaddress: "1.1.1.1"
-          new_mgmt_ipaddress: "12.12.12.12"
-
+          - exist_mgmt_ipaddress: "1.1.1.1"
+            new_mgmt_ipaddress: "12.12.12.12"
 - name: Associate Wired Devices to site and Provisioned it in Inventory
   cisco.dnac.inventory_workflow_manager:
-    dnac_host: "{{dnac_host}}"
-    dnac_username: "{{dnac_username}}"
-    dnac_password: "{{dnac_password}}"
-    dnac_verify: "{{dnac_verify}}"
-    dnac_port: "{{dnac_port}}"
-    dnac_version: "{{dnac_version}}"
-    dnac_debug: "{{dnac_debug}}"
-    dnac_log_level: "{{dnac_log_level}}"
-    dnac_log: False
+    dnac_host: "{{ dnac_host }}"
+    dnac_username: "{{ dnac_username }}"
+    dnac_password: "{{ dnac_password }}"
+    dnac_verify: "{{ dnac_verify }}"
+    dnac_port: "{{ dnac_port }}"
+    dnac_version: "{{ dnac_version }}"
+    dnac_debug: "{{ dnac_debug }}"
+    dnac_log_level: "{{ dnac_log_level }}"
+    dnac_log: false
     state: merged
     config:
       - provision_wired_device:
-        - device_ip: "1.1.1.1"
-          site_name: "Global/USA/San Francisco/BGL_18/floor_pnp"
-          resync_retry_count: 200
-          resync_retry_interval: 2
-        - device_ip: "2.2.2.2"
-          site_name: "Global/USA/San Francisco/BGL_18/floor_test"
-          resync_retry_count: 200
-          resync_retry_interval: 2
-
+          - device_ip: "1.1.1.1"
+            site_name: "Global/USA/San Francisco/BGL_18/floor_pnp"
+            resync_retry_count: 200
+            resync_retry_interval: 2
+          - device_ip: "2.2.2.2"
+            site_name: "Global/USA/San Francisco/BGL_18/floor_test"
+            resync_retry_count: 200
+            resync_retry_interval: 2
 - name: Update Device Role with IP Address
   cisco.dnac.inventory_workflow_manager:
-    dnac_host: "{{dnac_host}}"
-    dnac_username: "{{dnac_username}}"
-    dnac_password: "{{dnac_password}}"
-    dnac_verify: "{{dnac_verify}}"
-    dnac_port: "{{dnac_port}}"
-    dnac_version: "{{dnac_version}}"
-    dnac_debug: "{{dnac_debug}}"
-    dnac_log_level: "{{dnac_log_level}}"
-    dnac_log: False
+    dnac_host: "{{ dnac_host }}"
+    dnac_username: "{{ dnac_username }}"
+    dnac_password: "{{ dnac_password }}"
+    dnac_verify: "{{ dnac_verify }}"
+    dnac_port: "{{ dnac_port }}"
+    dnac_version: "{{ dnac_version }}"
+    dnac_debug: "{{ dnac_debug }}"
+    dnac_log_level: "{{ dnac_log_level }}"
+    dnac_log: false
     state: merged
     config:
-      - ip_address_list: ["1.1.1.1", "2.2.2.2"]
+      - ip_address_list:
+          - "204.1.2.2"
+          - "204.1.2.3"
         role: ACCESS
-
 - name: Update Interface details with IP Address
   cisco.dnac.inventory_workflow_manager:
-    dnac_host: "{{dnac_host}}"
-    dnac_username: "{{dnac_username}}"
-    dnac_password: "{{dnac_password}}"
-    dnac_verify: "{{dnac_verify}}"
-    dnac_port: "{{dnac_port}}"
-    dnac_version: "{{dnac_version}}"
-    dnac_debug: "{{dnac_debug}}"
-    dnac_log_level: "{{dnac_log_level}}"
-    dnac_log: False
+    dnac_host: "{{ dnac_host }}"
+    dnac_username: "{{ dnac_username }}"
+    dnac_password: "{{ dnac_password }}"
+    dnac_verify: "{{ dnac_verify }}"
+    dnac_port: "{{ dnac_port }}"
+    dnac_version: "{{ dnac_version }}"
+    dnac_debug: "{{ dnac_debug }}"
+    dnac_log_level: "{{ dnac_log_level }}"
+    dnac_log: false
     state: merged
     config:
-      - ip_address_list: ["1.1.1.1", "2.2.2.2"]
+      - ip_address_list:
+          - "204.1.2.2"
+          - "204.1.2.3"
         update_interface_details:
           description: "Testing for updating interface details"
           admin_status: "UP"
@@ -589,119 +1022,231 @@ EXAMPLES = r"""
           voice_vlan_id: 45
           deployment_mode: "Deploy"
           interface_name: ["GigabitEthernet1/0/11", FortyGigabitEthernet1/1/1]
-          clear_mac_address_table: True
-
+          clear_mac_address_table: true
 - name: Export Device Details in a CSV file Interface details with IP Address
   cisco.dnac.inventory_workflow_manager:
-    dnac_host: "{{dnac_host}}"
-    dnac_username: "{{dnac_username}}"
-    dnac_password: "{{dnac_password}}"
-    dnac_verify: "{{dnac_verify}}"
-    dnac_port: "{{dnac_port}}"
-    dnac_version: "{{dnac_version}}"
-    dnac_debug: "{{dnac_debug}}"
-    dnac_log_level: "{{dnac_log_level}}"
-    dnac_log: False
+    dnac_host: "{{ dnac_host }}"
+    dnac_username: "{{ dnac_username }}"
+    dnac_password: "{{ dnac_password }}"
+    dnac_verify: "{{ dnac_verify }}"
+    dnac_port: "{{ dnac_port }}"
+    dnac_version: "{{ dnac_version }}"
+    dnac_debug: "{{ dnac_debug }}"
+    dnac_log_level: "{{ dnac_log_level }}"
+    dnac_log: false
     state: merged
     config:
-      - ip_address_list: ["1.1.1.1", "2.2.2.2"]
+      - ip_address_list:
+          - "204.1.2.2"
+          - "204.1.2.3"
         export_device_list:
           password: "File_password"
           operation_enum: "0"
           parameters: ["componentName", "SerialNumber", "Last Sync Status"]
-
 - name: Create Global User Defined with IP Address
   cisco.dnac.inventory_workflow_manager:
-    dnac_host: "{{dnac_host}}"
-    dnac_username: "{{dnac_username}}"
-    dnac_password: "{{dnac_password}}"
-    dnac_verify: "{{dnac_verify}}"
-    dnac_port: "{{dnac_port}}"
-    dnac_version: "{{dnac_version}}"
-    dnac_debug: "{{dnac_debug}}"
-    dnac_log_level: "{{dnac_log_level}}"
-    dnac_log: False
+    dnac_host: "{{ dnac_host }}"
+    dnac_username: "{{ dnac_username }}"
+    dnac_password: "{{ dnac_password }}"
+    dnac_verify: "{{ dnac_verify }}"
+    dnac_port: "{{ dnac_port }}"
+    dnac_version: "{{ dnac_version }}"
+    dnac_debug: "{{ dnac_debug }}"
+    dnac_log_level: "{{ dnac_log_level }}"
+    dnac_log: false
     state: merged
     config:
-      - ip_address_list: ["1.1.1.1", "2.2.2.2"]
+      - ip_address_list:
+          - "204.1.2.2"
+          - "204.1.2.3"
         add_user_defined_field:
-        - name: Test123
-          description: "Added first udf for testing"
-          value: "value123"
-        - name: Test321
-          description: "Added second udf for testing"
-          value: "value321"
-
+          - name: Test123
+            description: "Added first udf for testing"
+            value: "value123"
+          - name: Test321
+            description: "Added second udf for testing"
+            value: "value321"
 - name: Resync Device with IP Addresses
   cisco.dnac.inventory_workflow_manager:
-    dnac_host: "{{dnac_host}}"
-    dnac_username: "{{dnac_username}}"
-    dnac_password: "{{dnac_password}}"
-    dnac_verify: "{{dnac_verify}}"
-    dnac_port: "{{dnac_port}}"
-    dnac_version: "{{dnac_version}}"
-    dnac_debug: "{{dnac_debug}}"
-    dnac_log_level: "{{dnac_log_level}}"
-    dnac_log: False
+    dnac_host: "{{ dnac_host }}"
+    dnac_username: "{{ dnac_username }}"
+    dnac_password: "{{ dnac_password }}"
+    dnac_verify: "{{ dnac_verify }}"
+    dnac_port: "{{ dnac_port }}"
+    dnac_version: "{{ dnac_version }}"
+    dnac_debug: "{{ dnac_debug }}"
+    dnac_log_level: "{{ dnac_log_level }}"
+    dnac_log: false
     state: merged
     config:
-      - ip_address_list: ["1.1.1.1", "2.2.2.2"]
-        device_resync: True
-        force_sync: False
+      - ip_address_list:
+          - "204.1.2.2"
+          - "204.1.2.3"
+        device_resync: true
+        force_sync: false
 
 - name: Reboot AP Devices with IP Addresses
   cisco.dnac.inventory_workflow_manager:
-    dnac_host: "{{dnac_host}}"
-    dnac_username: "{{dnac_username}}"
-    dnac_password: "{{dnac_password}}"
-    dnac_verify: "{{dnac_verify}}"
-    dnac_port: "{{dnac_port}}"
-    dnac_version: "{{dnac_version}}"
-    dnac_debug: "{{dnac_debug}}"
-    dnac_log_level: "{{dnac_log_level}}"
-    dnac_log: False
+    dnac_host: "{{ dnac_host }}"
+    dnac_username: "{{ dnac_username }}"
+    dnac_password: "{{ dnac_password }}"
+    dnac_verify: "{{ dnac_verify }}"
+    dnac_port: "{{ dnac_port }}"
+    dnac_version: "{{ dnac_version }}"
+    dnac_debug: "{{ dnac_debug }}"
+    dnac_log_level: "{{ dnac_log_level }}"
+    dnac_log: false
     state: merged
     config:
-      - ip_address_list: ["1.1.1.1", "2.2.2.2"]
-        reboot_device: True
+      - ip_address_list:
+          - "204.1.2.2"
+          - "204.1.2.3"
+        reboot_device: true
+
+- name: Schedule the maintenance for the devices for one time.
+  cisco.dnac.inventory_workflow_manager:
+    dnac_host: "{{ dnac_host }}"
+    dnac_username: "{{ dnac_username }}"
+    dnac_password: "{{ dnac_password }}"
+    dnac_verify: "{{ dnac_verify }}"
+    dnac_port: "{{ dnac_port }}"
+    dnac_version: "{{ dnac_version }}"
+    dnac_debug: "{{ dnac_debug }}"
+    dnac_log_level: "{{ dnac_log_level }}"
+    dnac_log: false
+    state: merged
+    config:
+      - devices_maintenance_schedule:
+          - device_ips:
+              - "204.1.2.2"
+              - "204.1.2.3"
+            description: "Schedule maintenance for 2 devices"
+            start_time: "2025-04-05 10:30:00"
+            end_time: "2025-04-05 11:30:00"
+            time_zone: "Asia/Kolkata"
+
+- name: Schedule the maintenance for the devices with recurrence interval and recurrence end time.
+  cisco.dnac.inventory_workflow_manager:
+    dnac_host: "{{ dnac_host }}"
+    dnac_username: "{{ dnac_username }}"
+    dnac_password: "{{ dnac_password }}"
+    dnac_verify: "{{ dnac_verify }}"
+    dnac_port: "{{ dnac_port }}"
+    dnac_version: "{{ dnac_version }}"
+    dnac_debug: "{{ dnac_debug }}"
+    dnac_log_level: "{{ dnac_log_level }}"
+    dnac_log: false
+    state: merged
+    config:
+      - devices_maintenance_schedule:
+          - device_ips:
+              - "204.1.2.2"
+              - "204.1.2.3"
+            description: "Schedule maintenance for 2 devices"
+            start_time: "2025-04-05 10:30:00"
+            end_time: "2025-04-05 11:30:00"
+            ime_zone: "Asia/Kolkata"
+            recurrence_end_time: "2025-04-10 11:40:00"
+            recurrence_interval: 2
+
+- name: Update the maintenance schedule for the devices.
+  cisco.dnac.inventory_workflow_manager:
+    dnac_host: "{{ dnac_host }}"
+    dnac_username: "{{ dnac_username }}"
+    dnac_password: "{{ dnac_password }}"
+    dnac_verify: "{{ dnac_verify }}"
+    dnac_port: "{{ dnac_port }}"
+    dnac_version: "{{ dnac_version }}"
+    dnac_debug: "{{ dnac_debug }}"
+    dnac_log_level: "{{ dnac_log_level }}"
+    dnac_log: false
+    state: merged
+    config:
+      - devices_maintenance_schedule:
+          - device_ips:
+              - "204.1.2.2"
+              - "204.1.2.3"
+            description: "Updated description for maintenance of 2 devices"
+            start_time: "2025-04-05 10:30:00"
+            end_time: "2025-04-05 11:30:00"
+            time_zone: "Asia/Kolkata"
+            recurrence_end_time: "2025-04-10 11:40:00"
+            recurrence_interval: 1
 
 - name: Delete Provision/Unprovision Devices by IP Address
   cisco.dnac.inventory_workflow_manager:
-    dnac_host: "{{dnac_host}}"
-    dnac_username: "{{dnac_username}}"
-    dnac_password: "{{dnac_password}}"
-    dnac_verify: "{{dnac_verify}}"
-    dnac_port: "{{dnac_port}}"
-    dnac_version: "{{dnac_version}}"
-    dnac_debug: "{{dnac_debug}}"
-    dnac_log: False
-    dnac_log_level: "{{dnac_log_level}}"
+    dnac_host: "{{ dnac_host }}"
+    dnac_username: "{{ dnac_username }}"
+    dnac_password: "{{ dnac_password }}"
+    dnac_verify: "{{ dnac_verify }}"
+    dnac_port: "{{ dnac_port }}"
+    dnac_version: "{{ dnac_version }}"
+    dnac_debug: "{{ dnac_debug }}"
+    dnac_log: false
+    dnac_log_level: "{{ dnac_log_level }}"
     state: deleted
     config:
-      - ip_address_list: ["1.1.1.1", "2.2.2.2"]
-        clean_config: False
+      - ip_address_list:
+          - "204.1.2.2"
+          - "204.1.2.3"
+        clean_config: false
+
+- name: Delete Provision/Unprovision network devices along with configuration
+  cisco.dnac.inventory_workflow_manager:
+    dnac_host: "{{ dnac_host }}"
+    dnac_username: "{{ dnac_username }}"
+    dnac_password: "{{ dnac_password }}"
+    dnac_verify: "{{ dnac_verify }}"
+    dnac_port: "{{ dnac_port }}"
+    dnac_version: "{{ dnac_version }}"
+    dnac_debug: "{{ dnac_debug }}"
+    dnac_log: false
+    dnac_log_level: "{{ dnac_log_level }}"
+    state: deleted
+    config:
+      - ip_address_list:
+          - "204.1.2.2"
+          - "204.1.2.3"
+        clean_config: true
 
 - name: Delete Global User Defined Field with name
   cisco.dnac.inventory_workflow_manager:
-    dnac_host: "{{dnac_host}}"
-    dnac_username: "{{dnac_username}}"
-    dnac_password: "{{dnac_password}}"
-    dnac_verify: "{{dnac_verify}}"
-    dnac_port: "{{dnac_port}}"
-    dnac_version: "{{dnac_version}}"
-    dnac_debug: "{{dnac_debug}}"
-    dnac_log_level: "{{dnac_log_level}}"
-    dnac_log: False
+    dnac_host: "{{ dnac_host }}"
+    dnac_username: "{{ dnac_username }}"
+    dnac_password: "{{ dnac_password }}"
+    dnac_verify: "{{ dnac_verify }}"
+    dnac_port: "{{ dnac_port }}"
+    dnac_version: "{{ dnac_version }}"
+    dnac_debug: "{{ dnac_debug }}"
+    dnac_log_level: "{{ dnac_log_level }}"
+    dnac_log: false
     state: deleted
     config:
-    - ip_address_list: ["1.1.1.1", "2.2.2.2"]
-      add_user_defined_field:
-        - name: "Test123"
+      - ip_address_list:
+          - "204.1.2.2"
+          - "204.1.2.3"
+        add_user_defined_field:
+          - name: "Test123"
 
+- name: Delete the maintenance schedule for the devices.
+  cisco.dnac.inventory_workflow_manager:
+    dnac_host: "{{ dnac_host }}"
+    dnac_username: "{{ dnac_username }}"
+    dnac_password: "{{ dnac_password }}"
+    dnac_verify: "{{ dnac_verify }}"
+    dnac_port: "{{ dnac_port }}"
+    dnac_version: "{{ dnac_version }}"
+    dnac_debug: "{{ dnac_debug }}"
+    dnac_log_level: "{{ dnac_log_level }}"
+    dnac_log: false
+    state: merged
+    config:
+      - devices_maintenance_schedule:
+          - device_ips:
+              - "204.1.2.2"
+              - "204.1.2.3"
 """
-
 RETURN = r"""
-
 dnac_response:
   description: A dictionary or list with the response returned by the Cisco Catalyst Center Python SDK
   returned: always
@@ -718,6 +1263,7 @@ dnac_response:
 # common approach when a module relies on optional dependencies that are not available during the validation process.
 try:
     import pyzipper
+    import pytz
     HAS_PYZIPPER = True
 except ImportError:
     HAS_PYZIPPER = False
@@ -746,9 +1292,13 @@ class Inventory(DnacBase):
         self.deleted_devices, self.provisioned_device_deleted, self.no_device_to_delete = [], [], []
         self.response_list, self.role_updated_list, self.device_role_name = [], [], []
         self.udf_added, self.udf_deleted = [], []
-        self.ip_address_for_update, self.updated_ip, self.update_device_ips = [], [], []
+        self.maintenance_scheduled, self.maintenance_updated, self.no_update_in_maintenance = [], [], []
+        self.maintenance_deleted, self.no_maintenance_schedule = [], []
+        self.ip_address_for_update, self.updated_ip, self.update_device_ips, self.device_already_present = [], [], [], []
         self.output_file_name, self.device_not_exist = [], []
-        self.resync_successful_devices, self.device_not_exist_to_resync = [], []
+        self.resync_successful_devices, self.device_not_exist_to_resync, self.device_role_ip_already_updated = [], [], []
+        self.cred_updated_not_required, self.device_role_already_updated = [], []
+        self.ap_rebooted_successfully = []
 
     def validate_input(self):
         """
@@ -836,6 +1386,17 @@ class Inventory(DnacBase):
                 'site_name': {'type': 'str'},
                 'resync_retry_count': {'default': 200, 'type': 'int'},
                 'resync_retry_interval': {'default': 2, 'type': 'int'},
+            },
+            'devices_maintenance_schedule': {
+                'type': 'list',
+                'elements': 'dict',
+                'device_ips': {'type': 'list', 'elements': 'str'},
+                'description': {'type': 'str'},
+                'start_time': {'type': 'str'},
+                'time_zone': {'type': 'str'},
+                'end_time': {'type': 'str'},
+                'recurrence_interval': {'type': 'int'},
+                'recurrence_end_time': {'type': 'str'},
             }
         }
 
@@ -937,6 +1498,10 @@ class Inventory(DnacBase):
                     )
                 offset = offset + 1
                 self.log("Received API response from 'get_device_list': {0}".format(str(response)), "DEBUG")
+                if not response:
+                    self.log("There are no device details received from 'get_device_list' API.", "INFO")
+                    break
+
                 response = response.get("response")
                 if not response:
                     self.log("There are no device details received from 'get_device_list' API.", "INFO")
@@ -1432,7 +1997,7 @@ class Inventory(DnacBase):
                 self.msg = (
                     "Device(s) '{0}' have been successfully resynced in the inventory in Cisco Catalyst Center. "
                 ).format(resync_successful_devices)
-                self.resync_successful_devices.append(resync_successful_devices)
+                self.resync_successful_devices = resync_successful_devices
             if resync_failed_for_all_device:
                 self.status = "failed"
                 self.log(self.msg, "ERROR")
@@ -1531,6 +2096,7 @@ class Inventory(DnacBase):
                     self.result['changed'] = True
                     self.result['response'] = execution_details
                     self.msg = "AP Device(s) {0} successfully rebooted!".format(str(input_device_ips))
+                    self.ap_rebooted_successfully = input_device_ips
                     self.log(self.msg, "INFO")
                     break
                 elif execution_details.get("isError"):
@@ -1677,6 +2243,47 @@ class Inventory(DnacBase):
         self.result['changed'] = True
         self.log("{0} Devices provisioned successfully partially for {1} devices".format(device_type, provision_count), "INFO")
 
+    def wait_for_device_to_be_managed_v1(self, device_ip, max_retries, retry_interval):
+        """
+        Waits for the device to reach a managed state.
+        Parameters:
+            device_ip (str): The IP address of the device to check.
+            max_retries (int): The maximum number of retries to check the device state.
+            retry_interval (int): The interval in seconds between retries.
+        Returns:
+            bool: True if the device reaches a managed state, False otherwise.
+            device_ip: The IP address of the device.
+        Description:
+            This method polls the device at the specified IP address to determine
+            if it has reached a managed state. It retries the check a specified
+            number of times, waiting a set interval between each attempt.
+            If the device reaches a managed state within the allowed retries,
+            it returns True; otherwise, it returns False.
+        """
+        retries_left = max_retries
+
+        while retries_left > 0:
+            device_response = self.get_device_response(device_ip)
+            management_state = device_response.get('managementState')
+            collection_status = device_response.get('collectionStatus')
+            self.log("Device is in {0} state, waiting for Managed State.".format(management_state), "DEBUG")
+
+            if management_state == "Managed" and collection_status == "Managed":
+                msg = "Device '{0}' reached Managed state with {1} retries left.".format(device_ip, retries_left)
+                self.log(msg, "INFO")
+                return True, device_ip
+
+            if collection_status in ["Partial Collection Failure", "Could Not Synchronize"]:
+                msg = "Device '{0}' reached '{1}' state. Retries left: {2}.".format(device_ip, collection_status, retries_left)
+                self.log(msg, "INFO")
+                return False, device_ip
+
+            time.sleep(retry_interval)
+            retries_left -= 1
+
+        self.log("Device '{0}' did not transition to the Managed state within the retry limit.".format(device_ip), "WARNING")
+        return False, device_ip
+
     def provisioned_wired_device(self):
         """
         Main function to provision wired devices in Cisco Catalyst Center.
@@ -1699,16 +2306,19 @@ class Inventory(DnacBase):
         device_ip_list = []
         self.provision_count, self.already_provisioned_count = 0, 0
 
-        for device_info in provision_wired_list:
-            device_ip = device_info['device_ip']
-            site_name_hierarchy = device_info['site_name']
-            device_ip_list.append(device_ip)
-            device_type = "Wired"
-            resync_retry_count = device_info.get("resync_retry_count", 200)
-            resync_retry_interval = device_info.get("resync_retry_interval", 2)
-
-            if self.get_ccc_version_as_integer() <= self.get_ccc_version_as_int_from_str("2.3.5.3"):
-                self.log("Processing with Catalyst version <= 2.3.5.3", "DEBUG")
+        if self.compare_dnac_versions(self.get_ccc_version(), "2.3.5.3") <= 0:
+            self.log("Processing with Catalyst version <= 2.3.5.3", "DEBUG")
+            for device_info in provision_wired_list:
+                device_ip = device_info['device_ip']
+                site_name_hierarchy = device_info['site_name']
+                self.log("Processing device with IP: {0} at site: {1}".format(device_ip, site_name_hierarchy), "DEBUG")
+                device_ip_list.append(device_ip)
+                self.log("Appended device IP {0} to device_ip_list".format(device_ip), "DEBUG")
+                device_type = "Wired"
+                self.log("Device type set to {0}".format(device_type), "DEBUG")
+                resync_retry_count = device_info.get("resync_retry_count", 200)
+                resync_retry_interval = device_info.get("resync_retry_interval", 2)
+                self.log("Resync retry count: {0}, Resync retry interval: {1} seconds".format(resync_retry_count, resync_retry_interval), "DEBUG")
                 device_status = self.get_provision_wired_device(device_ip)
 
                 if device_status == 2:  # Already provisioned
@@ -1720,16 +2330,42 @@ class Inventory(DnacBase):
                     self.log(error_msg, "ERROR")
                     continue
 
-            # Check if device reaches managed state
-            managed_flag = self.wait_for_device_managed_state(device_ip, resync_retry_count, resync_retry_interval)
-            if not managed_flag:
-                self.log("Device {0} is not transitioning to the managed state, so provisioning operation cannot be performed.".format(device_ip), "WARNING")
-                continue
+                # Check if device reaches managed state
+                self.log("Checking if device {0} reaches managed state.".format(device_ip), "DEBUG")
+                managed_flag = self.wait_for_device_managed_state(device_ip, resync_retry_count, resync_retry_interval)
+                if not managed_flag:
+                    self.log("Device {0} is not transitioning to the managed state,so provisioning operation cannot be performed.".format(device_ip), "WARNING")
+                    continue
 
-            if self.get_ccc_version_as_integer() <= self.get_ccc_version_as_int_from_str("2.3.5.3"):
+                self.log("Device {0} has successfully reached the managed state. Proceeding with provisioning operation.".format(device_ip), "INFO")
                 self.provision_wired_device_v1(device_ip, site_name_hierarchy, device_type)
-            else:
-                self.provision_wired_device_v2(device_ip, site_name_hierarchy)
+
+        else:
+            device_ip_in_managed_state = []
+            device_ip_not_in_managed_state = []
+            self.log("Starting to process the provisioned wired list.", "DEBUG")
+            for device_info in provision_wired_list:
+                device_ip = device_info['device_ip']
+                site_name_hierarchy = device_info['site_name']
+                device_ip_list.append(device_ip)
+                self.log("Processing device {0} at site {1}".format(device_ip, site_name_hierarchy), "DEBUG")
+                device_type = "Wired"
+                resync_retry_count = device_info.get("resync_retry_count", 200)
+                resync_retry_interval = device_info.get("resync_retry_interval", 2)
+                self.log("Retry count: {0}, Retry interval: {1} seconds for device {2}".format(resync_retry_count, resync_retry_interval, device_ip), "DEBUG")
+
+                # Check if device reaches managed state
+                managed_flag, device_ip_info = self.wait_for_device_to_be_managed_v1(device_ip, resync_retry_count, resync_retry_interval)
+                if not managed_flag:
+                    device_ip_not_in_managed_state.append(device_ip_info)
+                    self.log("Device {0} did not transition to the managed state, so provisioning cannot be performed.".format(device_ip), "WARNING")
+                    continue
+
+                self.log("Device {0} reached managed state. Adding to the managed state list.".format(device_ip), "INFO")
+                device_ip_in_managed_state.append(device_ip_info)
+
+            self.log("Initiating provisioning for devices in managed state.", "DEBUG")
+            self.provision_wired_device_v2(device_ip, site_name_hierarchy, device_ip_in_managed_state, provision_wired_list)
 
         # Handle final provisioning results
         self.handle_final_provisioning_result(total_devices, self.provision_count, self.already_provisioned_count, device_ip_list, device_type)
@@ -1818,35 +2454,89 @@ class Inventory(DnacBase):
         except Exception as e:
             self.handle_provisioning_exception(device_ip, e, device_type)
 
-    def provision_wired_device_v2(self, device_ip, site_name_hierarchy):
+    def provision_wired_device_v2(self, device_ip, site_name_hierarchy, device_ip_in_managed_state, provision_wired_list):
         """
-        Provisions a device for versions > 2.3.5.6.
+        Provisions bulk devices for versions > 2.3.5.6.
         Parameters:
-            device_ip (str): The IP address of the device to provision.
-            site_name (str): The name of the site where the device will be provisioned.
+            device_ip_in_managed_state (list): List of device IPs currently in a managed state.
+            provision_wired_list (list): List of dictionaries containing device and site information.
+
         Description:
-            This method provisions a device with the specified IP address
-            and site name for software versions greater than 2.3.5.6.
-            It performs the necessary configurations and returns a success status.
+            This method provisions multiple devices with the specified IP addresses and site names
+            for software versions greater than 2.3.5.6. It performs the necessary configurations
+            in a single API call to improve efficiency.
         """
         try:
-            site_exist, site_id = self.get_site_id(site_name_hierarchy)
-            device_ids = self.get_device_ids([device_ip])
-            device_id = device_ids[0]
+            self.log("Starting provisioning process for devices in managed state.", "DEBUG")
+            self.log("Managed state devices: {0}".format(device_ip_in_managed_state), "DEBUG")
+            self.log("Provision wired list: {0}".format(provision_wired_list), "DEBUG")
 
-            assign_params = {'deviceIds': [device_id], 'siteId': site_id}
-            provision_params = [{"siteId": site_id, "networkDeviceId": device_id}]
-            is_device_provisioned = self.is_device_provisioned(device_id, device_ip)
-            is_device_assigned_to_site = self.is_device_assigned_to_site(device_id)
+            site_data = {}
+            device_data = {}
 
-            if not is_device_assigned_to_site:
-                self.assign_device_to_site(device_ids, site_name_hierarchy, site_id)
+            # Collect site and device information
+            for item in provision_wired_list:
+                site_name = item['site_name']
+                site_exist, site_id = self.get_site_id(site_name)
+                self.log("Checked site '{0}', exists: {1}, site ID: {2}".format(site_name, site_exist, site_id), "DEBUG")
+                if site_exist:
+                    site_data[site_name] = site_id
 
-            if not is_device_provisioned:
-                self.provision_device(provision_params, device_ip)
-                self.provisioned_device.append(device_ip)
-            else:
-                self.log_device_already_provisioned(device_ip)
+                device_ip = item['device_ip']
+                device_ids = self.get_device_ids([device_ip])
+                self.log("Device IP '{0}' mapped to device IDs: {1}".format(device_ip, device_ids), "DEBUG")
+                if device_ids:
+                    device_data[device_ip] = device_ids[0]
+
+            devices_to_assign_and_provision = []
+            device_already_provisioned = []
+            for device_ip in device_ip_in_managed_state:
+                provision_item = next((item for item in provision_wired_list if item['device_ip'] == device_ip), None)
+                if provision_item:
+                    site_name = provision_item['site_name']
+                    site_id = site_data.get(site_name)
+                    device_id = device_data.get(device_ip)
+                    self.log("Processing device '{0}' for site '{1}', site ID: {2}, device ID: {3}".format(
+                             device_ip, site_name, site_id, device_id), "DEBUG")
+
+                    if site_id and device_id:
+                        is_device_assigned_to_a_site, device_site_name = self.is_device_assigned_to_site(device_id)
+
+                        if not is_device_assigned_to_a_site:
+                            self.log("Assigning device '{0}' to site '{1}'.".format(device_ip, site_name), "INFO")
+                            self.assign_device_to_site([device_id], site_name, site_id)
+
+                        elif device_site_name != site_name:
+                            self.msg = ("Error in provisioning wired device '{0}' - the device is already associated "
+                                        "with Site '{1}' and cannot be re-associated with Site '{2}'.".format(device_ip, device_site_name, site_name))
+                            self.set_operation_result("failed", False, self.msg, "ERROR").check_return_status()
+
+                        is_device_provisioned = self.is_device_provisioned(device_id, device_ip)
+                        self.log("Device '{0}' is provisioned: {1}".format(device_ip, is_device_provisioned), "DEBUG")
+
+                        if not is_device_provisioned:
+                            devices_to_assign_and_provision.append({
+                                "device_ip": device_ip,
+                                "device_id": device_id,
+                                "site_id": site_id
+                            })
+                        else:
+                            device_already_provisioned.append(device_ip)
+                            self.log_device_already_provisioned(device_ip)
+
+            device_ips_to_provision = [device["device_ip"] for device in devices_to_assign_and_provision]
+            self.log("Devices to provision: {0}".format(device_ips_to_provision), "INFO")
+            if devices_to_assign_and_provision:
+                payload = [
+                    {
+                        "siteId": device["site_id"],
+                        "networkDeviceId": device["device_id"]
+                    }
+                    for device in devices_to_assign_and_provision
+                ]
+                device_ips_to_provision = [device["device_ip"] for device in devices_to_assign_and_provision]
+                self.provision_device(payload, device_ips_to_provision)
+                self.provisioned_device.extend(device_ips_to_provision)
 
         except Exception as e:
             self.handle_provisioning_exception(device_ip, e, "Wired")
@@ -1860,24 +2550,36 @@ class Inventory(DnacBase):
                   to be validated.
           - uuid (str): The UUID of the device to check for site assignment.
         Returns:
-          - boolean:  True if the device is assigned to a site, False otherwise.
+          - tuple: (bool, Optional[str])
+            - True and the site name if the device is assigned to a site.
+            - False and None if not assigned or in case of an error..
 
         """
 
         self.log("Checking site assignment for device with UUID: {0}".format(uuid), "INFO")
         try:
-            site_response = self.dnac_apply['exec'](
-                family="devices",
-                function='get_device_detail',
-                params={"search_by": uuid ,
-                        "identifier": "uuid"},
-                op_modifies=True
+            site_api_response = self.dnac_apply['exec'](
+                family="site_design",
+                function='get_site_assigned_network_device',
+                params={"id": uuid}
             )
-            self.log("Response collected from the API 'get_device_detail' {0}".format(site_response))
-            site_response = site_response.get("response")
-            if site_response.get("location"):
-                return True
-            return False
+
+            if not site_api_response or not isinstance(site_api_response, dict):
+                self.log("Invalid API response for device UUID: {0}. Response: {1}".format(uuid, site_api_response), "ERROR")
+                return False, None
+
+            self.log("API response received for 'get_site_assigned_network_device': {0}".format(site_api_response), "DEBUG")
+            site_response = site_api_response.get("response")
+
+            if site_response:
+                site_name = site_response.get("siteNameHierarchy")
+                if site_name:
+                    self.log("Device with UUID {0} is assigned to site: {1}".format(uuid, site_name), "INFO")
+                    return True, site_name
+
+            self.log("Device with UUID {0} is not assigned to any site.".format(uuid), "INFO")
+            return False, None
+
         except Exception as e:
             msg = "Failed to find device with UUID {0} due to: {1}".format(uuid, e)
             self.log(msg, "CRITICAL")
@@ -1896,7 +2598,7 @@ class Inventory(DnacBase):
             if the device is currently provisioned and returns the appropriate
             status.
         """
-        if self.get_ccc_version_as_integer() <= self.get_ccc_version_as_int_from_str("2.3.5.3"):
+        if self.compare_dnac_versions(self.get_ccc_version(), "2.3.7.6") >= 0:
             try:
                 prov_response = self.dnac._exec(
                     family="sda",
@@ -2655,7 +3357,7 @@ class Inventory(DnacBase):
 
         try:
             flag = 3
-            if self.get_ccc_version_as_integer() <= self.get_ccc_version_as_int_from_str("2.3.5.3"):
+            if self.compare_dnac_versions(self.get_ccc_version(), "2.3.7.6") >= 0:
                 response = self.dnac._exec(
                     family="sda",
                     function='get_provisioned_wired_device',
@@ -3045,6 +3747,789 @@ class Inventory(DnacBase):
 
         return device_exist
 
+    def get_schedule_and_unscheduled_device_ids(self, network_device_ids, device_ip_id_map):
+        """
+        Categorize network devices based on their maintenance schedule in Cisco Catalyst Center.
+
+        Args:
+            self (object): An instance of a class used for interacting with Cisco Catalyst Center.
+            network_device_ids (list): A list of network device IDs to check for scheduled maintenance.
+            device_ip_id_map (dict): A mapping of device IDs to their corresponding IP addresses.
+
+        Returns:
+            tuple: A tuple containing:
+                - schedule_device_ids (list): List of device IDs that have a scheduled maintenance window.
+                - unscheduled_device_ids (list): List of device IDs that do not have a scheduled maintenance window.
+
+        Description:
+            This function checks whether the given network devices have scheduled maintenance in Cisco Catalyst Center.
+            It iterates through 'network_device_ids', retrieves the maintenance schedule using the
+            'retrieve_scheduled_maintenance_windows_for_network_devices' API call, and logs the response.
+            Devices with scheduled maintenance are added to 'schedule_device_ids', while those without are added
+            to 'unscheduled_device_ids'. If an error occurs during the API call, an error message is logged
+            and the operation result is set to 'failed'.
+        """
+
+        schedule_device_ids, unscheduled_device_ids = [], []
+        self.log("Start checking and collecting the device ids for which maintenance is schedule or not..", "DEBUG")
+        for device_id in network_device_ids:
+            try:
+                device_ip = device_ip_id_map.get(device_id)
+                response = self.dnac._exec(
+                    family="devices",
+                    function='retrieve_scheduled_maintenance_windows_for_network_devices',
+                    op_modifies=True,
+                    params={"network_device_ids": device_id},
+                )
+                self.log(
+                    "Received API response from 'retrieve_scheduled_maintenance_windows_for_network_devices' for the "
+                    "device '{0}': {1}".format(device_ip, str(response)), "DEBUG"
+                )
+                response = response.get("response")
+
+                if not response:
+                    self.log("No maintenance scheduled for device '{0}'.".format(device_ip), "INFO")
+                    unscheduled_device_ids.append(device_id)
+                    continue
+
+                schedule_device_ids.append(device_id)
+
+            except Exception as e:
+                self.msg = """Error while fetching the maintenance schedule for the device '{0}' present in
+                        Cisco Catalyst Center: {1}""".format(device_ip, str(e))
+                self.set_operation_result("failed", False, self.msg, "ERROR")
+
+        return schedule_device_ids, unscheduled_device_ids
+
+    def get_device_maintenance_details(self, device_id, device_ip):
+        """
+        Retrieve the scheduled maintenance details for a specific network device in Cisco Catalyst Center.
+
+        Args:
+            self (object): An instance of a class used for interacting with Cisco Catalyst Center.
+            device_id (str): The unique identifier of the network device.
+            device_ip (str): The IP address of the network device.
+
+        Returns:
+            dict or None:
+                - A dictionary containing the maintenance details if available.
+                - None if no maintenance details are found or an error occurs.
+
+        Description:
+            This function retrieves the scheduled maintenance details for a given network device using
+            the 'retrieve_scheduled_maintenance_windows_for_network_devices' API call. The response is
+            logged for debugging. If no maintenance details are found, it returns None. In case of an
+            exception, an error message is logged, and the operation result is marked as 'failed'.
+        """
+        try:
+            response = self.dnac._exec(
+                family="devices",
+                function='retrieve_scheduled_maintenance_windows_for_network_devices',
+                op_modifies=True,
+                params={"network_device_ids": device_id},
+            )
+            self.log(
+                "Received API response from 'retrieve_scheduled_maintenance_windows_for_network_devices' for the "
+                "device '{0}': {1}".format(device_ip, str(response)), "DEBUG"
+            )
+            response = response.get("response")
+
+            if not response:
+                self.msg = "No maintenance details retrieved for network device '{0}'.".format(device_ip)
+                return None
+
+        except Exception as e:
+            self.msg = """Error while fetching the maintenance schedule for the device '{0}' present in
+                    Cisco Catalyst Center: {1}""".format(device_ip, str(e))
+            self.set_operation_result("failed", False, self.msg, "ERROR").check_return_status()
+
+        return response[0]
+
+    def to_epoch_timezone(self, time_str, timezone, date_time_format="%Y-%m-%d %H:%M:%S"):
+        """
+        Convert a given datetime string to an epoch timestamp in milliseconds for a specified timezone.
+
+        Args:
+            self (object): An instance of a class used for time-related operations.
+            time_str (str): The datetime string to be converted.
+            timezone (str): The timezone in which the datetime should be interpreted.
+            date_time_format (str, optional): The expected format of 'time_str'. Defaults to "%Y-%m-%d %H:%M:%S".
+
+        Returns:
+            int: The epoch timestamp in milliseconds corresponding to the given datetime in the specified timezone.
+
+        Description:
+            This function converts a given datetime string into an epoch timestamp (milliseconds) based on the provided
+            timezone. It first attempts to parse 'time_str' using the specified format. If the format is incorrect,
+            an error is logged, and execution is halted. If the given timezone is an abbreviation, it is converted
+            to its full form using 'self.get_timezone_with_abbreviation()'. The function then localizes the parsed
+            datetime to the specified timezone and returns the corresponding epoch timestamp in milliseconds.
+
+        Error Handling:
+            - If 'time_str' is in an invalid format, an error is logged, and execution is halted.
+            - If the given timezone is invalid, an error is logged, and execution is halted.
+        """
+
+        try:
+            dt = datetime.strptime(time_str, date_time_format)
+        except ValueError:
+            self.msg = "Invalid datetime format: '{0}' given in the playbook. Please provide in the given format: {1}".format(time_str, date_time_format)
+            self.log(self.msg, "ERROR")
+            self.fail_and_exit(self.msg)
+
+        try:
+            local_tz = pytz.timezone(timezone)
+        except pytz.UnknownTimeZoneError:
+            self.msg = "Invalid timezone: '{0}' given in the playbook.".format(timezone)
+            self.log(self.msg, "ERROR")
+            self.fail_and_exit(self.msg)
+
+        epoch_date_time = local_tz.localize(dt)
+
+        return int(epoch_date_time.timestamp() * 1000)
+
+    def get_current_time_in_timezone(self, timezone):
+        """
+        Retrieve the current epoch timestamp in milliseconds for a specified timezone.
+
+        Args:
+            self (object): An instance of a class used for time-related operations.
+            timezone (str): The timezone for which the current time should be retrieved.
+
+        Returns:
+            int: The current epoch timestamp in milliseconds for the specified timezone.
+
+        Description:
+            This function returns the current epoch timestamp (milliseconds) based on the provided timezone.
+            If the given timezone is an abbreviation, it is converted to its full form using
+            'self.get_timezone_with_abbreviation()'. The function then retrieves the current time in
+            the specified timezone and converts it to an epoch timestamp.
+
+        Error Handling:
+            - If the provided timezone is invalid, an error is logged, and execution is halted.
+        """
+
+        try:
+            local_tz = pytz.timezone(timezone)
+        except pytz.UnknownTimeZoneError:
+            self.msg = "Invalid timezone: '{0}' given in the playbook.".format(timezone)
+            self.log(self.msg, "ERROR")
+            self.fail_and_exit(self.msg)
+
+        local_time = datetime.now(local_tz)
+        epoch_curr_time = int(local_time.timestamp() * 1000)
+
+        return epoch_curr_time
+
+    def validate_device_maintenance_params(self, devices_maintenance):
+        """
+        Validate the parameters required for scheduling device maintenance in Cisco Catalyst Center.
+
+        Args:
+            self (object): An instance of a class used for device maintenance scheduling.
+            devices_maintenance (dict): A dictionary containing maintenance scheduling parameters, including
+                - device_ips (list): List of device IPs for maintenance.
+                - start_time (str): Start time of the maintenance window.
+                - end_time (str): End time of the maintenance window.
+                - time_zone (str): Time zone in which the maintenance schedule is defined.
+                - recurrence_end_time (str, optional): The end time for recurring maintenance (if applicable).
+                - recurrence_interval (int, optional): The recurrence interval in days (if applicable).
+
+        Returns:
+            None: The function does not return a value. It either validates the parameters successfully or
+                terminates execution with an error message if validation fails.
+
+        Description:
+            This function performs the following validations:
+            1. Ensures that required parameters ('device_ips', 'start_time', 'end_time', 'time_zone') are present.
+            2. Converts 'start_time' and 'end_time' to epoch timestamps.
+            3. Ensures 'start_time' and 'end_time' are greater than the current time.
+            4. If 'recurrence_end_time' is provided:
+                - Ensures 'recurrence_interval' is also provided and falls within the range (0,365) days.
+                - Validates that the interval is longer than the maintenance duration.
+                - Ensures 'recurrence_end_time' is later than 'end_time' and the current time.
+
+        Error Handling:
+            - Logs an error and terminates execution if any required parameter is missing.
+            - Logs an error if timestamps or recurrence parameters are invalid.
+            - Handles unexpected exceptions and logs an appropriate error message.
+        """
+
+        try:
+            device_ips = devices_maintenance.get("device_ips")
+            start_time = devices_maintenance.get("start_time")
+            end_time = devices_maintenance.get("end_time")
+            time_zone = devices_maintenance.get("time_zone")
+            to_validate_params = {
+                "device_ips": device_ips,
+                "start_time": start_time,
+                "end_time": end_time,
+                "time_zone": time_zone
+            }
+            invalid_params = []
+            for key, value in to_validate_params.items():
+                if value is None:
+                    self.log("Required parameter '{0}' is missing from playbook for scheduling the device maintenance.".format(key), "ERROR")
+                    invalid_params.append(key)
+
+            self.log("Checking if any of the above parameter is not provided in the playbook or not...", "DEBUG")
+            if invalid_params:
+                self.msg = (
+                    "Required parameter(s) '{0}' missing from playbook for scheduling the device maintenance "
+                    "for device(s): {1}.".format(invalid_params, device_ips)
+                )
+                self.log(self.msg, "ERROR")
+                self.fail_and_exit(self.msg)
+
+            epoch_start_time = self.to_epoch_timezone(start_time, time_zone)
+            epoch_end_time = self.to_epoch_timezone(end_time, time_zone)
+            epoch_current_time = self.get_current_time_in_timezone(time_zone)
+
+            # Add the validation for the recurrence end time and recurrence interval
+            recurrence_end_time = devices_maintenance.get("recurrence_end_time")
+            if recurrence_end_time:
+                interval = devices_maintenance.get("recurrence_interval")
+                if not interval:
+                    self.msg = "Parameter 'recurrence_interval' is required field for the maintenance schedule"
+                    self.log(self.msg, "ERROR")
+                    self.fail_and_exit(self.msg)
+
+                if interval <= 0 or interval > 365:
+                    self.msg = "Invalid 'recurrence_interval': {0}. It must be between 1 and 365 days.".format(interval)
+                    self.log(self.msg, "ERROR")
+                    self.fail_and_exit(self.msg)
+
+                schedule_duration_days = (epoch_end_time - epoch_start_time) / (24 * 3600 * 1000)
+                if interval < schedule_duration_days:
+                    self.msg = (
+                        "Recurrence interval ({0} days) must be longer than the maintenance duration ({1} days).".format(
+                            interval, schedule_duration_days
+                        )
+                    )
+                    self.log(self.msg, "ERROR")
+                    self.fail_and_exit(self.msg)
+
+                epoch_recurr_end_time = self.to_epoch_timezone(recurrence_end_time, time_zone)
+                if epoch_recurr_end_time < epoch_end_time:
+                    self.msg = (
+                        "Given 'recurrence_end_time' {0} is less than device maintenance end date/time {1}. "
+                        "It should be greater than maintenance end date/time.".format(recurrence_end_time, end_time)
+                    )
+                    self.log(self.msg, "ERROR")
+                    self.fail_and_exit(self.msg)
+
+                if epoch_recurr_end_time < epoch_current_time:
+                    self.msg = (
+                        "Given 'recurrence_end_time' {0} is less than the current date/time. It should be"
+                        " greater than the current date/time.".format(recurrence_end_time)
+                    )
+                    self.log(self.msg, "ERROR")
+                    self.fail_and_exit(self.msg)
+            else:
+                self.log("Add the validation to check start time, end time should be greater than current time", "DEBUG")
+                if epoch_start_time < epoch_current_time:
+                    self.msg = "Parameter 'start_time' must be greater than the current time."
+                    self.log(self.msg, "ERROR")
+                    self.fail_and_exit(self.msg)
+
+                if epoch_end_time < epoch_current_time:
+                    self.msg = "Parameter 'end_time' must be greater than the current time."
+                    self.log(self.msg, "ERROR")
+                    self.fail_and_exit(self.msg)
+
+        except Exception as e:
+            self.msg = "An exception occured while validating the device maintenance params: {0}".format(str(e))
+            self.log(self.msg, "ERROR")
+            self.fail_and_exit(self.msg)
+
+    def create_schedule_maintenance_payload(self, devices_maintenance, unscheduled_device_ids, device_ips):
+        """
+        Creates a payload for scheduling device maintenance in the Cisco Catalyst Center.
+
+        Args:
+            self (object): An instance of a class used for interacting with Cisco Catalyst Center.
+            devices_maintenance (dict): Dictionary containing maintenance schedule details
+            unscheduled_device_ids (list): List of device IDs that are not currently scheduled for maintenance.
+            device_ips (list): List of IP addresses of the devices being scheduled.
+
+        Returns:
+            dict: A dictionary containing the formatted payload for scheduling maintenance.
+
+        Description:
+            This function constructs a payload that includes the start time, end time, time zone,
+            device details, and optional recurrence information for scheduling a maintenance window.
+        """
+
+        start_time = devices_maintenance.get("start_time")
+        end_time = devices_maintenance.get("end_time")
+        time_zone = devices_maintenance.get("time_zone")
+        epoch_start_time = self.to_epoch_timezone(start_time, time_zone)
+        epoch_end_time = self.to_epoch_timezone(end_time, time_zone)
+
+        payload = {
+            "description": devices_maintenance.get("description"),
+            "maintenanceSchedule": {
+                "startTime": epoch_start_time,
+                "endTime": epoch_end_time
+            },
+            "networkDeviceIds": unscheduled_device_ids
+        }
+
+        recurrence_end_time = devices_maintenance.get("recurrence_end_time")
+        if recurrence_end_time:
+            recurr_epoch_end_time = self.to_epoch_timezone(recurrence_end_time, time_zone)
+            payload["maintenanceSchedule"]["recurrence"] = {
+                "recurrenceEndTime": recurr_epoch_end_time,
+                "interval": devices_maintenance.get("recurrence_interval")
+            }
+
+        self.log(
+            "Constructed maintenance schedule payload for device(s) {0}: {1}".format(device_ips, payload),
+            "INFO"
+        )
+
+        return payload
+
+    def schedule_maintenance_for_devices(self, maintenance_payload, device_ips):
+        """
+        Schedules maintenance for specified network devices in the Cisco Catalyst Center.
+
+        Args:
+            self (object): An instance of a class used for interacting with Cisco Catalyst Center.
+            maintenance_payload (dict): Payload containing maintenance schedule details.
+            device_ips (list): List of IP addresses of the devices to be scheduled for maintenance.
+
+        Returns:
+            self: The instance of the class, updated with operation results.
+
+        Description:
+            This function triggers an API call to create a maintenance schedule for the given devices
+            using the provided payload and monitors the task execution status.
+        """
+
+        try:
+            self.log("Proceeding with maintenance scheduling for the devices {0}.".format(device_ips), "INFO")
+            payload = {"payload": maintenance_payload}
+            self.log("Constructed payload for scheduling the maintenance: {0}".format(payload), "DEBUG")
+            task_name = "create_maintenance_schedule_for_network_devices"
+            self.log("Triggering '{0}' API call with payload.".format(task_name), "DEBUG")
+            task_id = self.get_taskid_post_api_call("devices", task_name, payload)
+
+            if not task_id:
+                self.msg = "Failed to retrieve task ID for '{0}'. Device maintenance scheduling aborted.".format(task_name)
+                self.set_operation_result("failed", False, self.msg, "ERROR")
+                return self
+
+            self.log("Received task ID: {0}. Monitoring task status.".format(task_id), "DEBUG")
+            success_msg = "Maintenance schedule successfully for the device(s): {0}.".format(device_ips)
+            self.get_task_status_from_tasks_by_id(task_id, task_name, success_msg)
+
+        except Exception as e:
+            self.msg = (
+                "An exception occured while scheduling the maintenance for the device(s) '{0}' in the Cisco Catalyst "
+                "Center: {1}"
+            ).format(device_ips, str(e))
+            self.set_operation_result("failed", False, self.msg, "ERROR")
+
+        return self
+
+    def device_maintenance_needs_update(self, devices_maintenance, schedule_details, device_ip):
+        """
+        Determine whether the maintenance schedule of a device requires an update.
+
+        Args:
+            self (object): An instance of a class used for device maintenance scheduling.
+            devices_maintenance (dict): A dictionary containing maintenance scheduling parameters, including:
+                - start_time (str, optional): The desired start time for maintenance.
+                - end_time (str, optional): The desired end time for maintenance.
+                - time_zone (str, optional): The timezone in which the maintenance schedule is defined.
+                - description (str, optional): A description of the maintenance schedule.
+                - recurrence_end_time (str, optional): The end time for a recurring maintenance schedule.
+                - recurrence_interval (int, optional): The recurrence interval in days.
+            schedule_details (dict): The current maintenance schedule details from Cisco Catalyst Center.
+            device_ip (str): The IP address of the device being checked.
+
+        Returns:
+            bool: True if the maintenance schedule for the device needs to be updated, False otherwise.
+
+        Description:
+            This function compares the provided maintenance parameters with the existing schedule in Cisco Catalyst Center.
+            If any discrepancy is found, the function logs the mismatch and returns True, indicating that an update is needed.
+            If no updates are required, it logs an informational message and returns False.
+
+        Error Handling:
+            - If an exception occurs during the comparison process, an error is logged, and execution is halted.
+            - If 'recurrence_end_time' is provided but the device is currently scheduled as a one-time maintenance, a
+                warning is logged, and an update is required.
+        """
+
+        try:
+            start_time = devices_maintenance.get("start_time")
+            end_time = devices_maintenance.get("end_time")
+            time_zone = devices_maintenance.get("time_zone")
+            if start_time and time_zone:
+                epoch_start_time = self.to_epoch_timezone(start_time, time_zone)
+                start_time_in_ccc = schedule_details.get("maintenanceSchedule").get("startTime")
+                if epoch_start_time != start_time_in_ccc:
+                    self.log(
+                        "Mismatch in the parameter 'start_time' so maintenance schedule for the device {0} "
+                        "needs update".format(device_ip), "INFO"
+                    )
+                    return True
+
+            if end_time and time_zone:
+                epoch_end_time = self.to_epoch_timezone(end_time, time_zone)
+                end_time_in_ccc = schedule_details.get("maintenanceSchedule").get("endTime")
+                if epoch_end_time != end_time_in_ccc:
+                    self.log(
+                        "Mismatch in the parameter 'end_time' so maintenance schedule for the device {0} "
+                        "needs update".format(device_ip), "INFO"
+                    )
+                    return True
+
+            recurrence_end_time = devices_maintenance.get("recurrence_end_time")
+            if recurrence_end_time:
+                maintenance_recurrence = schedule_details.get("maintenanceSchedule").get("recurrence")
+                if not maintenance_recurrence:
+                    self.log(
+                        "Parameter 'recurrence_end_time' is given in the playbook but the device {0} is currently "
+                        "scheduled for one-time maintenance. Cannot change the maintenance type from once to "
+                        "recurring.".format(device_ip), "WARNING"
+                    )
+                    return True
+
+                recurrence_end_time_in_ccc = maintenance_recurrence.get("recurrenceEndTime")
+                recurr_epoch_end_time = self.to_epoch_timezone(recurrence_end_time, time_zone)
+                if recurr_epoch_end_time != recurrence_end_time_in_ccc:
+                    self.log(
+                        "Mismatch in the parameter 'recurrence_end_time' so maintenance schedule for the device {0} "
+                        "needs update".format(device_ip), "INFO"
+                    )
+                    return True
+
+                recurrence_interval = devices_maintenance.get("recurrence_interval")
+                recurrence_interval_in_ccc = maintenance_recurrence.get("interval")
+                if recurrence_interval and recurrence_interval != recurrence_interval_in_ccc:
+                    self.log(
+                        "Mismatch in the parameter 'recurrence_interval' so maintenance schedule for the device {0} "
+                        "needs update".format(device_ip), "INFO"
+                    )
+                    return True
+
+        except Exception as e:
+            self.msg = (
+                "An exception occured while checking the scheduling the maintenance for the device '{0}' "
+                " needs update or not in the Cisco Catalyst Center: {1}"
+            ).format(device_ip, str(e))
+            self.log(self.msg, "ERROR")
+            self.fail_and_exit(self.msg)
+
+        self.log("There is no update required for the given schedule maintenance of device {0}.".format(device_ip), "INFO")
+
+        return False
+
+    def is_recurrence_type_changed(self, devices_maintenance, schedule_details):
+        """
+        Check if the recurrence type of the maintenance schedule has changed.
+
+        Args:
+            self (object): An instance of a class used for device maintenance scheduling.
+            devices_maintenance (dict): A dictionary containing maintenance scheduling parameters
+            schedule_details (dict): Dictionary containing current schedule details.
+
+        Returns:
+            bool: True if the maintenance type has changed from one-time to recurring, False otherwise.
+
+        Description:
+            This function checks if the provided maintenance schedule includes a 'recurrence_end_time'
+            while the existing schedule in Cisco Catalyst Center does not have recurrence enabled.
+            If recurrence was not previously set, it logs a warning and returns True, indicating a
+            change in recurrence type, which is not allowed.
+
+        Error Handling:
+            - Logs a warning if an attempt is made to change the maintenance type from one-time to recurring.
+        """
+
+        recurrence_end_time = devices_maintenance.get("recurrence_end_time")
+        recurrence_type_in_ccc = schedule_details.get("maintenanceSchedule").get("recurrence")
+        if recurrence_end_time and recurrence_type_in_ccc is None:
+            self.log(
+                "Parameter 'recurrence_end_time' is provided but the system schedule is set for one-time only. "
+                "Changing maintenance type from one-time to recurring is not allowed.", "WARNING"
+            )
+            return True
+
+        return False
+
+    def get_update_payload_for_maintenance(self, devices_maintenance, schedule_details, device_ip):
+        """
+        Generates an updated payload for scheduling or modifying device maintenance.
+
+        Args:
+            self (object): An instance of a class used for interacting with Cisco Catalyst Center.
+            devices_maintenance (dict): Dictionary containing maintenance details such as
+                'start_time', 'end_time', 'time_zone', 'recurrence_end_time', and 'recurrence_interval'.
+            schedule_details (dict): Dictionary containing existing schedule details, including
+                schedule ID, description, maintenance schedule, and network device IDs.
+            device_ip (str): The IP address of the device for which the maintenance schedule is being updated.
+
+        Returns:
+            dict: Updated payload containing maintenance schedule information.
+
+        Description:
+            This function constructs a maintenance schedule payload by incorporating the given device
+            maintenance details and existing schedule information. It converts provided timestamps
+            into epoch format and validates recurrence parameters if applicable.
+        """
+
+        start_time = devices_maintenance.get("start_time")
+        end_time = devices_maintenance.get("end_time")
+        time_zone = devices_maintenance.get("time_zone")
+        maintenance_schedule = schedule_details.get("maintenanceSchedule") or {}
+        schedule_payload = {
+            "id": schedule_details.get("id"),
+            "description": schedule_details.get("description"),
+            "maintenanceSchedule": {
+                "startTime": maintenance_schedule.get("startTime"),
+                "endTime": maintenance_schedule.get("endTime"),
+            },
+            "networkDeviceIds": schedule_details.get("networkDeviceIds")
+        }
+        if start_time and time_zone:
+            epoch_start_time = self.to_epoch_timezone(start_time, time_zone)
+            schedule_payload["maintenanceSchedule"]["startTime"] = epoch_start_time
+            self.log(
+                "Converted start_time '{0}' to epoch '{1}' using timezone '{2}'.".format(
+                    start_time, epoch_start_time, time_zone
+                ), "DEBUG"
+            )
+
+        if end_time and time_zone:
+            epoch_end_time = self.to_epoch_timezone(end_time, time_zone)
+            schedule_payload["maintenanceSchedule"]["endTime"] = epoch_end_time
+            self.log(
+                "Converted end_time '{0}' to epoch '{1}' using timezone '{2}'.".format(
+                    end_time, epoch_end_time, time_zone
+                ), "DEBUG"
+            )
+
+        recurrence_end_time = devices_maintenance.get("recurrence_end_time")
+        if recurrence_end_time:
+            ep_end_time = schedule_payload["maintenanceSchedule"]["endTime"]
+            epoch_current_time = self.get_current_time_in_timezone(time_zone)
+            self.log(
+                "Validating end_time '{0}' against current time '{1}'.".format(
+                    ep_end_time, epoch_current_time
+                ), "DEBUG"
+            )
+            if ep_end_time < epoch_current_time:
+                self.msg = (
+                    "Given 'end_time' {0} is less than the current date/time {1}. It should be"
+                    " greater than the current date/time.".format(ep_end_time, epoch_current_time)
+                )
+                self.log(self.msg, "ERROR")
+                self.fail_and_exit(self.msg)
+
+            recurr_epoch_end_time = self.to_epoch_timezone(recurrence_end_time, time_zone)
+            self.log(
+                "Validating recurrence_end_time '{0}' against end_time '{1}'.".format(
+                    recurr_epoch_end_time, ep_end_time
+                ), "DEBUG"
+            )
+            if recurr_epoch_end_time < ep_end_time:
+                self.msg = (
+                    "Given 'recurrence_end_time' {0} is less than device maintenance end date/time {1}. "
+                    "It should be greater than maintenance end date/time.".format(recurr_epoch_end_time, ep_end_time)
+                )
+                self.log(self.msg, "ERROR")
+                self.fail_and_exit(self.msg)
+
+            interval = devices_maintenance.get("recurrence_interval")
+            schedule_payload["maintenanceSchedule"]["recurrence"] = {
+                "recurrenceEndTime": recurr_epoch_end_time,
+                "interval": interval or maintenance_schedule.get("recurrence").get("interval")
+            }
+            self.log(
+                "Added recurrence to payload: {0}".format(
+                    schedule_payload["maintenanceSchedule"]["recurrence"]
+                ), "DEBUG"
+            )
+            ep_start_time = schedule_payload["maintenanceSchedule"]["startTime"]
+            recur_interval = schedule_payload["maintenanceSchedule"]["recurrence"]["interval"]
+            schedule_duration_days = (ep_end_time - ep_start_time) / (24 * 3600 * 1000)
+            self.log(
+                "Validating recurrence interval '{0}' against schedule window '{1}' days.".format(
+                    recur_interval, schedule_duration_days
+                ), "DEBUG"
+            )
+            if recur_interval < schedule_duration_days:
+                self.msg = "The interval must be longer than the duration of the schedules."
+                self.log(self.msg, "ERROR")
+                self.fail_and_exit(self.msg)
+
+        if (
+            not schedule_payload.get("maintenanceSchedule").get("recurrence") and
+            schedule_details.get("maintenanceSchedule").get("recurrence")
+        ):
+            schedule_payload["maintenanceSchedule"]["recurrence"] = maintenance_schedule.get("recurrence")
+            self.log(
+                "No recurrence provided in devices_maintenance. Using existing recurrence from schedule details.",
+                "DEBUG"
+            )
+
+        self.log("Payload for updating the scheduled maintenance of device {0}: {1}".format(device_ip, schedule_payload), "INFO")
+
+        return schedule_payload
+
+    def exit_maintenance_window(self, schedule_details):
+        """
+        Exits the maintenance window for a given device schedule by updating its end time.
+
+        Args:
+            self (object): An instance of a class used for interacting with Cisco Catalyst Center.
+            schedule_details (dict): Dictionary containing maintenance schedule details,
+                including 'id', 'description', 'maintenanceSchedule', and 'networkDeviceIds'.
+
+        Returns:
+            self: Returns the current instance after performing the update.
+
+        Description:
+            This function constructs a payload to update the maintenance schedule by setting the
+            `endTime` to `-1`, signaling the termination of the maintenance window. It then triggers
+            an API call to update the schedule and monitors the task status.
+        """
+
+        try:
+            exit_window_payload = {
+                "description": schedule_details.get("description"),
+                "maintenanceSchedule": schedule_details.get("maintenanceSchedule"),
+                "networkDeviceIds": schedule_details.get("networkDeviceIds")
+            }
+            exit_window_payload["maintenanceSchedule"]["endTime"] = -1
+            update_payload = {
+                "id": schedule_details.get("id"),
+                "payload": exit_window_payload
+            }
+            self.log("Constructed payload for updating the maintenance schedule: {0}".format(update_payload), "DEBUG")
+            task_name = "updates_the_maintenance_schedule_information"
+            self.log("Triggering '{0}' API call to update the maintenance window.".format(task_name), "DEBUG")
+            task_id = self.get_taskid_post_api_call("devices", task_name, update_payload)
+
+            if not task_id:
+                self.msg = "Failed to retrieve task ID for '{0}'. Exiting the maintenance schedule window aborted.".format(task_name)
+                self.set_operation_result("failed", False, self.msg, "ERROR")
+                return self
+
+            self.log("Received task ID: {0}. Monitoring task status.".format(task_id), "DEBUG")
+            success_msg = "Exited the maintenance schedule window successfully."
+            self.get_task_status_from_tasks_by_id(task_id, task_name, success_msg)
+
+        except Exception as e:
+            self.msg = (
+                "An exception occurred while trying to exit the maintenance schedule window: {0}"
+            ).format(str(e))
+            self.set_operation_result("failed", False, self.msg, "ERROR")
+
+        return self
+
+    def update_schedule_maintenance(self, update_schedule_payload, device_ip):
+        """
+        Update the maintenance schedule for a specific network device.
+
+        Args:
+            self (object): An instance of a class used for interacting with Cisco Catalyst Center.
+            update_schedule_payload (dict): The payload containing updated maintenance schedule details.
+            device_ip (str): The IP address of the device for which the maintenance schedule is being updated.
+
+        Returns:
+            self (object): An instance of a class used for interacting with Cisco Catalyst Center.
+
+        Description:
+            This function updates the maintenance schedule for a specified device in Cisco Catalyst Center.
+            It constructs the necessary payload, triggers the API call to update the schedule, and retrieves
+            the task ID associated with the operation. The function then monitors the task's status and logs
+            appropriate messages. If the task ID cannot be retrieved, the update process is aborted.
+        """
+
+        try:
+            self.log("Starting maintenance schedule update for device '{0}'.".format(device_ip), "INFO")
+            schedule_id = update_schedule_payload.get("id")
+            update_schedule_payload.pop("id")
+            payload = {"payload": update_schedule_payload, "id": schedule_id}
+            self.log("Constructed payload for updating the maintenance schedule: {0}".format(payload), "DEBUG")
+            task_name = "updates_the_maintenance_schedule_information"
+            self.log("Triggering '{0}' API call to update maintenance schedule.".format(task_name), "DEBUG")
+            task_id = self.get_taskid_post_api_call("devices", task_name, payload)
+
+            if not task_id:
+                self.msg = (
+                    "Failed to retrieve task ID after '{0}' API call. "
+                    "Maintenance schedule update for device '{1}' aborted.".format(task_name, device_ip)
+                )
+                self.set_operation_result("failed", False, self.msg, "ERROR")
+                return self
+
+            self.log("Received task ID: {0}. Monitoring task status.".format(task_id), "DEBUG")
+            success_msg = "Maintenance schedule updated successfully for the device: {0}.".format(device_ip)
+            self.get_task_status_from_tasks_by_id(task_id, task_name, success_msg)
+
+        except Exception as e:
+            self.msg = (
+                "An exception occured while updating the maintenance schedule for the device '{0}' in the Cisco Catalyst "
+                "Center: {1}"
+            ).format(device_ip, str(e))
+            self.set_operation_result("failed", False, self.msg, "ERROR")
+
+        return self
+
+    def delete_maintenance_schedule(self, schedule_id):
+        """
+        Delete a maintenance schedule from Cisco Catalyst Center.
+
+        Args:
+            self (object): An instance of a class used for interacting with Cisco Catalyst Center.
+            schedule_id (str): The unique identifier of the maintenance schedule to be deleted.
+
+        Returns:
+            self (object): An instance of a class used for interacting with Cisco Catalyst Center.
+
+        Description:
+            This function deletes a specified maintenance schedule from Cisco Catalyst Center.
+            It constructs a request payload containing the schedule ID and triggers an API call
+            to delete the schedule. The function retrieves the task ID associated with the
+            deletion process and monitors the task's status. If the task ID cannot be retrieved,
+            the deletion process is aborted.
+        """
+
+        try:
+            self.log("Starting maintenance schedule deletion for schedule ID '{0}'.".format(schedule_id), "INFO")
+            payload = {"id": schedule_id}
+            self.log("Constructed payload for deleting the maintenance schedule: {0}".format(payload), "DEBUG")
+            task_name = "delete_maintenance_schedule"
+            task_id = self.get_taskid_post_api_call("devices", task_name, payload)
+
+            if not task_id:
+                self.msg = (
+                    "Unable to retrieve the task ID after '{0}' API call. "
+                    "Maintenance schedule deletion aborted.".format(task_name)
+                )
+                self.set_operation_result("failed", False, self.msg, "ERROR")
+                return self
+
+            self.log("Maintenance schedule deleted successfully from the Cisco Catalyst Center", "INFO")
+
+            success_msg = "Maintenance schedule deleted successfully from the Cisco Catalyst Center"
+            self.get_task_status_from_tasks_by_id(task_id, task_name, success_msg)
+
+        except Exception as e:
+            self.msg = (
+                "An exception occurred while deleting the maintenance schedule with ID '{0}': {1}"
+                .format(schedule_id, str(e))
+            )
+            self.set_operation_result("failed", False, self.msg, "ERROR")
+
+        return self
+
     def get_want(self, config):
         """
         Get all the device related information from playbook that is needed to be
@@ -3085,9 +4570,9 @@ class Inventory(DnacBase):
         """
         devices_to_add = self.have["device_not_in_ccc"]
         device_type = self.config[0].get("type", "NETWORK_DEVICE")
-        device_resynced = self.config[0].get("device_resync", False)
-        device_reboot = self.config[0].get("reboot_device", False)
-        credential_update = self.config[0].get("credential_update", False)
+        device_resynced = config.get("device_resync", False)
+        device_reboot = config.get("reboot_device", False)
+        credential_update = config.get("credential_update", False)
 
         config['type'] = device_type
         config['ip_address_list'] = devices_to_add
@@ -3185,6 +4670,9 @@ class Inventory(DnacBase):
                 self.result['response'] = self.msg
                 self.log(self.msg, "ERROR")
                 return self
+
+        if not config['ip_address_list'] and config.get("snmp_version") and config.get("snmp_mode"):
+            self.device_already_present.append(", ".join(self.have['devices_in_playbook']))
 
         if not config['ip_address_list']:
             self.msg = "Devices '{0}' already present in Cisco Catalyst Center".format(self.have['devices_in_playbook'])
@@ -3288,10 +4776,9 @@ class Inventory(DnacBase):
                 raise Exception(error_message)
 
         # Update the role of devices having the role source as Manual
-        if self.config[0].get('role'):
+        if config.get('role'):
             devices_to_update_role = self.get_device_ips_from_config_priority()
-            device_role = self.config[0].get('role')
-            self.device_role_name.append(device_role)
+            device_role = config.get('role')
             role_update_count = 0
             for device_ip in devices_to_update_role:
                 device_id = self.get_device_ids([device_ip])
@@ -3309,6 +4796,8 @@ class Inventory(DnacBase):
                 if response.get('role') == device_role:
                     self.status = "success"
                     self.result['changed'] = False
+                    self.device_role_already_updated.append(device_role)
+                    self.device_role_ip_already_updated.append(device_ip)
                     role_update_count += 1
                     log_msg = "The device role '{0}' is already set in Cisco Catalyst Center, no update is needed.".format(device_role)
                     self.log(log_msg, "INFO")
@@ -3340,6 +4829,7 @@ class Inventory(DnacBase):
                                 self.status = "success"
                                 self.log("Device '{0}' role updated successfully to '{1}'".format(device_ip, device_role), "INFO")
                                 self.role_updated_list.append(device_ip)
+                                self.device_role_name.append(device_role)
                                 break
                             elif execution_details.get("isError"):
                                 self.status = "failed"
@@ -3433,8 +4923,28 @@ class Inventory(DnacBase):
                     if device_data['snmpv3_privacy_password']:
                         csv_data_dict['snmp_auth_passphrase'] = device_data['snmpv3_auth_password']
                         csv_data_dict['snmp_priv_passphrase'] = device_data['snmpv3_privacy_password']
+                    elif device_data['snmpv3_auth_password']:
+                        csv_data_dict['snmp_auth_passphrase'] = device_data['snmpv3_auth_password']
                 else:
                     csv_data_dict['snmp_username'] = None
+
+                device_username = device_data.get('cli_username')
+                device_password = device_data.get('cli_password')
+                cli_enable_password = device_data.get('cli_enable_password')
+
+                playbook_username = playbook_params.get('userName')
+                playbook_password = playbook_params.get('password')
+                playbook_enable_password = playbook_params.get('enablePassword')
+
+                if (
+                    (playbook_username is not None or playbook_password is not None or playbook_enable_password is not None)
+                    and (device_username == playbook_username or playbook_username is None)
+                    and (device_password == playbook_password or playbook_password is None)
+                    and (cli_enable_password == playbook_enable_password or playbook_enable_password is None)
+                ):
+                    self.log("Credentials for device {0} do not require an update.".format(device_ip), "DEBUG")
+                    self.cred_updated_not_required.append(device_ip)
+                    continue
 
                 device_key_mapping = {
                     'username': 'userName',
@@ -3456,6 +4966,9 @@ class Inventory(DnacBase):
                         playbook_params['snmpAuthPassphrase'] = csv_data_dict['snmp_auth_passphrase']
                     if not playbook_params['snmpPrivPassphrase']:
                         playbook_params['snmpPrivPassphrase'] = csv_data_dict['snmp_priv_passphrase']
+                elif playbook_params['snmpMode'] == "AUTHNOPRIV":
+                    if not playbook_params['snmpAuthPassphrase']:
+                        playbook_params['snmpAuthPassphrase'] = csv_data_dict['snmp_auth_passphrase']
 
                 if playbook_params['snmpPrivProtocol'] == "AES192":
                     playbook_params['snmpPrivProtocol'] = "CISCOAES192"
@@ -3563,7 +5076,6 @@ class Inventory(DnacBase):
             self.update_interface_detail_of_device(device_to_update).check_return_status()
 
         # If User defined field(UDF) not present then create it and add multiple udf to specific or list of devices
-        self.log("self.config")
         self.log(self.config[0])
         if self.config[0].get('add_user_defined_field'):
             udf_field_list = self.config[0].get('add_user_defined_field')
@@ -3627,6 +5139,135 @@ class Inventory(DnacBase):
         if self.config[0].get('export_device_list'):
             self.export_device_details().check_return_status()
 
+        devices_maintenance = self.config[0].get('devices_maintenance_schedule')
+        if not devices_maintenance:
+            self.log("No device maintenance schedule provided in the playbook.", "INFO")
+            return self
+
+        if self.compare_dnac_versions(self.get_ccc_version(), "2.3.7.9") < 0:
+            self.log(
+                "Creating/Updating the device maintenance schedule starts from '2.3.7.9' onwards. Please upgrade "
+                "the Cisco Catalyst Center to '2.3.7.9' in order to leverage the device maintenance schedule feature.",
+                "WARNING"
+            )
+            return self
+
+        self.log("Proceeding with the device maintenance scheduling process...", "DEBUG")
+        updated_network_ids = []
+        for maintenance_config in devices_maintenance:
+            network_device_ips = maintenance_config.get("device_ips")
+            if not network_device_ips:
+                self.msg = (
+                    "Required parameter 'device_ips' must be provided in the playbook in order to create/update schedule "
+                    "maintenance for network devices."
+                )
+                self.log(self.msg, "ERROR")
+                self.fail_and_exit(self.msg)
+
+            if not maintenance_config.get("time_zone"):
+                self.msg = (
+                    "Required parameter 'time_zone' must be provided in the playbook in order to create/update schedule "
+                    "maintenance for network devices."
+                )
+                self.log(self.msg, "ERROR")
+                self.fail_and_exit(self.msg)
+
+            network_device_ids = self.get_device_ids(network_device_ips)
+            device_ip_id_map = self.get_device_ips_from_device_ids(network_device_ids)
+            # Find out the devices for which maintenance already schedule and not schedule yet
+            schedule_device_ids, unscheduled_device_ids = self.get_schedule_and_unscheduled_device_ids(network_device_ids, device_ip_id_map)
+
+            if unscheduled_device_ids:
+                device_ips = []
+                for device_id in unscheduled_device_ids:
+                    ip = device_ip_id_map[device_id]
+                    device_ips.append(ip)
+
+                self.log("Start scheduling the maintenance schedule for the device(s): {0}".format(device_ips), "INFO")
+                self.validate_device_maintenance_params(maintenance_config)
+                maintenance_payload = self.create_schedule_maintenance_payload(maintenance_config, unscheduled_device_ids, device_ips)
+                self.schedule_maintenance_for_devices(maintenance_payload, device_ips).check_return_status()
+                self.log("Maintenance schedule successfully for the device(s): {0}.".format(device_ips), "INFO")
+                self.maintenance_scheduled.extend(device_ips)
+
+            if schedule_device_ids:
+                for device_id in schedule_device_ids:
+                    device_ip = device_ip_id_map[device_id]
+                    schedule_details = self.get_device_maintenance_details(device_id, device_ip)
+                    if not schedule_details:
+                        self.log("No schedule maintenance details found for the device {0}".format(device_ip), "WARNING")
+                        continue
+
+                    status = schedule_details.get("maintenanceSchedule").get("status")
+                    if status not in ["UPCOMING", "IN_PROGRESS"]:
+                        self.msg = (
+                            "Device maintenance schedule status is neither 'UPCOMING' nor 'IN_PROGRESS' "
+                            "so unable to update the maintenance schedule for the given device: {0}".format(device_ip)
+                        )
+                        self.log(self.msg, "ERROR")
+                        self.fail_and_exit(self.msg)
+
+                    self.log("Check whether device maintenance needs update or not for the device: {0}".format(device_ip), "DEBUG")
+                    is_need_update = self.device_maintenance_needs_update(maintenance_config, schedule_details, device_ip)
+                    if is_need_update:
+                        status = schedule_details.get("maintenanceSchedule").get("status")
+                        if status == "IN_PROGRESS":
+                            self.log(
+                                "Since the schedule maintenance for the device {0} was going on, the user needs to exit the "
+                                "maintenance window by setting the `endTime` to -1.".format(device_ip), "INFO"
+                            )
+                            self.exit_maintenance_window(schedule_details).check_return_status()
+                            self.log("Exit the maintenance schedule window successfully...", "INFO")
+
+                        self.log(
+                            "Checking for the change in the maintenance schedule from recurring to once or vice versa.."
+                            , "DEBUG"
+                        )
+                        is_schedule_type_change = self.is_recurrence_type_changed(maintenance_config, schedule_details)
+                        if is_schedule_type_change:
+                            self.log(
+                                "Maintenance schedule type has been changed so need to delete the current schedule "
+                                "and create the new device maintenance schedule.", "INFO"
+                            )
+                            device_ids = schedule_details.get("networkDeviceIds")
+                            ips_list = []
+                            for device_id in device_ids:
+                                ip = device_ip_id_map[device_id]
+                                ips_list.append(ip)
+
+                            schedule_id = schedule_details.get("id")
+                            self.delete_maintenance_schedule(schedule_id).check_return_status()
+                            self.log("Maintenance schedule deleted successfully and now we have to create the new one...", "INFO")
+
+                            create_schedule_payload = self.get_update_payload_for_maintenance(maintenance_config, schedule_details, device_ip)
+                            self.schedule_maintenance_for_devices(create_schedule_payload, ips_list).check_return_status()
+                            self.log("Maintenance scheduled successfully for the device(s): {0}.".format(ips_list), "INFO")
+
+                            self.maintenance_scheduled.extend(ips_list)
+                            self.maintenance_scheduled = list(set(self.maintenance_scheduled))
+                        else:
+                            update_schedule_payload = self.get_update_payload_for_maintenance(maintenance_config, schedule_details, device_ip)
+                            self.update_schedule_maintenance(update_schedule_payload, device_ip).check_return_status()
+                            self.log("Maintenance schedule updated successfully for the device: {0}.".format(device_ip), "INFO")
+                            updated_network_ids.extend(schedule_details.get("networkDeviceIds"))
+                    else:
+                        self.log("There is no update required for the given schedule maintenance of device {0}.".format(device_ip), "INFO")
+                        self.no_update_in_maintenance.append(device_ip)
+
+                if updated_network_ids:
+                    for device_id in updated_network_ids:
+                        device_ip = device_ip_id_map.get(device_id)
+                        self.log("Maintenance schedule updated successfully for the device: {0}.".format(device_ip), "INFO")
+                        self.maintenance_updated.append(device_ip)
+                        if device_ip in self.no_update_in_maintenance:
+                            self.log("Remove the device ip {0} from no schedule maintenance updates list".format(device_ip), "INFO")
+                            self.no_update_in_maintenance.remove(device_ip)
+
+            if self.maintenance_scheduled and self.no_update_in_maintenance:
+                for device_ip in self.no_update_in_maintenance:
+                    self.log("Remove the device ip {0} from no schedule maintenance creation list".format(device_ip), "INFO")
+                    self.no_update_in_maintenance.remove(device_ip)
+
         return self
 
     def get_diff_deleted(self, config):
@@ -3651,6 +5292,7 @@ class Inventory(DnacBase):
             return self.delete_user_defined_fields()
 
         # Loop over devices to delete them
+        latest_testbed = self.compare_dnac_versions(self.get_ccc_version(), "2.3.7.9") >= 0
         for device_ip in device_to_delete:
             if device_ip not in self.have.get("device_in_ccc"):
                 self.status = "success"
@@ -3663,17 +5305,52 @@ class Inventory(DnacBase):
                 continue
             device_ids = self.get_device_ids([device_ip])
             device_id = device_ids[0]
+
+            if latest_testbed:
+                self.delete_device_with_or_without_cleanup_config(device_ip, device_id).check_return_status()
+                self.deleted_devices.append(device_ip)
+                continue
+
             is_device_provisioned = self.is_device_provisioned(device_id, device_ip)
             if not is_device_provisioned:
                 self.handle_device_deletion(device_ip)
                 continue
 
-            if self.get_ccc_version_as_integer() <= self.get_ccc_version_as_int_from_str("2.3.5.3"):
+            if self.compare_dnac_versions(self.get_ccc_version(), "2.3.5.3") <= 0:
                 self.delete_provisioned_device_v1(device_ip)
                 continue
             else:
                 self.delete_provisioned_device_v2(device_ip)
                 continue
+
+        devices_maintenance = self.config[0].get('devices_maintenance_schedule')
+        if devices_maintenance and self.compare_dnac_versions(self.get_ccc_version(), "2.3.7.9") >= 0:
+            for schedule in devices_maintenance:
+                device_ips = schedule.get("device_ips")
+                if not device_ips:
+                    self.msg = (
+                        "Unable to delete schedule maintenance for the devices as required parameter 'device_ips' is not given "
+                        "in the playbook"
+                    )
+                    self.set_operation_result("failed", False, self.msg, "ERROR").check_return_status()
+
+                network_device_ids = self.get_device_ids(device_ips)
+                schedule_details = self.get_device_maintenance_details(network_device_ids[0], device_ips[0])
+                if not schedule_details:
+                    self.log("No schedule maintenance details found for the device {0}".format(device_ips[0]), "WARNING")
+                    self.no_maintenance_schedule.extend(device_ips)
+                    continue
+
+                schedule_id = schedule_details.get("id")
+                self.delete_maintenance_schedule(schedule_id).check_return_status()
+                self.log("Maintenance schedule deleted successfully and now we have to create the new one...", "INFO")
+                self.maintenance_deleted.extend(device_ips)
+        elif devices_maintenance and self.compare_dnac_versions(self.get_ccc_version(), "2.3.7.9") < 0:
+            self.log(
+                "Deleting the device maintenance schedule starts from '2.3.7.9' onwards. Please upgrade "
+                "the Cisco Catalyst Center to '2.3.7.9' in order to leverage the device maintenance schedule"
+                " deletion feature.", "WARNING"
+            )
 
         return self
 
@@ -3759,17 +5436,8 @@ class Inventory(DnacBase):
             validations and API calls to ensure the device is removed from the
             Cisco Catalyst Center.
         """
-
-        provision_params = {"device_management_ip_address": device_ip}
-        prov_response = self.dnac._exec(
-            family="sda",
-            function='get_provisioned_wired_device',
-            op_modifies=True,
-            params=provision_params,
-        )
-        self.log("Received API response from 'get_provisioned_wired_device': {0}".format(str(prov_response)), "DEBUG")
-
-        if prov_response.get("status") == "success":
+        try:
+            provision_params = {"device_management_ip_address": device_ip}
             response = self.dnac._exec(
                 family="sda",
                 function='delete_provisioned_wired_device',
@@ -3782,6 +5450,13 @@ class Inventory(DnacBase):
                 validation_string = "deleted successfully"
                 self.check_task_response_status(response, validation_string, 'delete_provisioned_wired_device')
                 self.provisioned_device_deleted.append(device_ip)
+
+        except Exception as e:
+            self.status = "failed"
+            self.msg = "Failed to delete the provisioned device - ({0}) from Cisco Catalyst Center due to - {1}".format(device_ip, str(e))
+            self.result['response'] = self.msg
+            self.log(self.msg, "ERROR")
+            self.check_return_status()
 
     def delete_provisioned_device_v2(self, device_ip):
         """
@@ -3796,18 +5471,9 @@ class Inventory(DnacBase):
             is properly removed from the Cisco Catalyst Center, handling any
             required validations and API interactions.
         """
-
-        device_ids = self.get_device_ids([device_ip])
-        device_id = device_ids[0]
-        prov_response = self.dnac._exec(
-            family="sda",
-            function='get_provisioned_devices',
-            op_modifies=True,
-            params={"networkDeviceId": device_id}
-        )
-        self.log("Received API response from 'get_provisioned_devices': {0}".format(str(prov_response)), "DEBUG")
-
-        if prov_response.get("response"):
+        try:
+            device_ids = self.get_device_ids([device_ip])
+            device_id = device_ids[0]
             response = self.dnac._exec(
                 family="sda",
                 function='delete_provisioned_devices',
@@ -3818,6 +5484,13 @@ class Inventory(DnacBase):
             self.check_tasks_response_status(response, api_name='delete_provisioned_devices')
             if self.status not in ["failed", "exited"]:
                 self.provisioned_device_deleted.append(device_ip)
+
+        except Exception as e:
+            self.status = "failed"
+            self.msg = "Failed to delete the provisioned device - ({0}) from Cisco Catalyst Center due to - {1}".format(device_ip, str(e))
+            self.result['response'] = self.msg
+            self.log(self.msg, "ERROR")
+            self.check_return_status()
 
     def handle_device_deletion(self, device_ip):
         """
@@ -3834,29 +5507,78 @@ class Inventory(DnacBase):
             of the exception to aid in troubleshooting and ensures proper logging of
             the error scenario.
         """
+        try:
+            device_id = self.get_device_ids([device_ip])
+            delete_params = {
+                "id": device_id[0],
+                "clean_config": self.config[0].get("clean_config", False)
+            }
+            response = self.dnac._exec(
+                family="devices",
+                function='delete_device_by_id',
+                op_modifies=True,
+                params=delete_params,
+            )
 
-        device_id = self.get_device_ids([device_ip])
-        delete_params = {
-            "id": device_id[0],
-            "clean_config": self.config[0].get("clean_config", False)
-        }
-        response = self.dnac._exec(
-            family="devices",
-            function='delete_device_by_id',
-            op_modifies=True,
-            params=delete_params,
-        )
+            self.log("Received API response from 'deleted_device_by_id': {0}".format(str(response)), "DEBUG")
 
-        self.log("Received API response from 'deleted_device_by_id': {0}".format(str(response)), "DEBUG")
-
-        if self.get_ccc_version_as_integer() <= self.get_ccc_version_as_int_from_str("2.3.5.3"):
-            validation_string = "network device deleted successfully"
-            self.check_task_response_status(response, validation_string, 'deleted_device_by_id')
-            self.deleted_devices.append(device_ip)
-        else:
-            self.check_tasks_response_status(response, api_name='deleted_device_by_id')
-            if self.status not in ["failed", "exited"]:
+            if self.compare_dnac_versions(self.get_ccc_version(), "2.3.5.3") <= 0:
+                validation_string = "network device deleted successfully"
+                self.check_task_response_status(response, validation_string, 'deleted_device_by_id')
                 self.deleted_devices.append(device_ip)
+            else:
+                self.check_tasks_response_status(response, api_name='deleted_device_by_id')
+                if self.status not in ["failed", "exited"]:
+                    self.deleted_devices.append(device_ip)
+
+        except Exception as e:
+            self.status = "failed"
+            self.msg = "Failed to delete the device - ({0}) from Cisco Catalyst Center due to - {1}".format(device_ip, str(e))
+            self.result['response'] = self.msg
+            self.log(self.msg, "ERROR")
+            self.check_return_status()
+
+    def delete_device_with_or_without_cleanup_config(self, device_ip, device_id):
+        """
+        Deletes a network device from the Cisco Catalyst Center, with or without configuration cleanup.
+
+        Args:
+            device_ip (str): IP address of the device to be deleted.
+            device_id (str): Unique identifier of the device in the Cisco Catalyst Center.
+
+        Returns:
+            self: Returns the current instance after performing the delete operation.
+
+        Description:
+            This function determines whether to perform a configuration cleanup before deleting the
+            device, based on the `clean_config` parameter in the configuration. It then triggers
+            the appropriate API call to delete the device and monitors the task status.
+        """
+
+        try:
+            clean_up = self.config[0].get("clean_config", False)
+            if clean_up:
+                task_name = "delete_network_device_with_configuration_cleanup"
+            else:
+                task_name = "delete_a_network_device_without_configuration_cleanup"
+
+            delete_param = {"id": device_id}
+            task_id = self.get_taskid_post_api_call("devices", task_name, delete_param)
+            if not task_id:
+                self.msg = "Unable to retrieve the task_id for the task '{0}'.".format(task_name)
+                self.set_operation_result("failed", False, self.msg, "ERROR")
+                return self
+
+            success_msg = "Device '{0}' deleted successfully from the Cisco Catalyst Center.".format(device_ip)
+            self.log("Task ID '{0}' received. Checking task status.".format(task_id), "DEBUG")
+            self.get_task_status_from_tasks_by_id(task_id, task_name, success_msg)
+            self.log("Completed the process to deleting the device {0}.".format(device_ip), "INFO")
+
+        except Exception as e:
+            self.msg = "Failed to delete the device - ({0}) from Cisco Catalyst Center due to - {1}".format(device_ip, str(e))
+            self.set_operation_result("failed", False, self.msg, "ERROR")
+
+        return self
 
     def verify_diff_merged(self, config):
         """
@@ -3979,6 +5701,24 @@ class Inventory(DnacBase):
                 self.log("""Mismatch between playbook's input and Cisco Catalyst Center detected, indicating that
                          the provisioning task may not have executed successfully.""", "INFO")
 
+        devices_maintenance = self.config[0].get('devices_maintenance_schedule')
+        if devices_maintenance:
+            for schedule in devices_maintenance:
+                device_ips = schedule.get("device_ips")
+                network_device_ids = self.get_device_ids(device_ips)
+                schedule_details = self.get_device_maintenance_details(network_device_ids[0], device_ips[0])
+                if schedule_details:
+                    self.log(
+                        "Requested maintenance schedule for the device(s) '{0}' created/updated from Cisco Catalyst "
+                        "Center and the deletion has been verified.".format(device_ips), "INFO"
+                    )
+                else:
+                    self.log(
+                        "Mismatch between playbook parameter for creating/updating the maintenance schedule for"
+                        "  the device(s) {0}, indicating that the maintenance schedule creation/updation task may "
+                        "not have executed successfully.".format(device_ips), "WARNING"
+                    )
+
         return self
 
     def verify_diff_deleted(self, config):
@@ -4028,6 +5768,24 @@ class Inventory(DnacBase):
             self.log("""Mismatch between playbook parameter device({0}) and Cisco Catalyst Center detected, indicating that
                      the device deletion task may not have executed successfully.""".format(device_after_deletion), "INFO")
 
+        devices_maintenance = self.config[0].get('devices_maintenance_schedule')
+        if devices_maintenance:
+            for schedule in devices_maintenance:
+                device_ips = schedule.get("device_ips")
+                network_device_ids = self.get_device_ids(device_ips)
+                schedule_details = self.get_device_maintenance_details(network_device_ids[0], device_ips[0])
+                if not schedule_details:
+                    self.log(
+                        "Requested maintenance schedule for the device(s) '{0}' deleted from Cisco Catalyst Center "
+                        " and the deletion has been verified.".format(device_ips), "INFO"
+                    )
+                else:
+                    self.log(
+                        "Mismatch between playbook parameter for deleting the maintenance schedule for the device(s) {0}"
+                        ", indicating that the maintenance schedule deletion task may not have executed successfully."
+                        .format(device_ips), "WARNING"
+                    )
+
         return self
 
     def update_inventory_profile_messages(self):
@@ -4053,6 +5811,7 @@ class Inventory(DnacBase):
             result_msg_list_changed.append(provisioned_device)
 
         if self.device_already_provisioned:
+            self.log(self.device_already_provisioned)
             device_already_provisioned = "device(s) '{0}' already provisioned in Cisco Catalyst Center.".format("', '".join(self.device_already_provisioned))
             result_msg_list_not_changed.append(device_already_provisioned)
 
@@ -4087,6 +5846,16 @@ class Inventory(DnacBase):
                                " operation").format("', '".join(self.no_device_to_delete))
             result_msg_list_not_changed.append(deleted_devices)
 
+        if self.cred_updated_not_required:
+            cred_updated_not_required = ("device(s) '{0}' doesn't need any update for credintials"
+                                         " operation").format("', '".join(self.cred_updated_not_required))
+            result_msg_list_not_changed.append(cred_updated_not_required)
+
+        if self.device_already_present:
+            device_already_present = ("device(s) '{0}' already present in the cisco catalyst"
+                                      " center").format("', '".join(self.device_already_present))
+            result_msg_list_not_changed.append(device_already_present)
+
         if self.device_not_exist:
             devices = ', '.join(map(str, self.device_not_exist))
             device_not_exist = ("Unable to reboot device because the device(s) listed: {0} are not present in the"
@@ -4097,6 +5866,12 @@ class Inventory(DnacBase):
             devices = ', '.join(map(str, self.device_not_exist_to_resync))
             device_not_exist = ("Unable to resync device because the device(s) listed: {0} are not present in the Cisco Catalyst Center.").format(str(devices))
             result_msg_list_not_changed.append(device_not_exist)
+
+        if self.device_role_ip_already_updated:
+            devices = ', '.join(map(str, self.device_role_ip_already_updated))
+            device_role_ip_already_updated = ("Unable to update the device role because the device(s) listed: {0} are already with"
+                                              " the desiered device role.").format(str(devices))
+            result_msg_list_not_changed.append(device_role_ip_already_updated)
 
         if self.response_list:
             response_list_for_update = "{0}".format(", ".join(self.response_list))
@@ -4109,6 +5884,10 @@ class Inventory(DnacBase):
         if self.udf_added:
             udf_added = "Global User Defined Field(UDF) named '{0}' has been successfully added to the device.".format("', '".join(self.udf_added))
             result_msg_list_changed.append(udf_added)
+
+        if self.ap_rebooted_successfully:
+            ap_rebooted_successfully = "AP Device(s) {0} successfully rebooted!".format("', '".join(self.ap_rebooted_successfully))
+            result_msg_list_changed.append(ap_rebooted_successfully)
 
         if self.udf_deleted:
             udf_deleted = "Global User Defined Field(UDF) named '{0}' has been successfully deleted to the device.".format("', '".join(self.udf_deleted))
@@ -4133,6 +5912,26 @@ class Inventory(DnacBase):
             devices = ', '.join(map(str, self.resync_successful_devices))
             resync_successful_devices = "Device(s) '{0}' have been successfully resynced in the inventory in Cisco Catalyst Center.".format(str(devices))
             result_msg_list_changed.append(resync_successful_devices)
+
+        if self.maintenance_scheduled:
+            scheduled_msg = "Device maintenance scheduled successfully for the devices {0} in Cisco Catalyst Center.".format(self.maintenance_scheduled)
+            result_msg_list_changed.append(scheduled_msg)
+
+        if self.maintenance_updated:
+            schedule_update_msg = "Device maintenance scheduled updated successfully for the devices: {0}.".format(self.maintenance_updated)
+            result_msg_list_changed.append(schedule_update_msg)
+
+        if self.no_update_in_maintenance:
+            no_update_msg = "Maintenance schedule not required any update for the devices {0} in Cisco Catalyst Center.".format(self.no_update_in_maintenance)
+            result_msg_list_not_changed.append(no_update_msg)
+
+        if self.maintenance_deleted:
+            del_scheduled_msg = "Maintenance schedule deleted successfully for the devices {0} in Cisco Catalyst Center.".format(self.maintenance_deleted)
+            result_msg_list_changed.append(del_scheduled_msg)
+
+        if self.no_maintenance_schedule:
+            absent_scheduled_msg = "Maintenance schedule for the devices {0} not present in the Catalyst Center.".format(self.no_maintenance_schedule)
+            result_msg_list_not_changed.append(absent_scheduled_msg)
 
         if result_msg_list_not_changed and result_msg_list_changed:
             self.result["changed"] = True
@@ -4181,6 +5980,14 @@ def main():
 
     ccc_device = Inventory(module)
     state = ccc_device.params.get("state")
+
+    if ccc_device.compare_dnac_versions(ccc_device.get_ccc_version(), "2.3.5.3") < 0:
+        ccc_device.msg = (
+            "The specified version '{0}' does not support the inventory workflow feature. "
+            "Supported versions start from '2.3.5.3' onwards.".format(ccc_device.get_ccc_version())
+        )
+        ccc_device.status = "failed"
+        ccc_device.check_return_status()
 
     if state not in ccc_device.supported_states:
         ccc_device.status = "invalid"
