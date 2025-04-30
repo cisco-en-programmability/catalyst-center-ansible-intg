@@ -359,13 +359,13 @@ EXAMPLES = r"""
     state: deleted
     config_verify: true
     config:
-        - management_ip_address: 204.1.2.2
-          clean_config: true
+      - management_ip_address: 204.1.2.2
+        clean_config: true
 
 - name: Configure application telemetry for network devices on Cisco Catalyst Center
   hosts: localhost
   connection: local
-  gather_facts: no
+  gather_facts: false
   vars_files:
     - "credentials.yml"
   tasks:
@@ -386,7 +386,7 @@ EXAMPLES = r"""
         state: merged
         config:
           - application_telemetry:
-              - device_ips: ["204.1.1.2","204.192.6.200"]
+              - device_ips: ["204.1.1.2", "204.192.6.200"]
                 telemetry: enable
                 wlan_mode: LOCAL
                 include_guest_ssid: true
@@ -394,7 +394,7 @@ EXAMPLES = r"""
 - name: Configure application telemetry for network devices on Cisco Catalyst Center
   hosts: localhost
   connection: local
-  gather_facts: no
+  gather_facts: false
   vars_files:
     - "credentials.yml"
   tasks:
@@ -415,7 +415,7 @@ EXAMPLES = r"""
         state: merged
         config:
           - application_telemetry:
-              - device_ips: ["204.1.1.2","204.192.6.200"]
+              - device_ips: ["204.1.1.2", "204.192.6.200"]
                 telemetry: disable
 """
 RETURN = r"""
