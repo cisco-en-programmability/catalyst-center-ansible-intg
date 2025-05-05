@@ -1,0 +1,1012 @@
+05-05-2025 16:02:24 DEBUG  Provision: __init__: 110: Logging configured and initiated 
+
+05-05-2025 16:02:24 DEBUG  Provision: __init__: 119: Cisco Catalyst Center parameters: {"dnac_host": "10.195.243.38", "dnac_port": "443", "dnac_username": "admin", "dnac_password": "****", "dnac_version": "2.3.7.9", "dnac_verify": False, "dnac_debug": True, "dnac_log": True, "dnac_log_level": "DEBUG", "dnac_log_file_path": "dnac.log", "dnac_log_append": True} 
+
+05-05-2025 16:02:24 INFO  Provision: validate_input: 573: Successfully validated playbook configuration parameters using "validate_input": [{"management_ip_address": "204.192.13.1", "managed_ap_locations": ["Global/USA/SAN-FRANCISCO/BLD_SF", "Global/USA/SAN-FRANCISCO/BLD_SF/FLOOR1", "Global/USA/SAN-FRANCISCO/BLD_SF/FLOOR2"], "site_name_hierarchy": "Global/USA/SAN-FRANCISCO/BLD_SF", "primary_managed_ap_locations": None, "secondary_managed_ap_locations": None, "dynamic_interfaces": None, "skip_ap_provision": None, "rolling_ap_upgrade": None, "provisioning": True, "force_provisioning": True, "clean_config": False, "application_telemetry": None}] 
+
+05-05-2025 16:02:24 DEBUG  Provision: check_return_status: 325: Line No: 2423 status: success, msg: Successfully validated playbook configuration parameters using "validate_input": [{"management_ip_address": "204.192.13.1", "managed_ap_locations": ["Global/USA/SAN-FRANCISCO/BLD_SF", "Global/USA/SAN-FRANCISCO/BLD_SF/FLOOR1", "Global/USA/SAN-FRANCISCO/BLD_SF/FLOOR2"], "site_name_hierarchy": "Global/USA/SAN-FRANCISCO/BLD_SF", "primary_managed_ap_locations": None, "secondary_managed_ap_locations": None, "dynamic_interfaces": None, "skip_ap_provision": None, "rolling_ap_upgrade": None, "provisioning": True, "force_provisioning": True, "clean_config": False, "application_telemetry": None}] 
+
+05-05-2025 16:02:24 INFO  Provision: main: 2428: Fetching device types from Cisco Catalyst Center. 
+
+05-05-2025 16:02:24 INFO  Provision: get_device_type: 1531: Fetching device details for IP: 204.192.13.1 
+
+05-05-2025 16:02:25 DEBUG  Provision: get_device_type: 1552: Device response for "204.192.13.1": {"response": {"description": "Cisco IOS Software [Dublin], C9800 Software (C9800_IOSXE-K9), Version 17.12.4, RELEASE SOFTWARE (fc3) Technical Support: http://www.cisco.com/techsupport Copyright (c) 1986-2024 by Cisco Systems, Inc. Compiled Tue 23-Jul-24 09:45 by mcpre netconf enabled", "type": "Cisco Catalyst 9800-80 Wireless Controller", "softwareType": "IOS-XE", "softwareVersion": "17.12.4", "lastUpdateTime": 1746431940405, "deviceSupportLevel": "Supported", "serialNumber": "FXS2349Q289", "macAddress": "c4:b2:39:67:48:0b", "syncRequestedByApp": "", "inventoryStatusDetail": "<status><general code="SUCCESS"/></status>", "collectionInterval": "Global Default", "dnsResolvedManagementAddress": "204.192.13.1", "lastManagedResyncReasons": "Periodic", "managementState": "Managed", "pendingSyncRequestsCount": "0", "reasonsForDeviceResync": "Periodic", "reasonsForPendingSyncRequests": "", "upTime": "57 days, 7:13:24.18", "roleSource": "AUTO", "interfaceCount": "0", "lastUpdated": "2025-05-05 07:59:00", "bootDateTime": "2025-03-09 00:46:00", "apManagerInterfaceIp": "", "collectionStatus": "Managed", "family": "Wireless Controller", "hostname": "ISBTE-TB6-9880WLC2.cisco.com", "locationName": None, "managementIpAddress": "204.192.13.1", "platformId": "C9800-80-K9", "reachabilityFailureReason": "", "reachabilityStatus": "Reachable", "series": "Cisco Catalyst 9800 Series Wireless Controllers", "snmpContact": "", "snmpLocation": "", "associatedWlcIp": "", "apEthernetMacAddress": None, "errorCode": None, "errorDescription": None, "lastDeviceResyncStartTime": "2025-05-05 07:58:14", "lineCardCount": "0", "lineCardId": "", "managedAtleastOnce": True, "memorySize": "NA", "tagCount": "0", "tunnelUdpPort": None, "uptimeSeconds": 4959984, "vendor": "Cisco", "waasDeviceMode": None, "location": None, "role": "ACCESS", "instanceUuid": "c7eabe6d-f2fc-44e8-9702-631a0c7a20ea", "instanceTenantId": "67d3924020720200139444d2", "id": "c7eabe6d-f2fc-44e8-9702-631a0c7a20ea"}, "version": "1.0"} 
+
+05-05-2025 16:02:25 DEBUG  Provision: get_device_type: 1554: The device response from "get_network_device_by_ip" API is {"response": {"description": "Cisco IOS Software [Dublin], C9800 Software (C9800_IOSXE-K9), Version 17.12.4, RELEASE SOFTWARE (fc3) Technical Support: http://www.cisco.com/techsupport Copyright (c) 1986-2024 by Cisco Systems, Inc. Compiled Tue 23-Jul-24 09:45 by mcpre netconf enabled", "type": "Cisco Catalyst 9800-80 Wireless Controller", "softwareType": "IOS-XE", "softwareVersion": "17.12.4", "lastUpdateTime": 1746431940405, "deviceSupportLevel": "Supported", "serialNumber": "FXS2349Q289", "macAddress": "c4:b2:39:67:48:0b", "syncRequestedByApp": "", "inventoryStatusDetail": "<status><general code="SUCCESS"/></status>", "collectionInterval": "Global Default", "dnsResolvedManagementAddress": "204.192.13.1", "lastManagedResyncReasons": "Periodic", "managementState": "Managed", "pendingSyncRequestsCount": "0", "reasonsForDeviceResync": "Periodic", "reasonsForPendingSyncRequests": "", "upTime": "57 days, 7:13:24.18", "roleSource": "AUTO", "interfaceCount": "0", "lastUpdated": "2025-05-05 07:59:00", "bootDateTime": "2025-03-09 00:46:00", "apManagerInterfaceIp": "", "collectionStatus": "Managed", "family": "Wireless Controller", "hostname": "ISBTE-TB6-9880WLC2.cisco.com", "locationName": None, "managementIpAddress": "204.192.13.1", "platformId": "C9800-80-K9", "reachabilityFailureReason": "", "reachabilityStatus": "Reachable", "series": "Cisco Catalyst 9800 Series Wireless Controllers", "snmpContact": "", "snmpLocation": "", "associatedWlcIp": "", "apEthernetMacAddress": None, "errorCode": None, "errorDescription": None, "lastDeviceResyncStartTime": "2025-05-05 07:58:14", "lineCardCount": "0", "lineCardId": "", "managedAtleastOnce": True, "memorySize": "NA", "tagCount": "0", "tunnelUdpPort": None, "uptimeSeconds": 4959984, "vendor": "Cisco", "waasDeviceMode": None, "location": None, "role": "ACCESS", "instanceUuid": "c7eabe6d-f2fc-44e8-9702-631a0c7a20ea", "instanceTenantId": "67d3924020720200139444d2", "id": "c7eabe6d-f2fc-44e8-9702-631a0c7a20ea"}, "version": "1.0"} 
+
+05-05-2025 16:02:25 INFO  Provision: get_device_type: 1565: The device type for IP 204.192.13.1 is wireless 
+
+05-05-2025 16:02:25 INFO  Provision: get_device_type: 1571: Final device classification: {"wired": [], "wireless": ["204.192.13.1"]} 
+
+05-05-2025 16:02:25 DEBUG  Provision: main: 2430: Device classification result: {"wired": [], "wireless": ["204.192.13.1"]} 
+
+05-05-2025 16:02:25 WARNING  Provision: main: 2432: [{"management_ip_address": "204.192.13.1", "managed_ap_locations": ["Global/USA/SAN-FRANCISCO/BLD_SF", "Global/USA/SAN-FRANCISCO/BLD_SF/FLOOR1", "Global/USA/SAN-FRANCISCO/BLD_SF/FLOOR2"], "site_name_hierarchy": "Global/USA/SAN-FRANCISCO/BLD_SF", "primary_managed_ap_locations": None, "secondary_managed_ap_locations": None, "dynamic_interfaces": None, "skip_ap_provision": None, "rolling_ap_upgrade": None, "provisioning": True, "force_provisioning": True, "clean_config": False, "application_telemetry": None}] 
+
+05-05-2025 16:02:25 WARNING  Provision: main: 2435: [{"management_ip_address": "204.192.13.1", "managed_ap_locations": ["Global/USA/SAN-FRANCISCO/BLD_SF", "Global/USA/SAN-FRANCISCO/BLD_SF/FLOOR1", "Global/USA/SAN-FRANCISCO/BLD_SF/FLOOR2"], "site_name_hierarchy": "Global/USA/SAN-FRANCISCO/BLD_SF", "primary_managed_ap_locations": None, "secondary_managed_ap_locations": None, "dynamic_interfaces": None, "skip_ap_provision": None, "rolling_ap_upgrade": None, "provisioning": True, "force_provisioning": True, "clean_config": False, "application_telemetry": None}] 
+
+05-05-2025 16:02:25 INFO  Provision: main: 2438: No devices found for type "wired", skipping. 
+
+05-05-2025 16:02:25 INFO  Provision: main: 2441: Processing wireless devices: ["204.192.13.1"] 
+
+05-05-2025 16:02:25 INFO  Provision: main: 2457: Applying configuration for wireless device: 204.192.13.1 
+
+05-05-2025 16:02:25 DEBUG  Provision: get_dev_type: 599: The device response from "get_network_device_by_ip" API is {"response": {"description": "Cisco IOS Software [Dublin], C9800 Software (C9800_IOSXE-K9), Version 17.12.4, RELEASE SOFTWARE (fc3) Technical Support: http://www.cisco.com/techsupport Copyright (c) 1986-2024 by Cisco Systems, Inc. Compiled Tue 23-Jul-24 09:45 by mcpre netconf enabled", "type": "Cisco Catalyst 9800-80 Wireless Controller", "softwareType": "IOS-XE", "softwareVersion": "17.12.4", "lastUpdateTime": 1746431940405, "deviceSupportLevel": "Supported", "serialNumber": "FXS2349Q289", "macAddress": "c4:b2:39:67:48:0b", "syncRequestedByApp": "", "inventoryStatusDetail": "<status><general code="SUCCESS"/></status>", "collectionInterval": "Global Default", "dnsResolvedManagementAddress": "204.192.13.1", "lastManagedResyncReasons": "Periodic", "managementState": "Managed", "pendingSyncRequestsCount": "0", "reasonsForDeviceResync": "Periodic", "reasonsForPendingSyncRequests": "", "upTime": "57 days, 7:13:24.18", "roleSource": "AUTO", "interfaceCount": "0", "lastUpdated": "2025-05-05 07:59:00", "bootDateTime": "2025-03-09 00:46:00", "apManagerInterfaceIp": "", "collectionStatus": "Managed", "family": "Wireless Controller", "hostname": "ISBTE-TB6-9880WLC2.cisco.com", "locationName": None, "managementIpAddress": "204.192.13.1", "platformId": "C9800-80-K9", "reachabilityFailureReason": "", "reachabilityStatus": "Reachable", "series": "Cisco Catalyst 9800 Series Wireless Controllers", "snmpContact": "", "snmpLocation": "", "associatedWlcIp": "", "apEthernetMacAddress": None, "errorCode": None, "errorDescription": None, "lastDeviceResyncStartTime": "2025-05-05 07:58:14", "lineCardCount": "0", "lineCardId": "", "managedAtleastOnce": True, "memorySize": "NA", "tagCount": "0", "tunnelUdpPort": None, "uptimeSeconds": 4959985, "vendor": "Cisco", "waasDeviceMode": None, "location": None, "role": "ACCESS", "instanceUuid": "c7eabe6d-f2fc-44e8-9702-631a0c7a20ea", "instanceTenantId": "67d3924020720200139444d2", "id": "c7eabe6d-f2fc-44e8-9702-631a0c7a20ea"}, "version": "1.0"} 
+
+05-05-2025 16:02:25 INFO  Provision: get_dev_type: 618: The device type is wireless 
+
+05-05-2025 16:02:25 DEBUG  Provision: get_wireless_params: 981: Processing AP location: Global/USA/SAN-FRANCISCO/BLD_SF 
+
+05-05-2025 16:02:25 DEBUG  Provision: get_site_type: 777: Received site details                for "Global/USA/SAN-FRANCISCO/BLD_SF": {"response": [{"parentId": "446551ef-61de-4d3d-9e30-de360a4e0330", "name": "BLD_SF", "additionalInfo": [{"nameSpace": "ETA", "attributes": {"member.compatibleWithNaasOnly.direct": "0", "member.etaCapable.direct": "1", "member.etaReady.direct": "1", "member.etaEnabledNaasOnly.direct": "0", "ETAReady": "true", "member.etaNotReady.direct": "0", "member.etaReadyNotEnabled.direct": "1", "member.etaEnabled.direct": "0"}}, {"nameSpace": "Location", "attributes": {"country": "United States", "address": "McCarthy Blvd, San Jose, California 95131, United States", "latitude": "37.39819", "addressInheritedFrom": "de8fae3d-e616-4fc4-b88f-7361a0c44fc3", "type": "building", "longitude": "-121.91297"}}], "instanceTenantId": "67d3924020720200139444d2", "id": "de8fae3d-e616-4fc4-b88f-7361a0c44fc3", "siteHierarchy": "b0df0cb9-6fd7-47f2-9312-aef1e3c35bd9/27d72945-584e-4620-ae08-c9fd5d5ae83f/446551ef-61de-4d3d-9e30-de360a4e0330/de8fae3d-e616-4fc4-b88f-7361a0c44fc3", "siteNameHierarchy": "Global/USA/SAN-FRANCISCO/BLD_SF"}]} 
+
+05-05-2025 16:02:25 INFO  Provision: get_site_type: 784: Site type for site name "Global/USA/SAN-FRANCISCO/BLD_SF" : building 
+
+05-05-2025 16:02:25 DEBUG  Provision: get_wireless_params: 983: Resolved site type for AP location "Global/USA/SAN-FRANCISCO/BLD_SF": "building" 
+
+05-05-2025 16:02:25 DEBUG  Provision: get_wireless_params: 989: Building site type detected for "Global/USA/SAN-FRANCISCO/BLD_SF". Retrieving floor details. 
+
+05-05-2025 16:02:25 DEBUG  Provision: get_site: 835: Initiating retrieval of site details for site name: "Global/USA/SAN-FRANCISCO/BLD_SF.*". 
+
+05-05-2025 16:02:25 DEBUG  Provision: get_site: 846: Using "get_sites" API for Catalyst Center version: "2379". 
+
+05-05-2025 16:02:25 DEBUG  Provision: get_site: 852: Sending initial API request: Family="site_design", Function="get_sites", Params={"name_hierarchy": "Global/USA/SAN-FRANCISCO/BLD_SF.*", "offset": 1, "limit": 500} 
+
+05-05-2025 16:02:25 DEBUG  Provision: execute_get_request: 1929: Initiating GET API call for Function: get_sites from Family: site_design with Parameters: {"name_hierarchy": "Global/USA/SAN-FRANCISCO/BLD_SF.*", "offset": 1, "limit": 500}. 
+
+05-05-2025 16:02:26 INFO  Provision: execute_get_request: 1945: Response received from GET API call to Function: "get_sites" from Family: "site_design" is Response: {"response": [{"id": "de8fae3d-e616-4fc4-b88f-7361a0c44fc3", "parentId": "446551ef-61de-4d3d-9e30-de360a4e0330", "name": "BLD_SF", "nameHierarchy": "Global/USA/SAN-FRANCISCO/BLD_SF", "type": "building", "latitude": 37.39819, "longitude": -121.91297, "address": "McCarthy Blvd, San Jose, California 95131, United States", "country": "United States"}, {"id": "04e460df-b60b-47d5-ae49-e1e0376ced72", "parentId": "de8fae3d-e616-4fc4-b88f-7361a0c44fc3", "name": "FLOOR1", "nameHierarchy": "Global/USA/SAN-FRANCISCO/BLD_SF/FLOOR1", "type": "floor", "floorNumber": -1, "rfModel": "Drywall Office Only", "width": 16.4042, "length": 16.4042, "height": 9.84252, "unitsOfMeasure": "feet"}, {"id": "e61b15c8-7a8b-45f7-998d-68b369976f55", "parentId": "de8fae3d-e616-4fc4-b88f-7361a0c44fc3", "name": "FLOOR2", "nameHierarchy": "Global/USA/SAN-FRANCISCO/BLD_SF/FLOOR2", "type": "floor", "floorNumber": 2, "rfModel": "Drywall Office Only", "width": 10.0, "length": 12.0, "height": 8.0, "unitsOfMeasure": "feet"}], "version": "1.0"} 
+
+05-05-2025 16:02:26 DEBUG  Provision: get_site: 862: Received 3 site(s) from API (Offset=1). 
+
+05-05-2025 16:02:26 DEBUG  Provision: get_site: 867: Received less than limit (500) results, assuming last page. Exiting pagination. 
+
+05-05-2025 16:02:26 DEBUG  Provision: get_site: 878: Total 3 site(s) retrieved for site name: "Global/USA/SAN-FRANCISCO/BLD_SF.*". 
+
+05-05-2025 16:02:26 DEBUG  Provision: get_wireless_params: 995: Floor found: "Global/USA/SAN-FRANCISCO/BLD_SF/FLOOR1" for building "Global/USA/SAN-FRANCISCO/BLD_SF" 
+
+05-05-2025 16:02:26 DEBUG  Provision: get_wireless_params: 995: Floor found: "Global/USA/SAN-FRANCISCO/BLD_SF/FLOOR2" for building "Global/USA/SAN-FRANCISCO/BLD_SF" 
+
+05-05-2025 16:02:26 DEBUG  Provision: get_wireless_params: 981: Processing AP location: Global/USA/SAN-FRANCISCO/BLD_SF/FLOOR1 
+
+05-05-2025 16:02:26 DEBUG  Provision: get_site_type: 777: Received site details                for "Global/USA/SAN-FRANCISCO/BLD_SF/FLOOR1": {"response": [{"parentId": "de8fae3d-e616-4fc4-b88f-7361a0c44fc3", "name": "FLOOR1", "additionalInfo": [{"nameSpace": "mapGeometry", "attributes": {"offsetX": "0.0", "offsetY": "0.0", "length": "16.4042", "width": "16.4042", "height": "9.84252"}}, {"nameSpace": "mapsSummary", "attributes": {"rfModel": "85086", "floorIndex": "-1"}}, {"nameSpace": "Location", "attributes": {"address": "McCarthy Blvd, San Jose, California 95131, United States", "addressInheritedFrom": "de8fae3d-e616-4fc4-b88f-7361a0c44fc3", "type": "floor"}}], "instanceTenantId": "67d3924020720200139444d2", "id": "04e460df-b60b-47d5-ae49-e1e0376ced72", "siteHierarchy": "b0df0cb9-6fd7-47f2-9312-aef1e3c35bd9/27d72945-584e-4620-ae08-c9fd5d5ae83f/446551ef-61de-4d3d-9e30-de360a4e0330/de8fae3d-e616-4fc4-b88f-7361a0c44fc3/04e460df-b60b-47d5-ae49-e1e0376ced72", "siteNameHierarchy": "Global/USA/SAN-FRANCISCO/BLD_SF/FLOOR1"}]} 
+
+05-05-2025 16:02:26 INFO  Provision: get_site_type: 784: Site type for site name "Global/USA/SAN-FRANCISCO/BLD_SF/FLOOR1" : floor 
+
+05-05-2025 16:02:26 DEBUG  Provision: get_wireless_params: 983: Resolved site type for AP location "Global/USA/SAN-FRANCISCO/BLD_SF/FLOOR1": "floor" 
+
+05-05-2025 16:02:26 DEBUG  Provision: get_wireless_params: 986: Adding "Global/USA/SAN-FRANCISCO/BLD_SF/FLOOR1" to floor names list 
+
+05-05-2025 16:02:26 DEBUG  Provision: get_wireless_params: 981: Processing AP location: Global/USA/SAN-FRANCISCO/BLD_SF/FLOOR2 
+
+05-05-2025 16:02:26 DEBUG  Provision: get_site_type: 777: Received site details                for "Global/USA/SAN-FRANCISCO/BLD_SF/FLOOR2": {"response": [{"parentId": "de8fae3d-e616-4fc4-b88f-7361a0c44fc3", "name": "FLOOR2", "additionalInfo": [{"nameSpace": "Location", "attributes": {"address": "McCarthy Blvd, San Jose, California 95131, United States", "addressInheritedFrom": "de8fae3d-e616-4fc4-b88f-7361a0c44fc3", "type": "floor"}}, {"nameSpace": "mapsSummary", "attributes": {"rfModel": "85086", "floorIndex": "2"}}, {"nameSpace": "mapGeometry", "attributes": {"width": "10.0", "length": "12.0", "height": "8.0"}}], "instanceTenantId": "67d3924020720200139444d2", "id": "e61b15c8-7a8b-45f7-998d-68b369976f55", "siteHierarchy": "b0df0cb9-6fd7-47f2-9312-aef1e3c35bd9/27d72945-584e-4620-ae08-c9fd5d5ae83f/446551ef-61de-4d3d-9e30-de360a4e0330/de8fae3d-e616-4fc4-b88f-7361a0c44fc3/e61b15c8-7a8b-45f7-998d-68b369976f55", "siteNameHierarchy": "Global/USA/SAN-FRANCISCO/BLD_SF/FLOOR2"}]} 
+
+05-05-2025 16:02:26 INFO  Provision: get_site_type: 784: Site type for site name "Global/USA/SAN-FRANCISCO/BLD_SF/FLOOR2" : floor 
+
+05-05-2025 16:02:26 DEBUG  Provision: get_wireless_params: 983: Resolved site type for AP location "Global/USA/SAN-FRANCISCO/BLD_SF/FLOOR2": "floor" 
+
+05-05-2025 16:02:26 DEBUG  Provision: get_wireless_params: 986: Adding "Global/USA/SAN-FRANCISCO/BLD_SF/FLOOR2" to floor names list 
+
+05-05-2025 16:02:26 DEBUG  Provision: get_wireless_params: 1006: Final list of floor names: ["Global/USA/SAN-FRANCISCO/BLD_SF/FLOOR1", "Global/USA/SAN-FRANCISCO/BLD_SF/FLOOR2", "Global/USA/SAN-FRANCISCO/BLD_SF/FLOOR1", "Global/USA/SAN-FRANCISCO/BLD_SF/FLOOR2"] 
+
+05-05-2025 16:02:27 DEBUG  Provision: get_wireless_params: 1035: Response collected from "get_network_device_by_ip" is:{"response": {"description": "Cisco IOS Software [Dublin], C9800 Software (C9800_IOSXE-K9), Version 17.12.4, RELEASE SOFTWARE (fc3) Technical Support: http://www.cisco.com/techsupport Copyright (c) 1986-2024 by Cisco Systems, Inc. Compiled Tue 23-Jul-24 09:45 by mcpre netconf enabled", "type": "Cisco Catalyst 9800-80 Wireless Controller", "softwareType": "IOS-XE", "softwareVersion": "17.12.4", "lastUpdateTime": 1746431940405, "deviceSupportLevel": "Supported", "serialNumber": "FXS2349Q289", "macAddress": "c4:b2:39:67:48:0b", "syncRequestedByApp": "", "inventoryStatusDetail": "<status><general code="SUCCESS"/></status>", "collectionInterval": "Global Default", "dnsResolvedManagementAddress": "204.192.13.1", "lastManagedResyncReasons": "Periodic", "managementState": "Managed", "pendingSyncRequestsCount": "0", "reasonsForDeviceResync": "Periodic", "reasonsForPendingSyncRequests": "", "upTime": "57 days, 7:13:24.18", "roleSource": "AUTO", "interfaceCount": "0", "lastUpdated": "2025-05-05 07:59:00", "bootDateTime": "2025-03-09 00:46:00", "apManagerInterfaceIp": "", "collectionStatus": "Managed", "family": "Wireless Controller", "hostname": "ISBTE-TB6-9880WLC2.cisco.com", "locationName": None, "managementIpAddress": "204.192.13.1", "platformId": "C9800-80-K9", "reachabilityFailureReason": "", "reachabilityStatus": "Reachable", "series": "Cisco Catalyst 9800 Series Wireless Controllers", "snmpContact": "", "snmpLocation": "", "associatedWlcIp": "", "apEthernetMacAddress": None, "errorCode": None, "errorDescription": None, "lastDeviceResyncStartTime": "2025-05-05 07:58:14", "lineCardCount": "0", "lineCardId": "", "managedAtleastOnce": True, "memorySize": "NA", "tagCount": "0", "tunnelUdpPort": None, "uptimeSeconds": 4959987, "vendor": "Cisco", "waasDeviceMode": None, "location": None, "role": "ACCESS", "instanceUuid": "c7eabe6d-f2fc-44e8-9702-631a0c7a20ea", "instanceTenantId": "67d3924020720200139444d2", "id": "c7eabe6d-f2fc-44e8-9702-631a0c7a20ea"}, "version": "1.0"} 
+
+05-05-2025 16:02:27 INFO  Provision: get_wireless_params: 1038: Parameters collected for the provisioning of wireless device:[{"site": "Global/USA/SAN-FRANCISCO/BLD_SF", "managedAPLocations": ["Global/USA/SAN-FRANCISCO/BLD_SF", "Global/USA/SAN-FRANCISCO/BLD_SF/FLOOR1", "Global/USA/SAN-FRANCISCO/BLD_SF/FLOOR2"], "dynamicInterfaces": [], "skip_ap_provision": None, "primaryManagedAPLocationsSiteIds": ["Global/USA/SAN-FRANCISCO/BLD_SF", "Global/USA/SAN-FRANCISCO/BLD_SF/FLOOR1", "Global/USA/SAN-FRANCISCO/BLD_SF/FLOOR2"], "secondaryManagedAPLocationsSiteIds": None, "deviceName": "ISBTE-TB6-9880WLC2.cisco.com", "device_id": "c7eabe6d-f2fc-44e8-9702-631a0c7a20ea"}] 
+
+05-05-2025 16:02:27 INFO  Provision: get_want: 1085: Successfully collected all parameters from playbook for comparison 
+
+05-05-2025 16:02:27 DEBUG  Provision: check_return_status: 325: Line No: 2459 status: success, msg: Successfully collected all parameters from playbook for comparison 
+
+05-05-2025 16:02:27 DEBUG  Provision: get_diff_merged: 1217: Fetched CCC version: 2.3.7.9 
+
+05-05-2025 16:02:27 WARNING  Provision: get_diff_merged: 1222: {"device_type": "wireless", "prov_params": [{"site": "Global/USA/SAN-FRANCISCO/BLD_SF", "managedAPLocations": ["Global/USA/SAN-FRANCISCO/BLD_SF", "Global/USA/SAN-FRANCISCO/BLD_SF/FLOOR1", "Global/USA/SAN-FRANCISCO/BLD_SF/FLOOR2"], "dynamicInterfaces": [], "skip_ap_provision": None, "primaryManagedAPLocationsSiteIds": ["Global/USA/SAN-FRANCISCO/BLD_SF", "Global/USA/SAN-FRANCISCO/BLD_SF/FLOOR1", "Global/USA/SAN-FRANCISCO/BLD_SF/FLOOR2"], "secondaryManagedAPLocationsSiteIds": None, "deviceName": "ISBTE-TB6-9880WLC2.cisco.com", "device_id": "c7eabe6d-f2fc-44e8-9702-631a0c7a20ea"}]} 
+
+05-05-2025 16:02:27 WARNING  Provision: get_diff_merged: 1223: wireless 
+
+05-05-2025 16:02:27 DEBUG  Provision: get_diff_merged: 1232: Proceeding with provisioning logic based on CCC version and device type 
+
+05-05-2025 16:02:27 DEBUG  Provision: get_diff_merged: 1238: Device Type: wireless, Device IP: 204.192.13.1, Site: Global/USA/SAN-FRANCISCO/BLD_SF 
+
+05-05-2025 16:02:27 DEBUG  Provision: get_diff_merged: 1245: Checking provisioning status for wireless device: 204.192.13.1 
+
+05-05-2025 16:02:27 DEBUG  Provision: get_device_provision_status_for_wlc: 1166: Checking provisioning status for device with management IP "204.192.13.1" " 
+
+05-05-2025 16:02:36 DEBUG  Provision: get_device_provision_status_for_wlc: 1175: Received API response for device "204.192.13.1": {"deviceManagementIpAddress": "204.192.13.1", "siteNameHierarchy": "Global/USA/SAN-FRANCISCO/BLD_SF", "status": "success", "description": "Wired Provisioned device detail retrieved successfully."} 
+
+05-05-2025 16:02:36 DEBUG  Provision: get_device_provision_status_for_wlc: 1184: Final provisioning status for device "204.192.13.1": "success" 
+
+05-05-2025 16:02:36 INFO  Provision: get_diff_merged: 1254: Starting wireless device provisioning... 
+
+05-05-2025 16:02:36 INFO  Provision: provision_wireless_device: 1902: Starting provisioning process for wireless device 
+
+05-05-2025 16:02:36 DEBUG  Provision: get_site: 835: Initiating retrieval of site details for site name: "Global/USA/SAN-FRANCISCO/BLD_SF". 
+
+05-05-2025 16:02:36 DEBUG  Provision: get_site: 846: Using "get_sites" API for Catalyst Center version: "2379". 
+
+05-05-2025 16:02:36 DEBUG  Provision: get_site: 852: Sending initial API request: Family="site_design", Function="get_sites", Params={"name_hierarchy": "Global/USA/SAN-FRANCISCO/BLD_SF", "offset": 1, "limit": 500} 
+
+05-05-2025 16:02:36 DEBUG  Provision: execute_get_request: 1929: Initiating GET API call for Function: get_sites from Family: site_design with Parameters: {"name_hierarchy": "Global/USA/SAN-FRANCISCO/BLD_SF", "offset": 1, "limit": 500}. 
+
+05-05-2025 16:02:36 INFO  Provision: execute_get_request: 1945: Response received from GET API call to Function: "get_sites" from Family: "site_design" is Response: {"response": [{"id": "de8fae3d-e616-4fc4-b88f-7361a0c44fc3", "parentId": "446551ef-61de-4d3d-9e30-de360a4e0330", "name": "BLD_SF", "nameHierarchy": "Global/USA/SAN-FRANCISCO/BLD_SF", "type": "building", "latitude": 37.39819, "longitude": -121.91297, "address": "McCarthy Blvd, San Jose, California 95131, United States", "country": "United States"}], "version": "1.0"} 
+
+05-05-2025 16:02:36 DEBUG  Provision: get_site: 862: Received 1 site(s) from API (Offset=1). 
+
+05-05-2025 16:02:36 DEBUG  Provision: get_site: 867: Received less than limit (500) results, assuming last page. Exiting pagination. 
+
+05-05-2025 16:02:36 DEBUG  Provision: get_site: 878: Total 1 site(s) retrieved for site name: "Global/USA/SAN-FRANCISCO/BLD_SF". 
+
+05-05-2025 16:02:36 ERROR  Provision: get_site_id: 908: Site details retrieved for site "Global/USA/SAN-FRANCISCO/BLD_SF"": {"response": [{"id": "de8fae3d-e616-4fc4-b88f-7361a0c44fc3", "parentId": "446551ef-61de-4d3d-9e30-de360a4e0330", "name": "BLD_SF", "nameHierarchy": "Global/USA/SAN-FRANCISCO/BLD_SF", "type": "building", "latitude": 37.39819, "longitude": -121.91297, "address": "McCarthy Blvd, San Jose, California 95131, United States", "country": "United States"}]} 
+
+05-05-2025 16:02:36 DEBUG  Provision: provision_wireless_device: 1918: Provisioning wireless device with device_id: c7eabe6d-f2fc-44e8-9702-631a0c7a20ea 
+
+05-05-2025 16:02:36 DEBUG  Provision: provision_wireless_device: 1919: Site name: Global/USA/SAN-FRANCISCO/BLD_SF 
+
+05-05-2025 16:02:36 DEBUG  Provision: provision_wireless_device: 1920: Primary AP location: ["Global/USA/SAN-FRANCISCO/BLD_SF", "Global/USA/SAN-FRANCISCO/BLD_SF/FLOOR1", "Global/USA/SAN-FRANCISCO/BLD_SF/FLOOR2"] 
+
+05-05-2025 16:02:36 DEBUG  Provision: provision_wireless_device: 1921: Secondary AP location: None 
+
+05-05-2025 16:02:36 INFO  Provision: provision_wireless_device: 1928: Processing primary access point locations 
+
+05-05-2025 16:02:36 DEBUG  Provision: provision_wireless_device: 1930: Retrieving site ID for primary location: Global/USA/SAN-FRANCISCO/BLD_SF 
+
+05-05-2025 16:02:36 DEBUG  Provision: get_site: 835: Initiating retrieval of site details for site name: "Global/USA/SAN-FRANCISCO/BLD_SF". 
+
+05-05-2025 16:02:36 DEBUG  Provision: get_site: 846: Using "get_sites" API for Catalyst Center version: "2379". 
+
+05-05-2025 16:02:36 DEBUG  Provision: get_site: 852: Sending initial API request: Family="site_design", Function="get_sites", Params={"name_hierarchy": "Global/USA/SAN-FRANCISCO/BLD_SF", "offset": 1, "limit": 500} 
+
+05-05-2025 16:02:36 DEBUG  Provision: execute_get_request: 1929: Initiating GET API call for Function: get_sites from Family: site_design with Parameters: {"name_hierarchy": "Global/USA/SAN-FRANCISCO/BLD_SF", "offset": 1, "limit": 500}. 
+
+05-05-2025 16:02:36 INFO  Provision: execute_get_request: 1945: Response received from GET API call to Function: "get_sites" from Family: "site_design" is Response: {"response": [{"id": "de8fae3d-e616-4fc4-b88f-7361a0c44fc3", "parentId": "446551ef-61de-4d3d-9e30-de360a4e0330", "name": "BLD_SF", "nameHierarchy": "Global/USA/SAN-FRANCISCO/BLD_SF", "type": "building", "latitude": 37.39819, "longitude": -121.91297, "address": "McCarthy Blvd, San Jose, California 95131, United States", "country": "United States"}], "version": "1.0"} 
+
+05-05-2025 16:02:36 DEBUG  Provision: get_site: 862: Received 1 site(s) from API (Offset=1). 
+
+05-05-2025 16:02:36 DEBUG  Provision: get_site: 867: Received less than limit (500) results, assuming last page. Exiting pagination. 
+
+05-05-2025 16:02:36 DEBUG  Provision: get_site: 878: Total 1 site(s) retrieved for site name: "Global/USA/SAN-FRANCISCO/BLD_SF". 
+
+05-05-2025 16:02:36 ERROR  Provision: get_site_id: 908: Site details retrieved for site "Global/USA/SAN-FRANCISCO/BLD_SF"": {"response": [{"id": "de8fae3d-e616-4fc4-b88f-7361a0c44fc3", "parentId": "446551ef-61de-4d3d-9e30-de360a4e0330", "name": "BLD_SF", "nameHierarchy": "Global/USA/SAN-FRANCISCO/BLD_SF", "type": "building", "latitude": 37.39819, "longitude": -121.91297, "address": "McCarthy Blvd, San Jose, California 95131, United States", "country": "United States"}]} 
+
+05-05-2025 16:02:36 DEBUG  Provision: provision_wireless_device: 1930: Retrieving site ID for primary location: Global/USA/SAN-FRANCISCO/BLD_SF/FLOOR1 
+
+05-05-2025 16:02:36 DEBUG  Provision: get_site: 835: Initiating retrieval of site details for site name: "Global/USA/SAN-FRANCISCO/BLD_SF/FLOOR1". 
+
+05-05-2025 16:02:36 DEBUG  Provision: get_site: 846: Using "get_sites" API for Catalyst Center version: "2379". 
+
+05-05-2025 16:02:36 DEBUG  Provision: get_site: 852: Sending initial API request: Family="site_design", Function="get_sites", Params={"name_hierarchy": "Global/USA/SAN-FRANCISCO/BLD_SF/FLOOR1", "offset": 1, "limit": 500} 
+
+05-05-2025 16:02:36 DEBUG  Provision: execute_get_request: 1929: Initiating GET API call for Function: get_sites from Family: site_design with Parameters: {"name_hierarchy": "Global/USA/SAN-FRANCISCO/BLD_SF/FLOOR1", "offset": 1, "limit": 500}. 
+
+05-05-2025 16:02:36 INFO  Provision: execute_get_request: 1945: Response received from GET API call to Function: "get_sites" from Family: "site_design" is Response: {"response": [{"id": "04e460df-b60b-47d5-ae49-e1e0376ced72", "parentId": "de8fae3d-e616-4fc4-b88f-7361a0c44fc3", "name": "FLOOR1", "nameHierarchy": "Global/USA/SAN-FRANCISCO/BLD_SF/FLOOR1", "type": "floor", "floorNumber": -1, "rfModel": "Drywall Office Only", "width": 16.4042, "length": 16.4042, "height": 9.84252, "unitsOfMeasure": "feet"}], "version": "1.0"} 
+
+05-05-2025 16:02:36 DEBUG  Provision: get_site: 862: Received 1 site(s) from API (Offset=1). 
+
+05-05-2025 16:02:36 DEBUG  Provision: get_site: 867: Received less than limit (500) results, assuming last page. Exiting pagination. 
+
+05-05-2025 16:02:36 DEBUG  Provision: get_site: 878: Total 1 site(s) retrieved for site name: "Global/USA/SAN-FRANCISCO/BLD_SF/FLOOR1". 
+
+05-05-2025 16:02:36 ERROR  Provision: get_site_id: 908: Site details retrieved for site "Global/USA/SAN-FRANCISCO/BLD_SF/FLOOR1"": {"response": [{"id": "04e460df-b60b-47d5-ae49-e1e0376ced72", "parentId": "de8fae3d-e616-4fc4-b88f-7361a0c44fc3", "name": "FLOOR1", "nameHierarchy": "Global/USA/SAN-FRANCISCO/BLD_SF/FLOOR1", "type": "floor", "floorNumber": -1, "rfModel": "Drywall Office Only", "width": 16.4042, "length": 16.4042, "height": 9.84252, "unitsOfMeasure": "feet"}]} 
+
+05-05-2025 16:02:36 DEBUG  Provision: provision_wireless_device: 1930: Retrieving site ID for primary location: Global/USA/SAN-FRANCISCO/BLD_SF/FLOOR2 
+
+05-05-2025 16:02:36 DEBUG  Provision: get_site: 835: Initiating retrieval of site details for site name: "Global/USA/SAN-FRANCISCO/BLD_SF/FLOOR2". 
+
+05-05-2025 16:02:36 DEBUG  Provision: get_site: 846: Using "get_sites" API for Catalyst Center version: "2379". 
+
+05-05-2025 16:02:36 DEBUG  Provision: get_site: 852: Sending initial API request: Family="site_design", Function="get_sites", Params={"name_hierarchy": "Global/USA/SAN-FRANCISCO/BLD_SF/FLOOR2", "offset": 1, "limit": 500} 
+
+05-05-2025 16:02:36 DEBUG  Provision: execute_get_request: 1929: Initiating GET API call for Function: get_sites from Family: site_design with Parameters: {"name_hierarchy": "Global/USA/SAN-FRANCISCO/BLD_SF/FLOOR2", "offset": 1, "limit": 500}. 
+
+05-05-2025 16:02:37 INFO  Provision: execute_get_request: 1945: Response received from GET API call to Function: "get_sites" from Family: "site_design" is Response: {"response": [{"id": "e61b15c8-7a8b-45f7-998d-68b369976f55", "parentId": "de8fae3d-e616-4fc4-b88f-7361a0c44fc3", "name": "FLOOR2", "nameHierarchy": "Global/USA/SAN-FRANCISCO/BLD_SF/FLOOR2", "type": "floor", "floorNumber": 2, "rfModel": "Drywall Office Only", "width": 10.0, "length": 12.0, "height": 8.0, "unitsOfMeasure": "feet"}], "version": "1.0"} 
+
+05-05-2025 16:02:37 DEBUG  Provision: get_site: 862: Received 1 site(s) from API (Offset=1). 
+
+05-05-2025 16:02:37 DEBUG  Provision: get_site: 867: Received less than limit (500) results, assuming last page. Exiting pagination. 
+
+05-05-2025 16:02:37 DEBUG  Provision: get_site: 878: Total 1 site(s) retrieved for site name: "Global/USA/SAN-FRANCISCO/BLD_SF/FLOOR2". 
+
+05-05-2025 16:02:37 ERROR  Provision: get_site_id: 908: Site details retrieved for site "Global/USA/SAN-FRANCISCO/BLD_SF/FLOOR2"": {"response": [{"id": "e61b15c8-7a8b-45f7-998d-68b369976f55", "parentId": "de8fae3d-e616-4fc4-b88f-7361a0c44fc3", "name": "FLOOR2", "nameHierarchy": "Global/USA/SAN-FRANCISCO/BLD_SF/FLOOR2", "type": "floor", "floorNumber": 2, "rfModel": "Drywall Office Only", "width": 10.0, "length": 12.0, "height": 8.0, "unitsOfMeasure": "feet"}]} 
+
+05-05-2025 16:02:37 INFO  Provision: provision_wireless_device: 1978: Detected Catalyst Center version > 2.3.5.3; using new provisioning method 
+
+05-05-2025 16:02:37 INFO  Provision: provision_wireless_device: 1979: Checking if device is assigned to the site 
+
+05-05-2025 16:02:37 INFO  Provision: is_device_assigned_to_site_v1: 835: Checking site assignment for device with UUID: c7eabe6d-f2fc-44e8-9702-631a0c7a20ea 
+
+05-05-2025 16:02:37 WARNING  Provision: is_device_assigned_to_site_v1: 843: Response collected from the API "get_site_assigned_network_device" {"response": {"deviceId": "c7eabe6d-f2fc-44e8-9702-631a0c7a20ea", "siteId": "de8fae3d-e616-4fc4-b88f-7361a0c44fc3", "siteNameHierarchy": "Global/USA/SAN-FRANCISCO/BLD_SF", "siteType": "building"}, "version": "1.0"} 
+
+05-05-2025 16:02:37 INFO  Provision: is_device_assigned_to_site_v1: 849: Device with UUID c7eabe6d-f2fc-44e8-9702-631a0c7a20ea is assigned to site: Global/USA/SAN-FRANCISCO/BLD_SF 
+
+05-05-2025 16:02:37 DEBUG  Provision: get_device_id: 651: The device response from "get_network_device_by_ip" API is {"response": {"description": "Cisco IOS Software [Dublin], C9800 Software (C9800_IOSXE-K9), Version 17.12.4, RELEASE SOFTWARE (fc3) Technical Support: http://www.cisco.com/techsupport Copyright (c) 1986-2024 by Cisco Systems, Inc. Compiled Tue 23-Jul-24 09:45 by mcpre netconf enabled", "type": "Cisco Catalyst 9800-80 Wireless Controller", "softwareType": "IOS-XE", "softwareVersion": "17.12.4", "lastUpdateTime": 1746431940405, "deviceSupportLevel": "Supported", "serialNumber": "FXS2349Q289", "macAddress": "c4:b2:39:67:48:0b", "syncRequestedByApp": "", "inventoryStatusDetail": "<status><general code="SUCCESS"/></status>", "collectionInterval": "Global Default", "dnsResolvedManagementAddress": "204.192.13.1", "lastManagedResyncReasons": "Periodic", "managementState": "Managed", "pendingSyncRequestsCount": "0", "reasonsForDeviceResync": "Periodic", "reasonsForPendingSyncRequests": "", "upTime": "57 days, 7:13:24.18", "roleSource": "AUTO", "interfaceCount": "0", "lastUpdated": "2025-05-05 07:59:00", "bootDateTime": "2025-03-09 00:46:00", "apManagerInterfaceIp": "", "collectionStatus": "Managed", "family": "Wireless Controller", "hostname": "ISBTE-TB6-9880WLC2.cisco.com", "locationName": None, "managementIpAddress": "204.192.13.1", "platformId": "C9800-80-K9", "reachabilityFailureReason": "", "reachabilityStatus": "Reachable", "series": "Cisco Catalyst 9800 Series Wireless Controllers", "snmpContact": "", "snmpLocation": "", "associatedWlcIp": "", "apEthernetMacAddress": None, "errorCode": None, "errorDescription": None, "lastDeviceResyncStartTime": "2025-05-05 07:58:14", "lineCardCount": "0", "lineCardId": "", "managedAtleastOnce": True, "memorySize": "NA", "tagCount": "0", "tunnelUdpPort": None, "uptimeSeconds": 4959997, "vendor": "Cisco", "waasDeviceMode": None, "location": None, "role": "ACCESS", "instanceUuid": "c7eabe6d-f2fc-44e8-9702-631a0c7a20ea", "instanceTenantId": "67d3924020720200139444d2", "id": "c7eabe6d-f2fc-44e8-9702-631a0c7a20ea"}, "version": "1.0"} 
+
+05-05-2025 16:02:37 INFO  Provision: get_device_id: 655: Device ID of the device with IP address 204.192.13.1 is c7eabe6d-f2fc-44e8-9702-631a0c7a20ea 
+
+05-05-2025 16:02:37 DEBUG  Provision: provision_wireless_device: 1987: Retrieved device ID: c7eabe6d-f2fc-44e8-9702-631a0c7a20ea 
+
+05-05-2025 16:02:37 INFO  Provision: is_device_assigned_to_site_v1: 835: Checking site assignment for device with UUID: c7eabe6d-f2fc-44e8-9702-631a0c7a20ea 
+
+05-05-2025 16:02:37 WARNING  Provision: is_device_assigned_to_site_v1: 843: Response collected from the API "get_site_assigned_network_device" {"response": {"deviceId": "c7eabe6d-f2fc-44e8-9702-631a0c7a20ea", "siteId": "de8fae3d-e616-4fc4-b88f-7361a0c44fc3", "siteNameHierarchy": "Global/USA/SAN-FRANCISCO/BLD_SF", "siteType": "building"}, "version": "1.0"} 
+
+05-05-2025 16:02:37 INFO  Provision: is_device_assigned_to_site_v1: 849: Device with UUID c7eabe6d-f2fc-44e8-9702-631a0c7a20ea is assigned to site: Global/USA/SAN-FRANCISCO/BLD_SF 
+
+05-05-2025 16:02:37 INFO  Provision: provision_wireless_device: 2001: Assigning managed AP locations to device ID: c7eabe6d-f2fc-44e8-9702-631a0c7a20ea 
+
+05-05-2025 16:02:37 INFO  Provision: provision_wireless_device: 2003: Assigning managed AP locations for the WLC 
+
+05-05-2025 16:02:38 DEBUG  Provision: provision_wireless_device: 2015: API response from "assign_managed_ap_locations_for_w_l_c": {"response": {"taskId": "0196a001-3e08-7c1e-9d0a-44101d2aa700", "url": "/api/v1/task/0196a001-3e08-7c1e-9d0a-44101d2aa700"}, "version": "1.0"} 
+
+05-05-2025 16:02:38 DEBUG  Provision: provision_wireless_device: 2017: Received API response from "assign_managed_ap_locations_for_w_l_c": {"response": {"taskId": "0196a001-3e08-7c1e-9d0a-44101d2aa700", "url": "/api/v1/task/0196a001-3e08-7c1e-9d0a-44101d2aa700"}, "version": "1.0"} 
+
+05-05-2025 16:02:38 DEBUG  Provision: get_tasks_by_id: 1764: Task Details: {"response": {"endTime": 1746441158322, "status": "SUCCESS", "startTime": 1746441158152, "resultLocation": "/dna/intent/api/v1/tasks/0196a001-3e08-7c1e-9d0a-44101d2aa700/detail", "id": "0196a001-3e08-7c1e-9d0a-44101d2aa700"}, "version": "1.0"} 
+
+05-05-2025 16:02:38 DEBUG  Provision: get_tasks_by_id: 1765: Retrieving task details by the API "get_tasks_by_id" using task ID: 0196a001-3e08-7c1e-9d0a-44101d2aa700, Response: {"response": {"endTime": 1746441158322, "status": "SUCCESS", "startTime": 1746441158152, "resultLocation": "/dna/intent/api/v1/tasks/0196a001-3e08-7c1e-9d0a-44101d2aa700/detail", "id": "0196a001-3e08-7c1e-9d0a-44101d2aa700"}, "version": "1.0"} 
+
+05-05-2025 16:02:38 DEBUG  Provision: get_tasks_by_id: 1773: Task Status: {"endTime": 1746441158322, "status": "SUCCESS", "startTime": 1746441158152, "resultLocation": "/dna/intent/api/v1/tasks/0196a001-3e08-7c1e-9d0a-44101d2aa700/detail", "id": "0196a001-3e08-7c1e-9d0a-44101d2aa700"} 
+
+05-05-2025 16:02:38 DEBUG  Provision: check_tasks_response_status: 1828: Getting tasks details from task ID 0196a001-3e08-7c1e-9d0a-44101d2aa700: {"endTime": 1746441158322, "status": "SUCCESS", "startTime": 1746441158152, "resultLocation": "/dna/intent/api/v1/tasks/0196a001-3e08-7c1e-9d0a-44101d2aa700/detail", "id": "0196a001-3e08-7c1e-9d0a-44101d2aa700"} 
+
+05-05-2025 16:02:38 INFO  Provision: check_tasks_response_status: 1840: The task with task ID "0196a001-3e08-7c1e-9d0a-44101d2aa700" is executed successfully. 
+
+05-05-2025 16:02:38 INFO  Provision: provision_wireless_device: 2020: wireless Device "204.192.13.1" assign_managed_ap_locations_for_w_l_c completed successfully. 
+
+05-05-2025 16:02:38 INFO  Provision: provision_wireless_device: 2039: Starting wireless controller provisioning for device ID: c7eabe6d-f2fc-44e8-9702-631a0c7a20ea 
+
+05-05-2025 16:02:38 INFO  Provision: provision_wireless_device: 2046: Processing interfaces if they exist 
+
+05-05-2025 16:02:38 INFO  Provision: provision_wireless_device: 2047: Building payload for wireless provisioning 
+
+05-05-2025 16:02:38 INFO  Provision: provision_wireless_device: 2049: Processing dynamic interfaces 
+
+05-05-2025 16:02:38 INFO  Provision: provision_wireless_device: 2061: Processing "rolling_ap_upgrade" if it exists 
+
+05-05-2025 16:02:38 DEBUG  Provision: provision_wireless_device: 2067: "skip_ap_provision"  is not specified 
+
+05-05-2025 16:02:38 INFO  Provision: provision_wireless_device: 2069: Processing rolling AP upgrade settings 
+
+05-05-2025 16:02:39 DEBUG  Provision: provision_wireless_device: 2090: Received API response from "wireless_controller_provision": {"response": {"taskId": "0196a001-40be-7789-b30b-57a77350c55f", "url": "/api/v1/task/0196a001-40be-7789-b30b-57a77350c55f"}, "version": "1.0"} 
+
+05-05-2025 16:02:39 DEBUG  Provision: get_tasks_by_id: 1764: Task Details: {"response": {"status": "PENDING", "startTime": 1746441158846, "resultLocation": "/dna/intent/api/v1/tasks/0196a001-40be-7789-b30b-57a77350c55f/detail", "id": "0196a001-40be-7789-b30b-57a77350c55f"}, "version": "1.0"} 
+
+05-05-2025 16:02:39 DEBUG  Provision: get_tasks_by_id: 1765: Retrieving task details by the API "get_tasks_by_id" using task ID: 0196a001-40be-7789-b30b-57a77350c55f, Response: {"response": {"status": "PENDING", "startTime": 1746441158846, "resultLocation": "/dna/intent/api/v1/tasks/0196a001-40be-7789-b30b-57a77350c55f/detail", "id": "0196a001-40be-7789-b30b-57a77350c55f"}, "version": "1.0"} 
+
+05-05-2025 16:02:39 DEBUG  Provision: get_tasks_by_id: 1773: Task Status: {"status": "PENDING", "startTime": 1746441158846, "resultLocation": "/dna/intent/api/v1/tasks/0196a001-40be-7789-b30b-57a77350c55f/detail", "id": "0196a001-40be-7789-b30b-57a77350c55f"} 
+
+05-05-2025 16:02:39 DEBUG  Provision: check_tasks_response_status: 1828: Getting tasks details from task ID 0196a001-40be-7789-b30b-57a77350c55f: {"status": "PENDING", "startTime": 1746441158846, "resultLocation": "/dna/intent/api/v1/tasks/0196a001-40be-7789-b30b-57a77350c55f/detail", "id": "0196a001-40be-7789-b30b-57a77350c55f"} 
+
+05-05-2025 16:02:39 DEBUG  Provision: check_tasks_response_status: 1844: Progress is PENDING for task ID: 0196a001-40be-7789-b30b-57a77350c55f 
+
+05-05-2025 16:02:39 DEBUG  Provision: get_tasks_by_id: 1764: Task Details: {"response": {"lastUpdate": 1746441159275, "status": "PENDING", "startTime": 1746441158846, "resultLocation": "/dna/intent/api/v1/tasks/0196a001-40be-7789-b30b-57a77350c55f/detail", "id": "0196a001-40be-7789-b30b-57a77350c55f"}, "version": "1.0"} 
+
+05-05-2025 16:02:39 DEBUG  Provision: get_tasks_by_id: 1765: Retrieving task details by the API "get_tasks_by_id" using task ID: 0196a001-40be-7789-b30b-57a77350c55f, Response: {"response": {"lastUpdate": 1746441159275, "status": "PENDING", "startTime": 1746441158846, "resultLocation": "/dna/intent/api/v1/tasks/0196a001-40be-7789-b30b-57a77350c55f/detail", "id": "0196a001-40be-7789-b30b-57a77350c55f"}, "version": "1.0"} 
+
+05-05-2025 16:02:39 DEBUG  Provision: get_tasks_by_id: 1773: Task Status: {"lastUpdate": 1746441159275, "status": "PENDING", "startTime": 1746441158846, "resultLocation": "/dna/intent/api/v1/tasks/0196a001-40be-7789-b30b-57a77350c55f/detail", "id": "0196a001-40be-7789-b30b-57a77350c55f"} 
+
+05-05-2025 16:02:39 DEBUG  Provision: check_tasks_response_status: 1828: Getting tasks details from task ID 0196a001-40be-7789-b30b-57a77350c55f: {"lastUpdate": 1746441159275, "status": "PENDING", "startTime": 1746441158846, "resultLocation": "/dna/intent/api/v1/tasks/0196a001-40be-7789-b30b-57a77350c55f/detail", "id": "0196a001-40be-7789-b30b-57a77350c55f"} 
+
+05-05-2025 16:02:39 DEBUG  Provision: check_tasks_response_status: 1844: Progress is PENDING for task ID: 0196a001-40be-7789-b30b-57a77350c55f 
+
+05-05-2025 16:02:39 DEBUG  Provision: get_tasks_by_id: 1764: Task Details: {"response": {"lastUpdate": 1746441159275, "status": "PENDING", "startTime": 1746441158846, "resultLocation": "/dna/intent/api/v1/tasks/0196a001-40be-7789-b30b-57a77350c55f/detail", "id": "0196a001-40be-7789-b30b-57a77350c55f"}, "version": "1.0"} 
+
+05-05-2025 16:02:39 DEBUG  Provision: get_tasks_by_id: 1765: Retrieving task details by the API "get_tasks_by_id" using task ID: 0196a001-40be-7789-b30b-57a77350c55f, Response: {"response": {"lastUpdate": 1746441159275, "status": "PENDING", "startTime": 1746441158846, "resultLocation": "/dna/intent/api/v1/tasks/0196a001-40be-7789-b30b-57a77350c55f/detail", "id": "0196a001-40be-7789-b30b-57a77350c55f"}, "version": "1.0"} 
+
+05-05-2025 16:02:39 DEBUG  Provision: get_tasks_by_id: 1773: Task Status: {"lastUpdate": 1746441159275, "status": "PENDING", "startTime": 1746441158846, "resultLocation": "/dna/intent/api/v1/tasks/0196a001-40be-7789-b30b-57a77350c55f/detail", "id": "0196a001-40be-7789-b30b-57a77350c55f"} 
+
+05-05-2025 16:02:39 DEBUG  Provision: check_tasks_response_status: 1828: Getting tasks details from task ID 0196a001-40be-7789-b30b-57a77350c55f: {"lastUpdate": 1746441159275, "status": "PENDING", "startTime": 1746441158846, "resultLocation": "/dna/intent/api/v1/tasks/0196a001-40be-7789-b30b-57a77350c55f/detail", "id": "0196a001-40be-7789-b30b-57a77350c55f"} 
+
+05-05-2025 16:02:39 DEBUG  Provision: check_tasks_response_status: 1844: Progress is PENDING for task ID: 0196a001-40be-7789-b30b-57a77350c55f 
+
+05-05-2025 16:02:40 DEBUG  Provision: get_tasks_by_id: 1764: Task Details: {"response": {"lastUpdate": 1746441159275, "status": "PENDING", "startTime": 1746441158846, "resultLocation": "/dna/intent/api/v1/tasks/0196a001-40be-7789-b30b-57a77350c55f/detail", "id": "0196a001-40be-7789-b30b-57a77350c55f"}, "version": "1.0"} 
+
+05-05-2025 16:02:40 DEBUG  Provision: get_tasks_by_id: 1765: Retrieving task details by the API "get_tasks_by_id" using task ID: 0196a001-40be-7789-b30b-57a77350c55f, Response: {"response": {"lastUpdate": 1746441159275, "status": "PENDING", "startTime": 1746441158846, "resultLocation": "/dna/intent/api/v1/tasks/0196a001-40be-7789-b30b-57a77350c55f/detail", "id": "0196a001-40be-7789-b30b-57a77350c55f"}, "version": "1.0"} 
+
+05-05-2025 16:02:40 DEBUG  Provision: get_tasks_by_id: 1773: Task Status: {"lastUpdate": 1746441159275, "status": "PENDING", "startTime": 1746441158846, "resultLocation": "/dna/intent/api/v1/tasks/0196a001-40be-7789-b30b-57a77350c55f/detail", "id": "0196a001-40be-7789-b30b-57a77350c55f"} 
+
+05-05-2025 16:02:40 DEBUG  Provision: check_tasks_response_status: 1828: Getting tasks details from task ID 0196a001-40be-7789-b30b-57a77350c55f: {"lastUpdate": 1746441159275, "status": "PENDING", "startTime": 1746441158846, "resultLocation": "/dna/intent/api/v1/tasks/0196a001-40be-7789-b30b-57a77350c55f/detail", "id": "0196a001-40be-7789-b30b-57a77350c55f"} 
+
+05-05-2025 16:02:40 DEBUG  Provision: check_tasks_response_status: 1844: Progress is PENDING for task ID: 0196a001-40be-7789-b30b-57a77350c55f 
+
+05-05-2025 16:02:40 DEBUG  Provision: get_tasks_by_id: 1764: Task Details: {"response": {"lastUpdate": 1746441159275, "status": "PENDING", "startTime": 1746441158846, "resultLocation": "/dna/intent/api/v1/tasks/0196a001-40be-7789-b30b-57a77350c55f/detail", "id": "0196a001-40be-7789-b30b-57a77350c55f"}, "version": "1.0"} 
+
+05-05-2025 16:02:40 DEBUG  Provision: get_tasks_by_id: 1765: Retrieving task details by the API "get_tasks_by_id" using task ID: 0196a001-40be-7789-b30b-57a77350c55f, Response: {"response": {"lastUpdate": 1746441159275, "status": "PENDING", "startTime": 1746441158846, "resultLocation": "/dna/intent/api/v1/tasks/0196a001-40be-7789-b30b-57a77350c55f/detail", "id": "0196a001-40be-7789-b30b-57a77350c55f"}, "version": "1.0"} 
+
+05-05-2025 16:02:40 DEBUG  Provision: get_tasks_by_id: 1773: Task Status: {"lastUpdate": 1746441159275, "status": "PENDING", "startTime": 1746441158846, "resultLocation": "/dna/intent/api/v1/tasks/0196a001-40be-7789-b30b-57a77350c55f/detail", "id": "0196a001-40be-7789-b30b-57a77350c55f"} 
+
+05-05-2025 16:02:40 DEBUG  Provision: check_tasks_response_status: 1828: Getting tasks details from task ID 0196a001-40be-7789-b30b-57a77350c55f: {"lastUpdate": 1746441159275, "status": "PENDING", "startTime": 1746441158846, "resultLocation": "/dna/intent/api/v1/tasks/0196a001-40be-7789-b30b-57a77350c55f/detail", "id": "0196a001-40be-7789-b30b-57a77350c55f"} 
+
+05-05-2025 16:02:40 DEBUG  Provision: check_tasks_response_status: 1844: Progress is PENDING for task ID: 0196a001-40be-7789-b30b-57a77350c55f 
+
+05-05-2025 16:02:40 DEBUG  Provision: get_tasks_by_id: 1764: Task Details: {"response": {"lastUpdate": 1746441159275, "status": "PENDING", "startTime": 1746441158846, "resultLocation": "/dna/intent/api/v1/tasks/0196a001-40be-7789-b30b-57a77350c55f/detail", "id": "0196a001-40be-7789-b30b-57a77350c55f"}, "version": "1.0"} 
+
+05-05-2025 16:02:40 DEBUG  Provision: get_tasks_by_id: 1765: Retrieving task details by the API "get_tasks_by_id" using task ID: 0196a001-40be-7789-b30b-57a77350c55f, Response: {"response": {"lastUpdate": 1746441159275, "status": "PENDING", "startTime": 1746441158846, "resultLocation": "/dna/intent/api/v1/tasks/0196a001-40be-7789-b30b-57a77350c55f/detail", "id": "0196a001-40be-7789-b30b-57a77350c55f"}, "version": "1.0"} 
+
+05-05-2025 16:02:40 DEBUG  Provision: get_tasks_by_id: 1773: Task Status: {"lastUpdate": 1746441159275, "status": "PENDING", "startTime": 1746441158846, "resultLocation": "/dna/intent/api/v1/tasks/0196a001-40be-7789-b30b-57a77350c55f/detail", "id": "0196a001-40be-7789-b30b-57a77350c55f"} 
+
+05-05-2025 16:02:40 DEBUG  Provision: check_tasks_response_status: 1828: Getting tasks details from task ID 0196a001-40be-7789-b30b-57a77350c55f: {"lastUpdate": 1746441159275, "status": "PENDING", "startTime": 1746441158846, "resultLocation": "/dna/intent/api/v1/tasks/0196a001-40be-7789-b30b-57a77350c55f/detail", "id": "0196a001-40be-7789-b30b-57a77350c55f"} 
+
+05-05-2025 16:02:40 DEBUG  Provision: check_tasks_response_status: 1844: Progress is PENDING for task ID: 0196a001-40be-7789-b30b-57a77350c55f 
+
+05-05-2025 16:02:40 DEBUG  Provision: get_tasks_by_id: 1764: Task Details: {"response": {"lastUpdate": 1746441159275, "status": "PENDING", "startTime": 1746441158846, "resultLocation": "/dna/intent/api/v1/tasks/0196a001-40be-7789-b30b-57a77350c55f/detail", "id": "0196a001-40be-7789-b30b-57a77350c55f"}, "version": "1.0"} 
+
+05-05-2025 16:02:40 DEBUG  Provision: get_tasks_by_id: 1765: Retrieving task details by the API "get_tasks_by_id" using task ID: 0196a001-40be-7789-b30b-57a77350c55f, Response: {"response": {"lastUpdate": 1746441159275, "status": "PENDING", "startTime": 1746441158846, "resultLocation": "/dna/intent/api/v1/tasks/0196a001-40be-7789-b30b-57a77350c55f/detail", "id": "0196a001-40be-7789-b30b-57a77350c55f"}, "version": "1.0"} 
+
+05-05-2025 16:02:40 DEBUG  Provision: get_tasks_by_id: 1773: Task Status: {"lastUpdate": 1746441159275, "status": "PENDING", "startTime": 1746441158846, "resultLocation": "/dna/intent/api/v1/tasks/0196a001-40be-7789-b30b-57a77350c55f/detail", "id": "0196a001-40be-7789-b30b-57a77350c55f"} 
+
+05-05-2025 16:02:40 DEBUG  Provision: check_tasks_response_status: 1828: Getting tasks details from task ID 0196a001-40be-7789-b30b-57a77350c55f: {"lastUpdate": 1746441159275, "status": "PENDING", "startTime": 1746441158846, "resultLocation": "/dna/intent/api/v1/tasks/0196a001-40be-7789-b30b-57a77350c55f/detail", "id": "0196a001-40be-7789-b30b-57a77350c55f"} 
+
+05-05-2025 16:02:40 DEBUG  Provision: check_tasks_response_status: 1844: Progress is PENDING for task ID: 0196a001-40be-7789-b30b-57a77350c55f 
+
+05-05-2025 16:02:40 DEBUG  Provision: get_tasks_by_id: 1764: Task Details: {"response": {"lastUpdate": 1746441159275, "status": "PENDING", "startTime": 1746441158846, "resultLocation": "/dna/intent/api/v1/tasks/0196a001-40be-7789-b30b-57a77350c55f/detail", "id": "0196a001-40be-7789-b30b-57a77350c55f"}, "version": "1.0"} 
+
+05-05-2025 16:02:40 DEBUG  Provision: get_tasks_by_id: 1765: Retrieving task details by the API "get_tasks_by_id" using task ID: 0196a001-40be-7789-b30b-57a77350c55f, Response: {"response": {"lastUpdate": 1746441159275, "status": "PENDING", "startTime": 1746441158846, "resultLocation": "/dna/intent/api/v1/tasks/0196a001-40be-7789-b30b-57a77350c55f/detail", "id": "0196a001-40be-7789-b30b-57a77350c55f"}, "version": "1.0"} 
+
+05-05-2025 16:02:40 DEBUG  Provision: get_tasks_by_id: 1773: Task Status: {"lastUpdate": 1746441159275, "status": "PENDING", "startTime": 1746441158846, "resultLocation": "/dna/intent/api/v1/tasks/0196a001-40be-7789-b30b-57a77350c55f/detail", "id": "0196a001-40be-7789-b30b-57a77350c55f"} 
+
+05-05-2025 16:02:40 DEBUG  Provision: check_tasks_response_status: 1828: Getting tasks details from task ID 0196a001-40be-7789-b30b-57a77350c55f: {"lastUpdate": 1746441159275, "status": "PENDING", "startTime": 1746441158846, "resultLocation": "/dna/intent/api/v1/tasks/0196a001-40be-7789-b30b-57a77350c55f/detail", "id": "0196a001-40be-7789-b30b-57a77350c55f"} 
+
+05-05-2025 16:02:40 DEBUG  Provision: check_tasks_response_status: 1844: Progress is PENDING for task ID: 0196a001-40be-7789-b30b-57a77350c55f 
+
+05-05-2025 16:02:41 DEBUG  Provision: get_tasks_by_id: 1764: Task Details: {"response": {"lastUpdate": 1746441159275, "status": "PENDING", "startTime": 1746441158846, "resultLocation": "/dna/intent/api/v1/tasks/0196a001-40be-7789-b30b-57a77350c55f/detail", "id": "0196a001-40be-7789-b30b-57a77350c55f"}, "version": "1.0"} 
+
+05-05-2025 16:02:41 DEBUG  Provision: get_tasks_by_id: 1765: Retrieving task details by the API "get_tasks_by_id" using task ID: 0196a001-40be-7789-b30b-57a77350c55f, Response: {"response": {"lastUpdate": 1746441159275, "status": "PENDING", "startTime": 1746441158846, "resultLocation": "/dna/intent/api/v1/tasks/0196a001-40be-7789-b30b-57a77350c55f/detail", "id": "0196a001-40be-7789-b30b-57a77350c55f"}, "version": "1.0"} 
+
+05-05-2025 16:02:41 DEBUG  Provision: get_tasks_by_id: 1773: Task Status: {"lastUpdate": 1746441159275, "status": "PENDING", "startTime": 1746441158846, "resultLocation": "/dna/intent/api/v1/tasks/0196a001-40be-7789-b30b-57a77350c55f/detail", "id": "0196a001-40be-7789-b30b-57a77350c55f"} 
+
+05-05-2025 16:02:41 DEBUG  Provision: check_tasks_response_status: 1828: Getting tasks details from task ID 0196a001-40be-7789-b30b-57a77350c55f: {"lastUpdate": 1746441159275, "status": "PENDING", "startTime": 1746441158846, "resultLocation": "/dna/intent/api/v1/tasks/0196a001-40be-7789-b30b-57a77350c55f/detail", "id": "0196a001-40be-7789-b30b-57a77350c55f"} 
+
+05-05-2025 16:02:41 DEBUG  Provision: check_tasks_response_status: 1844: Progress is PENDING for task ID: 0196a001-40be-7789-b30b-57a77350c55f 
+
+05-05-2025 16:02:41 DEBUG  Provision: get_tasks_by_id: 1764: Task Details: {"response": {"lastUpdate": 1746441159275, "status": "PENDING", "startTime": 1746441158846, "resultLocation": "/dna/intent/api/v1/tasks/0196a001-40be-7789-b30b-57a77350c55f/detail", "id": "0196a001-40be-7789-b30b-57a77350c55f"}, "version": "1.0"} 
+
+05-05-2025 16:02:41 DEBUG  Provision: get_tasks_by_id: 1765: Retrieving task details by the API "get_tasks_by_id" using task ID: 0196a001-40be-7789-b30b-57a77350c55f, Response: {"response": {"lastUpdate": 1746441159275, "status": "PENDING", "startTime": 1746441158846, "resultLocation": "/dna/intent/api/v1/tasks/0196a001-40be-7789-b30b-57a77350c55f/detail", "id": "0196a001-40be-7789-b30b-57a77350c55f"}, "version": "1.0"} 
+
+05-05-2025 16:02:41 DEBUG  Provision: get_tasks_by_id: 1773: Task Status: {"lastUpdate": 1746441159275, "status": "PENDING", "startTime": 1746441158846, "resultLocation": "/dna/intent/api/v1/tasks/0196a001-40be-7789-b30b-57a77350c55f/detail", "id": "0196a001-40be-7789-b30b-57a77350c55f"} 
+
+05-05-2025 16:02:41 DEBUG  Provision: check_tasks_response_status: 1828: Getting tasks details from task ID 0196a001-40be-7789-b30b-57a77350c55f: {"lastUpdate": 1746441159275, "status": "PENDING", "startTime": 1746441158846, "resultLocation": "/dna/intent/api/v1/tasks/0196a001-40be-7789-b30b-57a77350c55f/detail", "id": "0196a001-40be-7789-b30b-57a77350c55f"} 
+
+05-05-2025 16:02:41 DEBUG  Provision: check_tasks_response_status: 1844: Progress is PENDING for task ID: 0196a001-40be-7789-b30b-57a77350c55f 
+
+05-05-2025 16:02:41 DEBUG  Provision: get_tasks_by_id: 1764: Task Details: {"response": {"lastUpdate": 1746441159275, "status": "PENDING", "startTime": 1746441158846, "resultLocation": "/dna/intent/api/v1/tasks/0196a001-40be-7789-b30b-57a77350c55f/detail", "id": "0196a001-40be-7789-b30b-57a77350c55f"}, "version": "1.0"} 
+
+05-05-2025 16:02:41 DEBUG  Provision: get_tasks_by_id: 1765: Retrieving task details by the API "get_tasks_by_id" using task ID: 0196a001-40be-7789-b30b-57a77350c55f, Response: {"response": {"lastUpdate": 1746441159275, "status": "PENDING", "startTime": 1746441158846, "resultLocation": "/dna/intent/api/v1/tasks/0196a001-40be-7789-b30b-57a77350c55f/detail", "id": "0196a001-40be-7789-b30b-57a77350c55f"}, "version": "1.0"} 
+
+05-05-2025 16:02:41 DEBUG  Provision: get_tasks_by_id: 1773: Task Status: {"lastUpdate": 1746441159275, "status": "PENDING", "startTime": 1746441158846, "resultLocation": "/dna/intent/api/v1/tasks/0196a001-40be-7789-b30b-57a77350c55f/detail", "id": "0196a001-40be-7789-b30b-57a77350c55f"} 
+
+05-05-2025 16:02:41 DEBUG  Provision: check_tasks_response_status: 1828: Getting tasks details from task ID 0196a001-40be-7789-b30b-57a77350c55f: {"lastUpdate": 1746441159275, "status": "PENDING", "startTime": 1746441158846, "resultLocation": "/dna/intent/api/v1/tasks/0196a001-40be-7789-b30b-57a77350c55f/detail", "id": "0196a001-40be-7789-b30b-57a77350c55f"} 
+
+05-05-2025 16:02:41 DEBUG  Provision: check_tasks_response_status: 1844: Progress is PENDING for task ID: 0196a001-40be-7789-b30b-57a77350c55f 
+
+05-05-2025 16:02:41 DEBUG  Provision: get_tasks_by_id: 1764: Task Details: {"response": {"lastUpdate": 1746441159275, "status": "PENDING", "startTime": 1746441158846, "resultLocation": "/dna/intent/api/v1/tasks/0196a001-40be-7789-b30b-57a77350c55f/detail", "id": "0196a001-40be-7789-b30b-57a77350c55f"}, "version": "1.0"} 
+
+05-05-2025 16:02:41 DEBUG  Provision: get_tasks_by_id: 1765: Retrieving task details by the API "get_tasks_by_id" using task ID: 0196a001-40be-7789-b30b-57a77350c55f, Response: {"response": {"lastUpdate": 1746441159275, "status": "PENDING", "startTime": 1746441158846, "resultLocation": "/dna/intent/api/v1/tasks/0196a001-40be-7789-b30b-57a77350c55f/detail", "id": "0196a001-40be-7789-b30b-57a77350c55f"}, "version": "1.0"} 
+
+05-05-2025 16:02:41 DEBUG  Provision: get_tasks_by_id: 1773: Task Status: {"lastUpdate": 1746441159275, "status": "PENDING", "startTime": 1746441158846, "resultLocation": "/dna/intent/api/v1/tasks/0196a001-40be-7789-b30b-57a77350c55f/detail", "id": "0196a001-40be-7789-b30b-57a77350c55f"} 
+
+05-05-2025 16:02:41 DEBUG  Provision: check_tasks_response_status: 1828: Getting tasks details from task ID 0196a001-40be-7789-b30b-57a77350c55f: {"lastUpdate": 1746441159275, "status": "PENDING", "startTime": 1746441158846, "resultLocation": "/dna/intent/api/v1/tasks/0196a001-40be-7789-b30b-57a77350c55f/detail", "id": "0196a001-40be-7789-b30b-57a77350c55f"} 
+
+05-05-2025 16:02:41 DEBUG  Provision: check_tasks_response_status: 1844: Progress is PENDING for task ID: 0196a001-40be-7789-b30b-57a77350c55f 
+
+05-05-2025 16:02:42 DEBUG  Provision: get_tasks_by_id: 1764: Task Details: {"response": {"lastUpdate": 1746441159275, "status": "PENDING", "startTime": 1746441158846, "resultLocation": "/dna/intent/api/v1/tasks/0196a001-40be-7789-b30b-57a77350c55f/detail", "id": "0196a001-40be-7789-b30b-57a77350c55f"}, "version": "1.0"} 
+
+05-05-2025 16:02:42 DEBUG  Provision: get_tasks_by_id: 1765: Retrieving task details by the API "get_tasks_by_id" using task ID: 0196a001-40be-7789-b30b-57a77350c55f, Response: {"response": {"lastUpdate": 1746441159275, "status": "PENDING", "startTime": 1746441158846, "resultLocation": "/dna/intent/api/v1/tasks/0196a001-40be-7789-b30b-57a77350c55f/detail", "id": "0196a001-40be-7789-b30b-57a77350c55f"}, "version": "1.0"} 
+
+05-05-2025 16:02:42 DEBUG  Provision: get_tasks_by_id: 1773: Task Status: {"lastUpdate": 1746441159275, "status": "PENDING", "startTime": 1746441158846, "resultLocation": "/dna/intent/api/v1/tasks/0196a001-40be-7789-b30b-57a77350c55f/detail", "id": "0196a001-40be-7789-b30b-57a77350c55f"} 
+
+05-05-2025 16:02:42 DEBUG  Provision: check_tasks_response_status: 1828: Getting tasks details from task ID 0196a001-40be-7789-b30b-57a77350c55f: {"lastUpdate": 1746441159275, "status": "PENDING", "startTime": 1746441158846, "resultLocation": "/dna/intent/api/v1/tasks/0196a001-40be-7789-b30b-57a77350c55f/detail", "id": "0196a001-40be-7789-b30b-57a77350c55f"} 
+
+05-05-2025 16:02:42 DEBUG  Provision: check_tasks_response_status: 1844: Progress is PENDING for task ID: 0196a001-40be-7789-b30b-57a77350c55f 
+
+05-05-2025 16:02:42 DEBUG  Provision: get_tasks_by_id: 1764: Task Details: {"response": {"lastUpdate": 1746441159275, "status": "PENDING", "startTime": 1746441158846, "resultLocation": "/dna/intent/api/v1/tasks/0196a001-40be-7789-b30b-57a77350c55f/detail", "id": "0196a001-40be-7789-b30b-57a77350c55f"}, "version": "1.0"} 
+
+05-05-2025 16:02:42 DEBUG  Provision: get_tasks_by_id: 1765: Retrieving task details by the API "get_tasks_by_id" using task ID: 0196a001-40be-7789-b30b-57a77350c55f, Response: {"response": {"lastUpdate": 1746441159275, "status": "PENDING", "startTime": 1746441158846, "resultLocation": "/dna/intent/api/v1/tasks/0196a001-40be-7789-b30b-57a77350c55f/detail", "id": "0196a001-40be-7789-b30b-57a77350c55f"}, "version": "1.0"} 
+
+05-05-2025 16:02:42 DEBUG  Provision: get_tasks_by_id: 1773: Task Status: {"lastUpdate": 1746441159275, "status": "PENDING", "startTime": 1746441158846, "resultLocation": "/dna/intent/api/v1/tasks/0196a001-40be-7789-b30b-57a77350c55f/detail", "id": "0196a001-40be-7789-b30b-57a77350c55f"} 
+
+05-05-2025 16:02:42 DEBUG  Provision: check_tasks_response_status: 1828: Getting tasks details from task ID 0196a001-40be-7789-b30b-57a77350c55f: {"lastUpdate": 1746441159275, "status": "PENDING", "startTime": 1746441158846, "resultLocation": "/dna/intent/api/v1/tasks/0196a001-40be-7789-b30b-57a77350c55f/detail", "id": "0196a001-40be-7789-b30b-57a77350c55f"} 
+
+05-05-2025 16:02:42 DEBUG  Provision: check_tasks_response_status: 1844: Progress is PENDING for task ID: 0196a001-40be-7789-b30b-57a77350c55f 
+
+05-05-2025 16:02:42 DEBUG  Provision: get_tasks_by_id: 1764: Task Details: {"response": {"lastUpdate": 1746441159275, "status": "PENDING", "startTime": 1746441158846, "resultLocation": "/dna/intent/api/v1/tasks/0196a001-40be-7789-b30b-57a77350c55f/detail", "id": "0196a001-40be-7789-b30b-57a77350c55f"}, "version": "1.0"} 
+
+05-05-2025 16:02:42 DEBUG  Provision: get_tasks_by_id: 1765: Retrieving task details by the API "get_tasks_by_id" using task ID: 0196a001-40be-7789-b30b-57a77350c55f, Response: {"response": {"lastUpdate": 1746441159275, "status": "PENDING", "startTime": 1746441158846, "resultLocation": "/dna/intent/api/v1/tasks/0196a001-40be-7789-b30b-57a77350c55f/detail", "id": "0196a001-40be-7789-b30b-57a77350c55f"}, "version": "1.0"} 
+
+05-05-2025 16:02:42 DEBUG  Provision: get_tasks_by_id: 1773: Task Status: {"lastUpdate": 1746441159275, "status": "PENDING", "startTime": 1746441158846, "resultLocation": "/dna/intent/api/v1/tasks/0196a001-40be-7789-b30b-57a77350c55f/detail", "id": "0196a001-40be-7789-b30b-57a77350c55f"} 
+
+05-05-2025 16:02:42 DEBUG  Provision: check_tasks_response_status: 1828: Getting tasks details from task ID 0196a001-40be-7789-b30b-57a77350c55f: {"lastUpdate": 1746441159275, "status": "PENDING", "startTime": 1746441158846, "resultLocation": "/dna/intent/api/v1/tasks/0196a001-40be-7789-b30b-57a77350c55f/detail", "id": "0196a001-40be-7789-b30b-57a77350c55f"} 
+
+05-05-2025 16:02:42 DEBUG  Provision: check_tasks_response_status: 1844: Progress is PENDING for task ID: 0196a001-40be-7789-b30b-57a77350c55f 
+
+05-05-2025 16:02:42 DEBUG  Provision: get_tasks_by_id: 1764: Task Details: {"response": {"lastUpdate": 1746441159275, "status": "PENDING", "startTime": 1746441158846, "resultLocation": "/dna/intent/api/v1/tasks/0196a001-40be-7789-b30b-57a77350c55f/detail", "id": "0196a001-40be-7789-b30b-57a77350c55f"}, "version": "1.0"} 
+
+05-05-2025 16:02:42 DEBUG  Provision: get_tasks_by_id: 1765: Retrieving task details by the API "get_tasks_by_id" using task ID: 0196a001-40be-7789-b30b-57a77350c55f, Response: {"response": {"lastUpdate": 1746441159275, "status": "PENDING", "startTime": 1746441158846, "resultLocation": "/dna/intent/api/v1/tasks/0196a001-40be-7789-b30b-57a77350c55f/detail", "id": "0196a001-40be-7789-b30b-57a77350c55f"}, "version": "1.0"} 
+
+05-05-2025 16:02:42 DEBUG  Provision: get_tasks_by_id: 1773: Task Status: {"lastUpdate": 1746441159275, "status": "PENDING", "startTime": 1746441158846, "resultLocation": "/dna/intent/api/v1/tasks/0196a001-40be-7789-b30b-57a77350c55f/detail", "id": "0196a001-40be-7789-b30b-57a77350c55f"} 
+
+05-05-2025 16:02:42 DEBUG  Provision: check_tasks_response_status: 1828: Getting tasks details from task ID 0196a001-40be-7789-b30b-57a77350c55f: {"lastUpdate": 1746441159275, "status": "PENDING", "startTime": 1746441158846, "resultLocation": "/dna/intent/api/v1/tasks/0196a001-40be-7789-b30b-57a77350c55f/detail", "id": "0196a001-40be-7789-b30b-57a77350c55f"} 
+
+05-05-2025 16:02:42 DEBUG  Provision: check_tasks_response_status: 1844: Progress is PENDING for task ID: 0196a001-40be-7789-b30b-57a77350c55f 
+
+05-05-2025 16:02:43 DEBUG  Provision: get_tasks_by_id: 1764: Task Details: {"response": {"lastUpdate": 1746441159275, "status": "PENDING", "startTime": 1746441158846, "resultLocation": "/dna/intent/api/v1/tasks/0196a001-40be-7789-b30b-57a77350c55f/detail", "id": "0196a001-40be-7789-b30b-57a77350c55f"}, "version": "1.0"} 
+
+05-05-2025 16:02:43 DEBUG  Provision: get_tasks_by_id: 1765: Retrieving task details by the API "get_tasks_by_id" using task ID: 0196a001-40be-7789-b30b-57a77350c55f, Response: {"response": {"lastUpdate": 1746441159275, "status": "PENDING", "startTime": 1746441158846, "resultLocation": "/dna/intent/api/v1/tasks/0196a001-40be-7789-b30b-57a77350c55f/detail", "id": "0196a001-40be-7789-b30b-57a77350c55f"}, "version": "1.0"} 
+
+05-05-2025 16:02:43 DEBUG  Provision: get_tasks_by_id: 1773: Task Status: {"lastUpdate": 1746441159275, "status": "PENDING", "startTime": 1746441158846, "resultLocation": "/dna/intent/api/v1/tasks/0196a001-40be-7789-b30b-57a77350c55f/detail", "id": "0196a001-40be-7789-b30b-57a77350c55f"} 
+
+05-05-2025 16:02:43 DEBUG  Provision: check_tasks_response_status: 1828: Getting tasks details from task ID 0196a001-40be-7789-b30b-57a77350c55f: {"lastUpdate": 1746441159275, "status": "PENDING", "startTime": 1746441158846, "resultLocation": "/dna/intent/api/v1/tasks/0196a001-40be-7789-b30b-57a77350c55f/detail", "id": "0196a001-40be-7789-b30b-57a77350c55f"} 
+
+05-05-2025 16:02:43 DEBUG  Provision: check_tasks_response_status: 1844: Progress is PENDING for task ID: 0196a001-40be-7789-b30b-57a77350c55f 
+
+05-05-2025 16:02:43 DEBUG  Provision: get_tasks_by_id: 1764: Task Details: {"response": {"lastUpdate": 1746441159275, "status": "PENDING", "startTime": 1746441158846, "resultLocation": "/dna/intent/api/v1/tasks/0196a001-40be-7789-b30b-57a77350c55f/detail", "id": "0196a001-40be-7789-b30b-57a77350c55f"}, "version": "1.0"} 
+
+05-05-2025 16:02:43 DEBUG  Provision: get_tasks_by_id: 1765: Retrieving task details by the API "get_tasks_by_id" using task ID: 0196a001-40be-7789-b30b-57a77350c55f, Response: {"response": {"lastUpdate": 1746441159275, "status": "PENDING", "startTime": 1746441158846, "resultLocation": "/dna/intent/api/v1/tasks/0196a001-40be-7789-b30b-57a77350c55f/detail", "id": "0196a001-40be-7789-b30b-57a77350c55f"}, "version": "1.0"} 
+
+05-05-2025 16:02:43 DEBUG  Provision: get_tasks_by_id: 1773: Task Status: {"lastUpdate": 1746441159275, "status": "PENDING", "startTime": 1746441158846, "resultLocation": "/dna/intent/api/v1/tasks/0196a001-40be-7789-b30b-57a77350c55f/detail", "id": "0196a001-40be-7789-b30b-57a77350c55f"} 
+
+05-05-2025 16:02:43 DEBUG  Provision: check_tasks_response_status: 1828: Getting tasks details from task ID 0196a001-40be-7789-b30b-57a77350c55f: {"lastUpdate": 1746441159275, "status": "PENDING", "startTime": 1746441158846, "resultLocation": "/dna/intent/api/v1/tasks/0196a001-40be-7789-b30b-57a77350c55f/detail", "id": "0196a001-40be-7789-b30b-57a77350c55f"} 
+
+05-05-2025 16:02:43 DEBUG  Provision: check_tasks_response_status: 1844: Progress is PENDING for task ID: 0196a001-40be-7789-b30b-57a77350c55f 
+
+05-05-2025 16:02:43 DEBUG  Provision: get_tasks_by_id: 1764: Task Details: {"response": {"lastUpdate": 1746441159275, "status": "PENDING", "startTime": 1746441158846, "resultLocation": "/dna/intent/api/v1/tasks/0196a001-40be-7789-b30b-57a77350c55f/detail", "id": "0196a001-40be-7789-b30b-57a77350c55f"}, "version": "1.0"} 
+
+05-05-2025 16:02:43 DEBUG  Provision: get_tasks_by_id: 1765: Retrieving task details by the API "get_tasks_by_id" using task ID: 0196a001-40be-7789-b30b-57a77350c55f, Response: {"response": {"lastUpdate": 1746441159275, "status": "PENDING", "startTime": 1746441158846, "resultLocation": "/dna/intent/api/v1/tasks/0196a001-40be-7789-b30b-57a77350c55f/detail", "id": "0196a001-40be-7789-b30b-57a77350c55f"}, "version": "1.0"} 
+
+05-05-2025 16:02:43 DEBUG  Provision: get_tasks_by_id: 1773: Task Status: {"lastUpdate": 1746441159275, "status": "PENDING", "startTime": 1746441158846, "resultLocation": "/dna/intent/api/v1/tasks/0196a001-40be-7789-b30b-57a77350c55f/detail", "id": "0196a001-40be-7789-b30b-57a77350c55f"} 
+
+05-05-2025 16:02:43 DEBUG  Provision: check_tasks_response_status: 1828: Getting tasks details from task ID 0196a001-40be-7789-b30b-57a77350c55f: {"lastUpdate": 1746441159275, "status": "PENDING", "startTime": 1746441158846, "resultLocation": "/dna/intent/api/v1/tasks/0196a001-40be-7789-b30b-57a77350c55f/detail", "id": "0196a001-40be-7789-b30b-57a77350c55f"} 
+
+05-05-2025 16:02:43 DEBUG  Provision: check_tasks_response_status: 1844: Progress is PENDING for task ID: 0196a001-40be-7789-b30b-57a77350c55f 
+
+05-05-2025 16:02:43 DEBUG  Provision: get_tasks_by_id: 1764: Task Details: {"response": {"lastUpdate": 1746441159275, "status": "PENDING", "startTime": 1746441158846, "resultLocation": "/dna/intent/api/v1/tasks/0196a001-40be-7789-b30b-57a77350c55f/detail", "id": "0196a001-40be-7789-b30b-57a77350c55f"}, "version": "1.0"} 
+
+05-05-2025 16:02:43 DEBUG  Provision: get_tasks_by_id: 1765: Retrieving task details by the API "get_tasks_by_id" using task ID: 0196a001-40be-7789-b30b-57a77350c55f, Response: {"response": {"lastUpdate": 1746441159275, "status": "PENDING", "startTime": 1746441158846, "resultLocation": "/dna/intent/api/v1/tasks/0196a001-40be-7789-b30b-57a77350c55f/detail", "id": "0196a001-40be-7789-b30b-57a77350c55f"}, "version": "1.0"} 
+
+05-05-2025 16:02:43 DEBUG  Provision: get_tasks_by_id: 1773: Task Status: {"lastUpdate": 1746441159275, "status": "PENDING", "startTime": 1746441158846, "resultLocation": "/dna/intent/api/v1/tasks/0196a001-40be-7789-b30b-57a77350c55f/detail", "id": "0196a001-40be-7789-b30b-57a77350c55f"} 
+
+05-05-2025 16:02:43 DEBUG  Provision: check_tasks_response_status: 1828: Getting tasks details from task ID 0196a001-40be-7789-b30b-57a77350c55f: {"lastUpdate": 1746441159275, "status": "PENDING", "startTime": 1746441158846, "resultLocation": "/dna/intent/api/v1/tasks/0196a001-40be-7789-b30b-57a77350c55f/detail", "id": "0196a001-40be-7789-b30b-57a77350c55f"} 
+
+05-05-2025 16:02:43 DEBUG  Provision: check_tasks_response_status: 1844: Progress is PENDING for task ID: 0196a001-40be-7789-b30b-57a77350c55f 
+
+05-05-2025 16:02:44 DEBUG  Provision: get_tasks_by_id: 1764: Task Details: {"response": {"lastUpdate": 1746441159275, "status": "PENDING", "startTime": 1746441158846, "resultLocation": "/dna/intent/api/v1/tasks/0196a001-40be-7789-b30b-57a77350c55f/detail", "id": "0196a001-40be-7789-b30b-57a77350c55f"}, "version": "1.0"} 
+
+05-05-2025 16:02:44 DEBUG  Provision: get_tasks_by_id: 1765: Retrieving task details by the API "get_tasks_by_id" using task ID: 0196a001-40be-7789-b30b-57a77350c55f, Response: {"response": {"lastUpdate": 1746441159275, "status": "PENDING", "startTime": 1746441158846, "resultLocation": "/dna/intent/api/v1/tasks/0196a001-40be-7789-b30b-57a77350c55f/detail", "id": "0196a001-40be-7789-b30b-57a77350c55f"}, "version": "1.0"} 
+
+05-05-2025 16:02:44 DEBUG  Provision: get_tasks_by_id: 1773: Task Status: {"lastUpdate": 1746441159275, "status": "PENDING", "startTime": 1746441158846, "resultLocation": "/dna/intent/api/v1/tasks/0196a001-40be-7789-b30b-57a77350c55f/detail", "id": "0196a001-40be-7789-b30b-57a77350c55f"} 
+
+05-05-2025 16:02:44 DEBUG  Provision: check_tasks_response_status: 1828: Getting tasks details from task ID 0196a001-40be-7789-b30b-57a77350c55f: {"lastUpdate": 1746441159275, "status": "PENDING", "startTime": 1746441158846, "resultLocation": "/dna/intent/api/v1/tasks/0196a001-40be-7789-b30b-57a77350c55f/detail", "id": "0196a001-40be-7789-b30b-57a77350c55f"} 
+
+05-05-2025 16:02:44 DEBUG  Provision: check_tasks_response_status: 1844: Progress is PENDING for task ID: 0196a001-40be-7789-b30b-57a77350c55f 
+
+05-05-2025 16:02:44 DEBUG  Provision: get_tasks_by_id: 1764: Task Details: {"response": {"lastUpdate": 1746441159275, "status": "PENDING", "startTime": 1746441158846, "resultLocation": "/dna/intent/api/v1/tasks/0196a001-40be-7789-b30b-57a77350c55f/detail", "id": "0196a001-40be-7789-b30b-57a77350c55f"}, "version": "1.0"} 
+
+05-05-2025 16:02:44 DEBUG  Provision: get_tasks_by_id: 1765: Retrieving task details by the API "get_tasks_by_id" using task ID: 0196a001-40be-7789-b30b-57a77350c55f, Response: {"response": {"lastUpdate": 1746441159275, "status": "PENDING", "startTime": 1746441158846, "resultLocation": "/dna/intent/api/v1/tasks/0196a001-40be-7789-b30b-57a77350c55f/detail", "id": "0196a001-40be-7789-b30b-57a77350c55f"}, "version": "1.0"} 
+
+05-05-2025 16:02:44 DEBUG  Provision: get_tasks_by_id: 1773: Task Status: {"lastUpdate": 1746441159275, "status": "PENDING", "startTime": 1746441158846, "resultLocation": "/dna/intent/api/v1/tasks/0196a001-40be-7789-b30b-57a77350c55f/detail", "id": "0196a001-40be-7789-b30b-57a77350c55f"} 
+
+05-05-2025 16:02:44 DEBUG  Provision: check_tasks_response_status: 1828: Getting tasks details from task ID 0196a001-40be-7789-b30b-57a77350c55f: {"lastUpdate": 1746441159275, "status": "PENDING", "startTime": 1746441158846, "resultLocation": "/dna/intent/api/v1/tasks/0196a001-40be-7789-b30b-57a77350c55f/detail", "id": "0196a001-40be-7789-b30b-57a77350c55f"} 
+
+05-05-2025 16:02:44 DEBUG  Provision: check_tasks_response_status: 1844: Progress is PENDING for task ID: 0196a001-40be-7789-b30b-57a77350c55f 
+
+05-05-2025 16:02:44 DEBUG  Provision: get_tasks_by_id: 1764: Task Details: {"response": {"lastUpdate": 1746441159275, "status": "PENDING", "startTime": 1746441158846, "resultLocation": "/dna/intent/api/v1/tasks/0196a001-40be-7789-b30b-57a77350c55f/detail", "id": "0196a001-40be-7789-b30b-57a77350c55f"}, "version": "1.0"} 
+
+05-05-2025 16:02:44 DEBUG  Provision: get_tasks_by_id: 1765: Retrieving task details by the API "get_tasks_by_id" using task ID: 0196a001-40be-7789-b30b-57a77350c55f, Response: {"response": {"lastUpdate": 1746441159275, "status": "PENDING", "startTime": 1746441158846, "resultLocation": "/dna/intent/api/v1/tasks/0196a001-40be-7789-b30b-57a77350c55f/detail", "id": "0196a001-40be-7789-b30b-57a77350c55f"}, "version": "1.0"} 
+
+05-05-2025 16:02:44 DEBUG  Provision: get_tasks_by_id: 1773: Task Status: {"lastUpdate": 1746441159275, "status": "PENDING", "startTime": 1746441158846, "resultLocation": "/dna/intent/api/v1/tasks/0196a001-40be-7789-b30b-57a77350c55f/detail", "id": "0196a001-40be-7789-b30b-57a77350c55f"} 
+
+05-05-2025 16:02:44 DEBUG  Provision: check_tasks_response_status: 1828: Getting tasks details from task ID 0196a001-40be-7789-b30b-57a77350c55f: {"lastUpdate": 1746441159275, "status": "PENDING", "startTime": 1746441158846, "resultLocation": "/dna/intent/api/v1/tasks/0196a001-40be-7789-b30b-57a77350c55f/detail", "id": "0196a001-40be-7789-b30b-57a77350c55f"} 
+
+05-05-2025 16:02:44 DEBUG  Provision: check_tasks_response_status: 1844: Progress is PENDING for task ID: 0196a001-40be-7789-b30b-57a77350c55f 
+
+05-05-2025 16:02:44 DEBUG  Provision: get_tasks_by_id: 1764: Task Details: {"response": {"lastUpdate": 1746441159275, "status": "PENDING", "startTime": 1746441158846, "resultLocation": "/dna/intent/api/v1/tasks/0196a001-40be-7789-b30b-57a77350c55f/detail", "id": "0196a001-40be-7789-b30b-57a77350c55f"}, "version": "1.0"} 
+
+05-05-2025 16:02:44 DEBUG  Provision: get_tasks_by_id: 1765: Retrieving task details by the API "get_tasks_by_id" using task ID: 0196a001-40be-7789-b30b-57a77350c55f, Response: {"response": {"lastUpdate": 1746441159275, "status": "PENDING", "startTime": 1746441158846, "resultLocation": "/dna/intent/api/v1/tasks/0196a001-40be-7789-b30b-57a77350c55f/detail", "id": "0196a001-40be-7789-b30b-57a77350c55f"}, "version": "1.0"} 
+
+05-05-2025 16:02:44 DEBUG  Provision: get_tasks_by_id: 1773: Task Status: {"lastUpdate": 1746441159275, "status": "PENDING", "startTime": 1746441158846, "resultLocation": "/dna/intent/api/v1/tasks/0196a001-40be-7789-b30b-57a77350c55f/detail", "id": "0196a001-40be-7789-b30b-57a77350c55f"} 
+
+05-05-2025 16:02:44 DEBUG  Provision: check_tasks_response_status: 1828: Getting tasks details from task ID 0196a001-40be-7789-b30b-57a77350c55f: {"lastUpdate": 1746441159275, "status": "PENDING", "startTime": 1746441158846, "resultLocation": "/dna/intent/api/v1/tasks/0196a001-40be-7789-b30b-57a77350c55f/detail", "id": "0196a001-40be-7789-b30b-57a77350c55f"} 
+
+05-05-2025 16:02:44 DEBUG  Provision: check_tasks_response_status: 1844: Progress is PENDING for task ID: 0196a001-40be-7789-b30b-57a77350c55f 
+
+05-05-2025 16:02:44 DEBUG  Provision: get_tasks_by_id: 1764: Task Details: {"response": {"lastUpdate": 1746441159275, "status": "PENDING", "startTime": 1746441158846, "resultLocation": "/dna/intent/api/v1/tasks/0196a001-40be-7789-b30b-57a77350c55f/detail", "id": "0196a001-40be-7789-b30b-57a77350c55f"}, "version": "1.0"} 
+
+05-05-2025 16:02:44 DEBUG  Provision: get_tasks_by_id: 1765: Retrieving task details by the API "get_tasks_by_id" using task ID: 0196a001-40be-7789-b30b-57a77350c55f, Response: {"response": {"lastUpdate": 1746441159275, "status": "PENDING", "startTime": 1746441158846, "resultLocation": "/dna/intent/api/v1/tasks/0196a001-40be-7789-b30b-57a77350c55f/detail", "id": "0196a001-40be-7789-b30b-57a77350c55f"}, "version": "1.0"} 
+
+05-05-2025 16:02:44 DEBUG  Provision: get_tasks_by_id: 1773: Task Status: {"lastUpdate": 1746441159275, "status": "PENDING", "startTime": 1746441158846, "resultLocation": "/dna/intent/api/v1/tasks/0196a001-40be-7789-b30b-57a77350c55f/detail", "id": "0196a001-40be-7789-b30b-57a77350c55f"} 
+
+05-05-2025 16:02:44 DEBUG  Provision: check_tasks_response_status: 1828: Getting tasks details from task ID 0196a001-40be-7789-b30b-57a77350c55f: {"lastUpdate": 1746441159275, "status": "PENDING", "startTime": 1746441158846, "resultLocation": "/dna/intent/api/v1/tasks/0196a001-40be-7789-b30b-57a77350c55f/detail", "id": "0196a001-40be-7789-b30b-57a77350c55f"} 
+
+05-05-2025 16:02:44 DEBUG  Provision: check_tasks_response_status: 1844: Progress is PENDING for task ID: 0196a001-40be-7789-b30b-57a77350c55f 
+
+05-05-2025 16:02:45 DEBUG  Provision: get_tasks_by_id: 1764: Task Details: {"response": {"lastUpdate": 1746441159275, "status": "PENDING", "startTime": 1746441158846, "resultLocation": "/dna/intent/api/v1/tasks/0196a001-40be-7789-b30b-57a77350c55f/detail", "id": "0196a001-40be-7789-b30b-57a77350c55f"}, "version": "1.0"} 
+
+05-05-2025 16:02:45 DEBUG  Provision: get_tasks_by_id: 1765: Retrieving task details by the API "get_tasks_by_id" using task ID: 0196a001-40be-7789-b30b-57a77350c55f, Response: {"response": {"lastUpdate": 1746441159275, "status": "PENDING", "startTime": 1746441158846, "resultLocation": "/dna/intent/api/v1/tasks/0196a001-40be-7789-b30b-57a77350c55f/detail", "id": "0196a001-40be-7789-b30b-57a77350c55f"}, "version": "1.0"} 
+
+05-05-2025 16:02:45 DEBUG  Provision: get_tasks_by_id: 1773: Task Status: {"lastUpdate": 1746441159275, "status": "PENDING", "startTime": 1746441158846, "resultLocation": "/dna/intent/api/v1/tasks/0196a001-40be-7789-b30b-57a77350c55f/detail", "id": "0196a001-40be-7789-b30b-57a77350c55f"} 
+
+05-05-2025 16:02:45 DEBUG  Provision: check_tasks_response_status: 1828: Getting tasks details from task ID 0196a001-40be-7789-b30b-57a77350c55f: {"lastUpdate": 1746441159275, "status": "PENDING", "startTime": 1746441158846, "resultLocation": "/dna/intent/api/v1/tasks/0196a001-40be-7789-b30b-57a77350c55f/detail", "id": "0196a001-40be-7789-b30b-57a77350c55f"} 
+
+05-05-2025 16:02:45 DEBUG  Provision: check_tasks_response_status: 1844: Progress is PENDING for task ID: 0196a001-40be-7789-b30b-57a77350c55f 
+
+05-05-2025 16:02:45 DEBUG  Provision: get_tasks_by_id: 1764: Task Details: {"response": {"lastUpdate": 1746441159275, "status": "PENDING", "startTime": 1746441158846, "resultLocation": "/dna/intent/api/v1/tasks/0196a001-40be-7789-b30b-57a77350c55f/detail", "id": "0196a001-40be-7789-b30b-57a77350c55f"}, "version": "1.0"} 
+
+05-05-2025 16:02:45 DEBUG  Provision: get_tasks_by_id: 1765: Retrieving task details by the API "get_tasks_by_id" using task ID: 0196a001-40be-7789-b30b-57a77350c55f, Response: {"response": {"lastUpdate": 1746441159275, "status": "PENDING", "startTime": 1746441158846, "resultLocation": "/dna/intent/api/v1/tasks/0196a001-40be-7789-b30b-57a77350c55f/detail", "id": "0196a001-40be-7789-b30b-57a77350c55f"}, "version": "1.0"} 
+
+05-05-2025 16:02:45 DEBUG  Provision: get_tasks_by_id: 1773: Task Status: {"lastUpdate": 1746441159275, "status": "PENDING", "startTime": 1746441158846, "resultLocation": "/dna/intent/api/v1/tasks/0196a001-40be-7789-b30b-57a77350c55f/detail", "id": "0196a001-40be-7789-b30b-57a77350c55f"} 
+
+05-05-2025 16:02:45 DEBUG  Provision: check_tasks_response_status: 1828: Getting tasks details from task ID 0196a001-40be-7789-b30b-57a77350c55f: {"lastUpdate": 1746441159275, "status": "PENDING", "startTime": 1746441158846, "resultLocation": "/dna/intent/api/v1/tasks/0196a001-40be-7789-b30b-57a77350c55f/detail", "id": "0196a001-40be-7789-b30b-57a77350c55f"} 
+
+05-05-2025 16:02:45 DEBUG  Provision: check_tasks_response_status: 1844: Progress is PENDING for task ID: 0196a001-40be-7789-b30b-57a77350c55f 
+
+05-05-2025 16:02:45 DEBUG  Provision: get_tasks_by_id: 1764: Task Details: {"response": {"lastUpdate": 1746441159275, "status": "PENDING", "startTime": 1746441158846, "resultLocation": "/dna/intent/api/v1/tasks/0196a001-40be-7789-b30b-57a77350c55f/detail", "id": "0196a001-40be-7789-b30b-57a77350c55f"}, "version": "1.0"} 
+
+05-05-2025 16:02:45 DEBUG  Provision: get_tasks_by_id: 1765: Retrieving task details by the API "get_tasks_by_id" using task ID: 0196a001-40be-7789-b30b-57a77350c55f, Response: {"response": {"lastUpdate": 1746441159275, "status": "PENDING", "startTime": 1746441158846, "resultLocation": "/dna/intent/api/v1/tasks/0196a001-40be-7789-b30b-57a77350c55f/detail", "id": "0196a001-40be-7789-b30b-57a77350c55f"}, "version": "1.0"} 
+
+05-05-2025 16:02:45 DEBUG  Provision: get_tasks_by_id: 1773: Task Status: {"lastUpdate": 1746441159275, "status": "PENDING", "startTime": 1746441158846, "resultLocation": "/dna/intent/api/v1/tasks/0196a001-40be-7789-b30b-57a77350c55f/detail", "id": "0196a001-40be-7789-b30b-57a77350c55f"} 
+
+05-05-2025 16:02:45 DEBUG  Provision: check_tasks_response_status: 1828: Getting tasks details from task ID 0196a001-40be-7789-b30b-57a77350c55f: {"lastUpdate": 1746441159275, "status": "PENDING", "startTime": 1746441158846, "resultLocation": "/dna/intent/api/v1/tasks/0196a001-40be-7789-b30b-57a77350c55f/detail", "id": "0196a001-40be-7789-b30b-57a77350c55f"} 
+
+05-05-2025 16:02:45 DEBUG  Provision: check_tasks_response_status: 1844: Progress is PENDING for task ID: 0196a001-40be-7789-b30b-57a77350c55f 
+
+05-05-2025 16:02:46 DEBUG  Provision: get_tasks_by_id: 1764: Task Details: {"response": {"lastUpdate": 1746441159275, "status": "PENDING", "startTime": 1746441158846, "resultLocation": "/dna/intent/api/v1/tasks/0196a001-40be-7789-b30b-57a77350c55f/detail", "id": "0196a001-40be-7789-b30b-57a77350c55f"}, "version": "1.0"} 
+
+05-05-2025 16:02:46 DEBUG  Provision: get_tasks_by_id: 1765: Retrieving task details by the API "get_tasks_by_id" using task ID: 0196a001-40be-7789-b30b-57a77350c55f, Response: {"response": {"lastUpdate": 1746441159275, "status": "PENDING", "startTime": 1746441158846, "resultLocation": "/dna/intent/api/v1/tasks/0196a001-40be-7789-b30b-57a77350c55f/detail", "id": "0196a001-40be-7789-b30b-57a77350c55f"}, "version": "1.0"} 
+
+05-05-2025 16:02:46 DEBUG  Provision: get_tasks_by_id: 1773: Task Status: {"lastUpdate": 1746441159275, "status": "PENDING", "startTime": 1746441158846, "resultLocation": "/dna/intent/api/v1/tasks/0196a001-40be-7789-b30b-57a77350c55f/detail", "id": "0196a001-40be-7789-b30b-57a77350c55f"} 
+
+05-05-2025 16:02:46 DEBUG  Provision: check_tasks_response_status: 1828: Getting tasks details from task ID 0196a001-40be-7789-b30b-57a77350c55f: {"lastUpdate": 1746441159275, "status": "PENDING", "startTime": 1746441158846, "resultLocation": "/dna/intent/api/v1/tasks/0196a001-40be-7789-b30b-57a77350c55f/detail", "id": "0196a001-40be-7789-b30b-57a77350c55f"} 
+
+05-05-2025 16:02:46 DEBUG  Provision: check_tasks_response_status: 1844: Progress is PENDING for task ID: 0196a001-40be-7789-b30b-57a77350c55f 
+
+05-05-2025 16:02:46 DEBUG  Provision: get_tasks_by_id: 1764: Task Details: {"response": {"lastUpdate": 1746441159275, "status": "PENDING", "startTime": 1746441158846, "resultLocation": "/dna/intent/api/v1/tasks/0196a001-40be-7789-b30b-57a77350c55f/detail", "id": "0196a001-40be-7789-b30b-57a77350c55f"}, "version": "1.0"} 
+
+05-05-2025 16:02:46 DEBUG  Provision: get_tasks_by_id: 1765: Retrieving task details by the API "get_tasks_by_id" using task ID: 0196a001-40be-7789-b30b-57a77350c55f, Response: {"response": {"lastUpdate": 1746441159275, "status": "PENDING", "startTime": 1746441158846, "resultLocation": "/dna/intent/api/v1/tasks/0196a001-40be-7789-b30b-57a77350c55f/detail", "id": "0196a001-40be-7789-b30b-57a77350c55f"}, "version": "1.0"} 
+
+05-05-2025 16:02:46 DEBUG  Provision: get_tasks_by_id: 1773: Task Status: {"lastUpdate": 1746441159275, "status": "PENDING", "startTime": 1746441158846, "resultLocation": "/dna/intent/api/v1/tasks/0196a001-40be-7789-b30b-57a77350c55f/detail", "id": "0196a001-40be-7789-b30b-57a77350c55f"} 
+
+05-05-2025 16:02:46 DEBUG  Provision: check_tasks_response_status: 1828: Getting tasks details from task ID 0196a001-40be-7789-b30b-57a77350c55f: {"lastUpdate": 1746441159275, "status": "PENDING", "startTime": 1746441158846, "resultLocation": "/dna/intent/api/v1/tasks/0196a001-40be-7789-b30b-57a77350c55f/detail", "id": "0196a001-40be-7789-b30b-57a77350c55f"} 
+
+05-05-2025 16:02:46 DEBUG  Provision: check_tasks_response_status: 1844: Progress is PENDING for task ID: 0196a001-40be-7789-b30b-57a77350c55f 
+
+05-05-2025 16:02:46 DEBUG  Provision: get_tasks_by_id: 1764: Task Details: {"response": {"lastUpdate": 1746441166599, "status": "PENDING", "startTime": 1746441158846, "resultLocation": "/dna/intent/api/v1/tasks/0196a001-40be-7789-b30b-57a77350c55f/detail", "id": "0196a001-40be-7789-b30b-57a77350c55f"}, "version": "1.0"} 
+
+05-05-2025 16:02:46 DEBUG  Provision: get_tasks_by_id: 1765: Retrieving task details by the API "get_tasks_by_id" using task ID: 0196a001-40be-7789-b30b-57a77350c55f, Response: {"response": {"lastUpdate": 1746441166599, "status": "PENDING", "startTime": 1746441158846, "resultLocation": "/dna/intent/api/v1/tasks/0196a001-40be-7789-b30b-57a77350c55f/detail", "id": "0196a001-40be-7789-b30b-57a77350c55f"}, "version": "1.0"} 
+
+05-05-2025 16:02:46 DEBUG  Provision: get_tasks_by_id: 1773: Task Status: {"lastUpdate": 1746441166599, "status": "PENDING", "startTime": 1746441158846, "resultLocation": "/dna/intent/api/v1/tasks/0196a001-40be-7789-b30b-57a77350c55f/detail", "id": "0196a001-40be-7789-b30b-57a77350c55f"} 
+
+05-05-2025 16:02:46 DEBUG  Provision: check_tasks_response_status: 1828: Getting tasks details from task ID 0196a001-40be-7789-b30b-57a77350c55f: {"lastUpdate": 1746441166599, "status": "PENDING", "startTime": 1746441158846, "resultLocation": "/dna/intent/api/v1/tasks/0196a001-40be-7789-b30b-57a77350c55f/detail", "id": "0196a001-40be-7789-b30b-57a77350c55f"} 
+
+05-05-2025 16:02:46 DEBUG  Provision: check_tasks_response_status: 1844: Progress is PENDING for task ID: 0196a001-40be-7789-b30b-57a77350c55f 
+
+05-05-2025 16:02:47 DEBUG  Provision: get_tasks_by_id: 1764: Task Details: {"response": {"lastUpdate": 1746441166599, "status": "PENDING", "startTime": 1746441158846, "resultLocation": "/dna/intent/api/v1/tasks/0196a001-40be-7789-b30b-57a77350c55f/detail", "id": "0196a001-40be-7789-b30b-57a77350c55f"}, "version": "1.0"} 
+
+05-05-2025 16:02:47 DEBUG  Provision: get_tasks_by_id: 1765: Retrieving task details by the API "get_tasks_by_id" using task ID: 0196a001-40be-7789-b30b-57a77350c55f, Response: {"response": {"lastUpdate": 1746441166599, "status": "PENDING", "startTime": 1746441158846, "resultLocation": "/dna/intent/api/v1/tasks/0196a001-40be-7789-b30b-57a77350c55f/detail", "id": "0196a001-40be-7789-b30b-57a77350c55f"}, "version": "1.0"} 
+
+05-05-2025 16:02:47 DEBUG  Provision: get_tasks_by_id: 1773: Task Status: {"lastUpdate": 1746441166599, "status": "PENDING", "startTime": 1746441158846, "resultLocation": "/dna/intent/api/v1/tasks/0196a001-40be-7789-b30b-57a77350c55f/detail", "id": "0196a001-40be-7789-b30b-57a77350c55f"} 
+
+05-05-2025 16:02:47 DEBUG  Provision: check_tasks_response_status: 1828: Getting tasks details from task ID 0196a001-40be-7789-b30b-57a77350c55f: {"lastUpdate": 1746441166599, "status": "PENDING", "startTime": 1746441158846, "resultLocation": "/dna/intent/api/v1/tasks/0196a001-40be-7789-b30b-57a77350c55f/detail", "id": "0196a001-40be-7789-b30b-57a77350c55f"} 
+
+05-05-2025 16:02:47 DEBUG  Provision: check_tasks_response_status: 1844: Progress is PENDING for task ID: 0196a001-40be-7789-b30b-57a77350c55f 
+
+05-05-2025 16:02:47 DEBUG  Provision: get_tasks_by_id: 1764: Task Details: {"response": {"lastUpdate": 1746441166599, "status": "PENDING", "startTime": 1746441158846, "resultLocation": "/dna/intent/api/v1/tasks/0196a001-40be-7789-b30b-57a77350c55f/detail", "id": "0196a001-40be-7789-b30b-57a77350c55f"}, "version": "1.0"} 
+
+05-05-2025 16:02:47 DEBUG  Provision: get_tasks_by_id: 1765: Retrieving task details by the API "get_tasks_by_id" using task ID: 0196a001-40be-7789-b30b-57a77350c55f, Response: {"response": {"lastUpdate": 1746441166599, "status": "PENDING", "startTime": 1746441158846, "resultLocation": "/dna/intent/api/v1/tasks/0196a001-40be-7789-b30b-57a77350c55f/detail", "id": "0196a001-40be-7789-b30b-57a77350c55f"}, "version": "1.0"} 
+
+05-05-2025 16:02:47 DEBUG  Provision: get_tasks_by_id: 1773: Task Status: {"lastUpdate": 1746441166599, "status": "PENDING", "startTime": 1746441158846, "resultLocation": "/dna/intent/api/v1/tasks/0196a001-40be-7789-b30b-57a77350c55f/detail", "id": "0196a001-40be-7789-b30b-57a77350c55f"} 
+
+05-05-2025 16:02:47 DEBUG  Provision: check_tasks_response_status: 1828: Getting tasks details from task ID 0196a001-40be-7789-b30b-57a77350c55f: {"lastUpdate": 1746441166599, "status": "PENDING", "startTime": 1746441158846, "resultLocation": "/dna/intent/api/v1/tasks/0196a001-40be-7789-b30b-57a77350c55f/detail", "id": "0196a001-40be-7789-b30b-57a77350c55f"} 
+
+05-05-2025 16:02:47 DEBUG  Provision: check_tasks_response_status: 1844: Progress is PENDING for task ID: 0196a001-40be-7789-b30b-57a77350c55f 
+
+05-05-2025 16:02:47 DEBUG  Provision: get_tasks_by_id: 1764: Task Details: {"response": {"lastUpdate": 1746441166599, "status": "PENDING", "startTime": 1746441158846, "resultLocation": "/dna/intent/api/v1/tasks/0196a001-40be-7789-b30b-57a77350c55f/detail", "id": "0196a001-40be-7789-b30b-57a77350c55f"}, "version": "1.0"} 
+
+05-05-2025 16:02:47 DEBUG  Provision: get_tasks_by_id: 1765: Retrieving task details by the API "get_tasks_by_id" using task ID: 0196a001-40be-7789-b30b-57a77350c55f, Response: {"response": {"lastUpdate": 1746441166599, "status": "PENDING", "startTime": 1746441158846, "resultLocation": "/dna/intent/api/v1/tasks/0196a001-40be-7789-b30b-57a77350c55f/detail", "id": "0196a001-40be-7789-b30b-57a77350c55f"}, "version": "1.0"} 
+
+05-05-2025 16:02:47 DEBUG  Provision: get_tasks_by_id: 1773: Task Status: {"lastUpdate": 1746441166599, "status": "PENDING", "startTime": 1746441158846, "resultLocation": "/dna/intent/api/v1/tasks/0196a001-40be-7789-b30b-57a77350c55f/detail", "id": "0196a001-40be-7789-b30b-57a77350c55f"} 
+
+05-05-2025 16:02:47 DEBUG  Provision: check_tasks_response_status: 1828: Getting tasks details from task ID 0196a001-40be-7789-b30b-57a77350c55f: {"lastUpdate": 1746441166599, "status": "PENDING", "startTime": 1746441158846, "resultLocation": "/dna/intent/api/v1/tasks/0196a001-40be-7789-b30b-57a77350c55f/detail", "id": "0196a001-40be-7789-b30b-57a77350c55f"} 
+
+05-05-2025 16:02:47 DEBUG  Provision: check_tasks_response_status: 1844: Progress is PENDING for task ID: 0196a001-40be-7789-b30b-57a77350c55f 
+
+05-05-2025 16:02:47 DEBUG  Provision: get_tasks_by_id: 1764: Task Details: {"response": {"lastUpdate": 1746441166599, "status": "PENDING", "startTime": 1746441158846, "resultLocation": "/dna/intent/api/v1/tasks/0196a001-40be-7789-b30b-57a77350c55f/detail", "id": "0196a001-40be-7789-b30b-57a77350c55f"}, "version": "1.0"} 
+
+05-05-2025 16:02:47 DEBUG  Provision: get_tasks_by_id: 1765: Retrieving task details by the API "get_tasks_by_id" using task ID: 0196a001-40be-7789-b30b-57a77350c55f, Response: {"response": {"lastUpdate": 1746441166599, "status": "PENDING", "startTime": 1746441158846, "resultLocation": "/dna/intent/api/v1/tasks/0196a001-40be-7789-b30b-57a77350c55f/detail", "id": "0196a001-40be-7789-b30b-57a77350c55f"}, "version": "1.0"} 
+
+05-05-2025 16:02:47 DEBUG  Provision: get_tasks_by_id: 1773: Task Status: {"lastUpdate": 1746441166599, "status": "PENDING", "startTime": 1746441158846, "resultLocation": "/dna/intent/api/v1/tasks/0196a001-40be-7789-b30b-57a77350c55f/detail", "id": "0196a001-40be-7789-b30b-57a77350c55f"} 
+
+05-05-2025 16:02:47 DEBUG  Provision: check_tasks_response_status: 1828: Getting tasks details from task ID 0196a001-40be-7789-b30b-57a77350c55f: {"lastUpdate": 1746441166599, "status": "PENDING", "startTime": 1746441158846, "resultLocation": "/dna/intent/api/v1/tasks/0196a001-40be-7789-b30b-57a77350c55f/detail", "id": "0196a001-40be-7789-b30b-57a77350c55f"} 
+
+05-05-2025 16:02:47 DEBUG  Provision: check_tasks_response_status: 1844: Progress is PENDING for task ID: 0196a001-40be-7789-b30b-57a77350c55f 
+
+05-05-2025 16:02:47 DEBUG  Provision: get_tasks_by_id: 1764: Task Details: {"response": {"lastUpdate": 1746441166599, "status": "PENDING", "startTime": 1746441158846, "resultLocation": "/dna/intent/api/v1/tasks/0196a001-40be-7789-b30b-57a77350c55f/detail", "id": "0196a001-40be-7789-b30b-57a77350c55f"}, "version": "1.0"} 
+
+05-05-2025 16:02:47 DEBUG  Provision: get_tasks_by_id: 1765: Retrieving task details by the API "get_tasks_by_id" using task ID: 0196a001-40be-7789-b30b-57a77350c55f, Response: {"response": {"lastUpdate": 1746441166599, "status": "PENDING", "startTime": 1746441158846, "resultLocation": "/dna/intent/api/v1/tasks/0196a001-40be-7789-b30b-57a77350c55f/detail", "id": "0196a001-40be-7789-b30b-57a77350c55f"}, "version": "1.0"} 
+
+05-05-2025 16:02:47 DEBUG  Provision: get_tasks_by_id: 1773: Task Status: {"lastUpdate": 1746441166599, "status": "PENDING", "startTime": 1746441158846, "resultLocation": "/dna/intent/api/v1/tasks/0196a001-40be-7789-b30b-57a77350c55f/detail", "id": "0196a001-40be-7789-b30b-57a77350c55f"} 
+
+05-05-2025 16:02:47 DEBUG  Provision: check_tasks_response_status: 1828: Getting tasks details from task ID 0196a001-40be-7789-b30b-57a77350c55f: {"lastUpdate": 1746441166599, "status": "PENDING", "startTime": 1746441158846, "resultLocation": "/dna/intent/api/v1/tasks/0196a001-40be-7789-b30b-57a77350c55f/detail", "id": "0196a001-40be-7789-b30b-57a77350c55f"} 
+
+05-05-2025 16:02:47 DEBUG  Provision: check_tasks_response_status: 1844: Progress is PENDING for task ID: 0196a001-40be-7789-b30b-57a77350c55f 
+
+05-05-2025 16:02:48 DEBUG  Provision: get_tasks_by_id: 1764: Task Details: {"response": {"lastUpdate": 1746441166599, "status": "PENDING", "startTime": 1746441158846, "resultLocation": "/dna/intent/api/v1/tasks/0196a001-40be-7789-b30b-57a77350c55f/detail", "id": "0196a001-40be-7789-b30b-57a77350c55f"}, "version": "1.0"} 
+
+05-05-2025 16:02:48 DEBUG  Provision: get_tasks_by_id: 1765: Retrieving task details by the API "get_tasks_by_id" using task ID: 0196a001-40be-7789-b30b-57a77350c55f, Response: {"response": {"lastUpdate": 1746441166599, "status": "PENDING", "startTime": 1746441158846, "resultLocation": "/dna/intent/api/v1/tasks/0196a001-40be-7789-b30b-57a77350c55f/detail", "id": "0196a001-40be-7789-b30b-57a77350c55f"}, "version": "1.0"} 
+
+05-05-2025 16:02:48 DEBUG  Provision: get_tasks_by_id: 1773: Task Status: {"lastUpdate": 1746441166599, "status": "PENDING", "startTime": 1746441158846, "resultLocation": "/dna/intent/api/v1/tasks/0196a001-40be-7789-b30b-57a77350c55f/detail", "id": "0196a001-40be-7789-b30b-57a77350c55f"} 
+
+05-05-2025 16:02:48 DEBUG  Provision: check_tasks_response_status: 1828: Getting tasks details from task ID 0196a001-40be-7789-b30b-57a77350c55f: {"lastUpdate": 1746441166599, "status": "PENDING", "startTime": 1746441158846, "resultLocation": "/dna/intent/api/v1/tasks/0196a001-40be-7789-b30b-57a77350c55f/detail", "id": "0196a001-40be-7789-b30b-57a77350c55f"} 
+
+05-05-2025 16:02:48 DEBUG  Provision: check_tasks_response_status: 1844: Progress is PENDING for task ID: 0196a001-40be-7789-b30b-57a77350c55f 
+
+05-05-2025 16:02:48 DEBUG  Provision: get_tasks_by_id: 1764: Task Details: {"response": {"lastUpdate": 1746441166599, "status": "PENDING", "startTime": 1746441158846, "resultLocation": "/dna/intent/api/v1/tasks/0196a001-40be-7789-b30b-57a77350c55f/detail", "id": "0196a001-40be-7789-b30b-57a77350c55f"}, "version": "1.0"} 
+
+05-05-2025 16:02:48 DEBUG  Provision: get_tasks_by_id: 1765: Retrieving task details by the API "get_tasks_by_id" using task ID: 0196a001-40be-7789-b30b-57a77350c55f, Response: {"response": {"lastUpdate": 1746441166599, "status": "PENDING", "startTime": 1746441158846, "resultLocation": "/dna/intent/api/v1/tasks/0196a001-40be-7789-b30b-57a77350c55f/detail", "id": "0196a001-40be-7789-b30b-57a77350c55f"}, "version": "1.0"} 
+
+05-05-2025 16:02:48 DEBUG  Provision: get_tasks_by_id: 1773: Task Status: {"lastUpdate": 1746441166599, "status": "PENDING", "startTime": 1746441158846, "resultLocation": "/dna/intent/api/v1/tasks/0196a001-40be-7789-b30b-57a77350c55f/detail", "id": "0196a001-40be-7789-b30b-57a77350c55f"} 
+
+05-05-2025 16:02:48 DEBUG  Provision: check_tasks_response_status: 1828: Getting tasks details from task ID 0196a001-40be-7789-b30b-57a77350c55f: {"lastUpdate": 1746441166599, "status": "PENDING", "startTime": 1746441158846, "resultLocation": "/dna/intent/api/v1/tasks/0196a001-40be-7789-b30b-57a77350c55f/detail", "id": "0196a001-40be-7789-b30b-57a77350c55f"} 
+
+05-05-2025 16:02:48 DEBUG  Provision: check_tasks_response_status: 1844: Progress is PENDING for task ID: 0196a001-40be-7789-b30b-57a77350c55f 
+
+05-05-2025 16:02:48 DEBUG  Provision: get_tasks_by_id: 1764: Task Details: {"response": {"lastUpdate": 1746441166599, "status": "PENDING", "startTime": 1746441158846, "resultLocation": "/dna/intent/api/v1/tasks/0196a001-40be-7789-b30b-57a77350c55f/detail", "id": "0196a001-40be-7789-b30b-57a77350c55f"}, "version": "1.0"} 
+
+05-05-2025 16:02:48 DEBUG  Provision: get_tasks_by_id: 1765: Retrieving task details by the API "get_tasks_by_id" using task ID: 0196a001-40be-7789-b30b-57a77350c55f, Response: {"response": {"lastUpdate": 1746441166599, "status": "PENDING", "startTime": 1746441158846, "resultLocation": "/dna/intent/api/v1/tasks/0196a001-40be-7789-b30b-57a77350c55f/detail", "id": "0196a001-40be-7789-b30b-57a77350c55f"}, "version": "1.0"} 
+
+05-05-2025 16:02:48 DEBUG  Provision: get_tasks_by_id: 1773: Task Status: {"lastUpdate": 1746441166599, "status": "PENDING", "startTime": 1746441158846, "resultLocation": "/dna/intent/api/v1/tasks/0196a001-40be-7789-b30b-57a77350c55f/detail", "id": "0196a001-40be-7789-b30b-57a77350c55f"} 
+
+05-05-2025 16:02:48 DEBUG  Provision: check_tasks_response_status: 1828: Getting tasks details from task ID 0196a001-40be-7789-b30b-57a77350c55f: {"lastUpdate": 1746441166599, "status": "PENDING", "startTime": 1746441158846, "resultLocation": "/dna/intent/api/v1/tasks/0196a001-40be-7789-b30b-57a77350c55f/detail", "id": "0196a001-40be-7789-b30b-57a77350c55f"} 
+
+05-05-2025 16:02:48 DEBUG  Provision: check_tasks_response_status: 1844: Progress is PENDING for task ID: 0196a001-40be-7789-b30b-57a77350c55f 
+
+05-05-2025 16:02:48 DEBUG  Provision: get_tasks_by_id: 1764: Task Details: {"response": {"lastUpdate": 1746441166599, "status": "PENDING", "startTime": 1746441158846, "resultLocation": "/dna/intent/api/v1/tasks/0196a001-40be-7789-b30b-57a77350c55f/detail", "id": "0196a001-40be-7789-b30b-57a77350c55f"}, "version": "1.0"} 
+
+05-05-2025 16:02:48 DEBUG  Provision: get_tasks_by_id: 1765: Retrieving task details by the API "get_tasks_by_id" using task ID: 0196a001-40be-7789-b30b-57a77350c55f, Response: {"response": {"lastUpdate": 1746441166599, "status": "PENDING", "startTime": 1746441158846, "resultLocation": "/dna/intent/api/v1/tasks/0196a001-40be-7789-b30b-57a77350c55f/detail", "id": "0196a001-40be-7789-b30b-57a77350c55f"}, "version": "1.0"} 
+
+05-05-2025 16:02:48 DEBUG  Provision: get_tasks_by_id: 1773: Task Status: {"lastUpdate": 1746441166599, "status": "PENDING", "startTime": 1746441158846, "resultLocation": "/dna/intent/api/v1/tasks/0196a001-40be-7789-b30b-57a77350c55f/detail", "id": "0196a001-40be-7789-b30b-57a77350c55f"} 
+
+05-05-2025 16:02:48 DEBUG  Provision: check_tasks_response_status: 1828: Getting tasks details from task ID 0196a001-40be-7789-b30b-57a77350c55f: {"lastUpdate": 1746441166599, "status": "PENDING", "startTime": 1746441158846, "resultLocation": "/dna/intent/api/v1/tasks/0196a001-40be-7789-b30b-57a77350c55f/detail", "id": "0196a001-40be-7789-b30b-57a77350c55f"} 
+
+05-05-2025 16:02:48 DEBUG  Provision: check_tasks_response_status: 1844: Progress is PENDING for task ID: 0196a001-40be-7789-b30b-57a77350c55f 
+
+05-05-2025 16:02:49 DEBUG  Provision: get_tasks_by_id: 1764: Task Details: {"response": {"lastUpdate": 1746441166599, "status": "PENDING", "startTime": 1746441158846, "resultLocation": "/dna/intent/api/v1/tasks/0196a001-40be-7789-b30b-57a77350c55f/detail", "id": "0196a001-40be-7789-b30b-57a77350c55f"}, "version": "1.0"} 
+
+05-05-2025 16:02:49 DEBUG  Provision: get_tasks_by_id: 1765: Retrieving task details by the API "get_tasks_by_id" using task ID: 0196a001-40be-7789-b30b-57a77350c55f, Response: {"response": {"lastUpdate": 1746441166599, "status": "PENDING", "startTime": 1746441158846, "resultLocation": "/dna/intent/api/v1/tasks/0196a001-40be-7789-b30b-57a77350c55f/detail", "id": "0196a001-40be-7789-b30b-57a77350c55f"}, "version": "1.0"} 
+
+05-05-2025 16:02:49 DEBUG  Provision: get_tasks_by_id: 1773: Task Status: {"lastUpdate": 1746441166599, "status": "PENDING", "startTime": 1746441158846, "resultLocation": "/dna/intent/api/v1/tasks/0196a001-40be-7789-b30b-57a77350c55f/detail", "id": "0196a001-40be-7789-b30b-57a77350c55f"} 
+
+05-05-2025 16:02:49 DEBUG  Provision: check_tasks_response_status: 1828: Getting tasks details from task ID 0196a001-40be-7789-b30b-57a77350c55f: {"lastUpdate": 1746441166599, "status": "PENDING", "startTime": 1746441158846, "resultLocation": "/dna/intent/api/v1/tasks/0196a001-40be-7789-b30b-57a77350c55f/detail", "id": "0196a001-40be-7789-b30b-57a77350c55f"} 
+
+05-05-2025 16:02:49 DEBUG  Provision: check_tasks_response_status: 1844: Progress is PENDING for task ID: 0196a001-40be-7789-b30b-57a77350c55f 
+
+05-05-2025 16:02:49 DEBUG  Provision: get_tasks_by_id: 1764: Task Details: {"response": {"lastUpdate": 1746441166599, "status": "PENDING", "startTime": 1746441158846, "resultLocation": "/dna/intent/api/v1/tasks/0196a001-40be-7789-b30b-57a77350c55f/detail", "id": "0196a001-40be-7789-b30b-57a77350c55f"}, "version": "1.0"} 
+
+05-05-2025 16:02:49 DEBUG  Provision: get_tasks_by_id: 1765: Retrieving task details by the API "get_tasks_by_id" using task ID: 0196a001-40be-7789-b30b-57a77350c55f, Response: {"response": {"lastUpdate": 1746441166599, "status": "PENDING", "startTime": 1746441158846, "resultLocation": "/dna/intent/api/v1/tasks/0196a001-40be-7789-b30b-57a77350c55f/detail", "id": "0196a001-40be-7789-b30b-57a77350c55f"}, "version": "1.0"} 
+
+05-05-2025 16:02:49 DEBUG  Provision: get_tasks_by_id: 1773: Task Status: {"lastUpdate": 1746441166599, "status": "PENDING", "startTime": 1746441158846, "resultLocation": "/dna/intent/api/v1/tasks/0196a001-40be-7789-b30b-57a77350c55f/detail", "id": "0196a001-40be-7789-b30b-57a77350c55f"} 
+
+05-05-2025 16:02:49 DEBUG  Provision: check_tasks_response_status: 1828: Getting tasks details from task ID 0196a001-40be-7789-b30b-57a77350c55f: {"lastUpdate": 1746441166599, "status": "PENDING", "startTime": 1746441158846, "resultLocation": "/dna/intent/api/v1/tasks/0196a001-40be-7789-b30b-57a77350c55f/detail", "id": "0196a001-40be-7789-b30b-57a77350c55f"} 
+
+05-05-2025 16:02:49 DEBUG  Provision: check_tasks_response_status: 1844: Progress is PENDING for task ID: 0196a001-40be-7789-b30b-57a77350c55f 
+
+05-05-2025 16:02:49 DEBUG  Provision: get_tasks_by_id: 1764: Task Details: {"response": {"lastUpdate": 1746441166599, "status": "PENDING", "startTime": 1746441158846, "resultLocation": "/dna/intent/api/v1/tasks/0196a001-40be-7789-b30b-57a77350c55f/detail", "id": "0196a001-40be-7789-b30b-57a77350c55f"}, "version": "1.0"} 
+
+05-05-2025 16:02:49 DEBUG  Provision: get_tasks_by_id: 1765: Retrieving task details by the API "get_tasks_by_id" using task ID: 0196a001-40be-7789-b30b-57a77350c55f, Response: {"response": {"lastUpdate": 1746441166599, "status": "PENDING", "startTime": 1746441158846, "resultLocation": "/dna/intent/api/v1/tasks/0196a001-40be-7789-b30b-57a77350c55f/detail", "id": "0196a001-40be-7789-b30b-57a77350c55f"}, "version": "1.0"} 
+
+05-05-2025 16:02:49 DEBUG  Provision: get_tasks_by_id: 1773: Task Status: {"lastUpdate": 1746441166599, "status": "PENDING", "startTime": 1746441158846, "resultLocation": "/dna/intent/api/v1/tasks/0196a001-40be-7789-b30b-57a77350c55f/detail", "id": "0196a001-40be-7789-b30b-57a77350c55f"} 
+
+05-05-2025 16:02:49 DEBUG  Provision: check_tasks_response_status: 1828: Getting tasks details from task ID 0196a001-40be-7789-b30b-57a77350c55f: {"lastUpdate": 1746441166599, "status": "PENDING", "startTime": 1746441158846, "resultLocation": "/dna/intent/api/v1/tasks/0196a001-40be-7789-b30b-57a77350c55f/detail", "id": "0196a001-40be-7789-b30b-57a77350c55f"} 
+
+05-05-2025 16:02:49 DEBUG  Provision: check_tasks_response_status: 1844: Progress is PENDING for task ID: 0196a001-40be-7789-b30b-57a77350c55f 
+
+05-05-2025 16:02:49 DEBUG  Provision: get_tasks_by_id: 1764: Task Details: {"response": {"lastUpdate": 1746441166599, "status": "PENDING", "startTime": 1746441158846, "resultLocation": "/dna/intent/api/v1/tasks/0196a001-40be-7789-b30b-57a77350c55f/detail", "id": "0196a001-40be-7789-b30b-57a77350c55f"}, "version": "1.0"} 
+
+05-05-2025 16:02:49 DEBUG  Provision: get_tasks_by_id: 1765: Retrieving task details by the API "get_tasks_by_id" using task ID: 0196a001-40be-7789-b30b-57a77350c55f, Response: {"response": {"lastUpdate": 1746441166599, "status": "PENDING", "startTime": 1746441158846, "resultLocation": "/dna/intent/api/v1/tasks/0196a001-40be-7789-b30b-57a77350c55f/detail", "id": "0196a001-40be-7789-b30b-57a77350c55f"}, "version": "1.0"} 
+
+05-05-2025 16:02:49 DEBUG  Provision: get_tasks_by_id: 1773: Task Status: {"lastUpdate": 1746441166599, "status": "PENDING", "startTime": 1746441158846, "resultLocation": "/dna/intent/api/v1/tasks/0196a001-40be-7789-b30b-57a77350c55f/detail", "id": "0196a001-40be-7789-b30b-57a77350c55f"} 
+
+05-05-2025 16:02:49 DEBUG  Provision: check_tasks_response_status: 1828: Getting tasks details from task ID 0196a001-40be-7789-b30b-57a77350c55f: {"lastUpdate": 1746441166599, "status": "PENDING", "startTime": 1746441158846, "resultLocation": "/dna/intent/api/v1/tasks/0196a001-40be-7789-b30b-57a77350c55f/detail", "id": "0196a001-40be-7789-b30b-57a77350c55f"} 
+
+05-05-2025 16:02:49 DEBUG  Provision: check_tasks_response_status: 1844: Progress is PENDING for task ID: 0196a001-40be-7789-b30b-57a77350c55f 
+
+05-05-2025 16:02:50 DEBUG  Provision: get_tasks_by_id: 1764: Task Details: {"response": {"lastUpdate": 1746441166599, "status": "PENDING", "startTime": 1746441158846, "resultLocation": "/dna/intent/api/v1/tasks/0196a001-40be-7789-b30b-57a77350c55f/detail", "id": "0196a001-40be-7789-b30b-57a77350c55f"}, "version": "1.0"} 
+
+05-05-2025 16:02:50 DEBUG  Provision: get_tasks_by_id: 1765: Retrieving task details by the API "get_tasks_by_id" using task ID: 0196a001-40be-7789-b30b-57a77350c55f, Response: {"response": {"lastUpdate": 1746441166599, "status": "PENDING", "startTime": 1746441158846, "resultLocation": "/dna/intent/api/v1/tasks/0196a001-40be-7789-b30b-57a77350c55f/detail", "id": "0196a001-40be-7789-b30b-57a77350c55f"}, "version": "1.0"} 
+
+05-05-2025 16:02:50 DEBUG  Provision: get_tasks_by_id: 1773: Task Status: {"lastUpdate": 1746441166599, "status": "PENDING", "startTime": 1746441158846, "resultLocation": "/dna/intent/api/v1/tasks/0196a001-40be-7789-b30b-57a77350c55f/detail", "id": "0196a001-40be-7789-b30b-57a77350c55f"} 
+
+05-05-2025 16:02:50 DEBUG  Provision: check_tasks_response_status: 1828: Getting tasks details from task ID 0196a001-40be-7789-b30b-57a77350c55f: {"lastUpdate": 1746441166599, "status": "PENDING", "startTime": 1746441158846, "resultLocation": "/dna/intent/api/v1/tasks/0196a001-40be-7789-b30b-57a77350c55f/detail", "id": "0196a001-40be-7789-b30b-57a77350c55f"} 
+
+05-05-2025 16:02:50 DEBUG  Provision: check_tasks_response_status: 1844: Progress is PENDING for task ID: 0196a001-40be-7789-b30b-57a77350c55f 
+
+05-05-2025 16:02:50 DEBUG  Provision: get_tasks_by_id: 1764: Task Details: {"response": {"lastUpdate": 1746441166599, "status": "PENDING", "startTime": 1746441158846, "resultLocation": "/dna/intent/api/v1/tasks/0196a001-40be-7789-b30b-57a77350c55f/detail", "id": "0196a001-40be-7789-b30b-57a77350c55f"}, "version": "1.0"} 
+
+05-05-2025 16:02:50 DEBUG  Provision: get_tasks_by_id: 1765: Retrieving task details by the API "get_tasks_by_id" using task ID: 0196a001-40be-7789-b30b-57a77350c55f, Response: {"response": {"lastUpdate": 1746441166599, "status": "PENDING", "startTime": 1746441158846, "resultLocation": "/dna/intent/api/v1/tasks/0196a001-40be-7789-b30b-57a77350c55f/detail", "id": "0196a001-40be-7789-b30b-57a77350c55f"}, "version": "1.0"} 
+
+05-05-2025 16:02:50 DEBUG  Provision: get_tasks_by_id: 1773: Task Status: {"lastUpdate": 1746441166599, "status": "PENDING", "startTime": 1746441158846, "resultLocation": "/dna/intent/api/v1/tasks/0196a001-40be-7789-b30b-57a77350c55f/detail", "id": "0196a001-40be-7789-b30b-57a77350c55f"} 
+
+05-05-2025 16:02:50 DEBUG  Provision: check_tasks_response_status: 1828: Getting tasks details from task ID 0196a001-40be-7789-b30b-57a77350c55f: {"lastUpdate": 1746441166599, "status": "PENDING", "startTime": 1746441158846, "resultLocation": "/dna/intent/api/v1/tasks/0196a001-40be-7789-b30b-57a77350c55f/detail", "id": "0196a001-40be-7789-b30b-57a77350c55f"} 
+
+05-05-2025 16:02:50 DEBUG  Provision: check_tasks_response_status: 1844: Progress is PENDING for task ID: 0196a001-40be-7789-b30b-57a77350c55f 
+
+05-05-2025 16:02:50 DEBUG  Provision: get_tasks_by_id: 1764: Task Details: {"response": {"lastUpdate": 1746441166599, "status": "PENDING", "startTime": 1746441158846, "resultLocation": "/dna/intent/api/v1/tasks/0196a001-40be-7789-b30b-57a77350c55f/detail", "id": "0196a001-40be-7789-b30b-57a77350c55f"}, "version": "1.0"} 
+
+05-05-2025 16:02:50 DEBUG  Provision: get_tasks_by_id: 1765: Retrieving task details by the API "get_tasks_by_id" using task ID: 0196a001-40be-7789-b30b-57a77350c55f, Response: {"response": {"lastUpdate": 1746441166599, "status": "PENDING", "startTime": 1746441158846, "resultLocation": "/dna/intent/api/v1/tasks/0196a001-40be-7789-b30b-57a77350c55f/detail", "id": "0196a001-40be-7789-b30b-57a77350c55f"}, "version": "1.0"} 
+
+05-05-2025 16:02:50 DEBUG  Provision: get_tasks_by_id: 1773: Task Status: {"lastUpdate": 1746441166599, "status": "PENDING", "startTime": 1746441158846, "resultLocation": "/dna/intent/api/v1/tasks/0196a001-40be-7789-b30b-57a77350c55f/detail", "id": "0196a001-40be-7789-b30b-57a77350c55f"} 
+
+05-05-2025 16:02:50 DEBUG  Provision: check_tasks_response_status: 1828: Getting tasks details from task ID 0196a001-40be-7789-b30b-57a77350c55f: {"lastUpdate": 1746441166599, "status": "PENDING", "startTime": 1746441158846, "resultLocation": "/dna/intent/api/v1/tasks/0196a001-40be-7789-b30b-57a77350c55f/detail", "id": "0196a001-40be-7789-b30b-57a77350c55f"} 
+
+05-05-2025 16:02:50 DEBUG  Provision: check_tasks_response_status: 1844: Progress is PENDING for task ID: 0196a001-40be-7789-b30b-57a77350c55f 
+
+05-05-2025 16:02:50 DEBUG  Provision: get_tasks_by_id: 1764: Task Details: {"response": {"lastUpdate": 1746441166599, "status": "PENDING", "startTime": 1746441158846, "resultLocation": "/dna/intent/api/v1/tasks/0196a001-40be-7789-b30b-57a77350c55f/detail", "id": "0196a001-40be-7789-b30b-57a77350c55f"}, "version": "1.0"} 
+
+05-05-2025 16:02:50 DEBUG  Provision: get_tasks_by_id: 1765: Retrieving task details by the API "get_tasks_by_id" using task ID: 0196a001-40be-7789-b30b-57a77350c55f, Response: {"response": {"lastUpdate": 1746441166599, "status": "PENDING", "startTime": 1746441158846, "resultLocation": "/dna/intent/api/v1/tasks/0196a001-40be-7789-b30b-57a77350c55f/detail", "id": "0196a001-40be-7789-b30b-57a77350c55f"}, "version": "1.0"} 
+
+05-05-2025 16:02:50 DEBUG  Provision: get_tasks_by_id: 1773: Task Status: {"lastUpdate": 1746441166599, "status": "PENDING", "startTime": 1746441158846, "resultLocation": "/dna/intent/api/v1/tasks/0196a001-40be-7789-b30b-57a77350c55f/detail", "id": "0196a001-40be-7789-b30b-57a77350c55f"} 
+
+05-05-2025 16:02:50 DEBUG  Provision: check_tasks_response_status: 1828: Getting tasks details from task ID 0196a001-40be-7789-b30b-57a77350c55f: {"lastUpdate": 1746441166599, "status": "PENDING", "startTime": 1746441158846, "resultLocation": "/dna/intent/api/v1/tasks/0196a001-40be-7789-b30b-57a77350c55f/detail", "id": "0196a001-40be-7789-b30b-57a77350c55f"} 
+
+05-05-2025 16:02:50 DEBUG  Provision: check_tasks_response_status: 1844: Progress is PENDING for task ID: 0196a001-40be-7789-b30b-57a77350c55f 
+
+05-05-2025 16:02:50 DEBUG  Provision: get_tasks_by_id: 1764: Task Details: {"response": {"lastUpdate": 1746441166599, "status": "PENDING", "startTime": 1746441158846, "resultLocation": "/dna/intent/api/v1/tasks/0196a001-40be-7789-b30b-57a77350c55f/detail", "id": "0196a001-40be-7789-b30b-57a77350c55f"}, "version": "1.0"} 
+
+05-05-2025 16:02:50 DEBUG  Provision: get_tasks_by_id: 1765: Retrieving task details by the API "get_tasks_by_id" using task ID: 0196a001-40be-7789-b30b-57a77350c55f, Response: {"response": {"lastUpdate": 1746441166599, "status": "PENDING", "startTime": 1746441158846, "resultLocation": "/dna/intent/api/v1/tasks/0196a001-40be-7789-b30b-57a77350c55f/detail", "id": "0196a001-40be-7789-b30b-57a77350c55f"}, "version": "1.0"} 
+
+05-05-2025 16:02:50 DEBUG  Provision: get_tasks_by_id: 1773: Task Status: {"lastUpdate": 1746441166599, "status": "PENDING", "startTime": 1746441158846, "resultLocation": "/dna/intent/api/v1/tasks/0196a001-40be-7789-b30b-57a77350c55f/detail", "id": "0196a001-40be-7789-b30b-57a77350c55f"} 
+
+05-05-2025 16:02:50 DEBUG  Provision: check_tasks_response_status: 1828: Getting tasks details from task ID 0196a001-40be-7789-b30b-57a77350c55f: {"lastUpdate": 1746441166599, "status": "PENDING", "startTime": 1746441158846, "resultLocation": "/dna/intent/api/v1/tasks/0196a001-40be-7789-b30b-57a77350c55f/detail", "id": "0196a001-40be-7789-b30b-57a77350c55f"} 
+
+05-05-2025 16:02:50 DEBUG  Provision: check_tasks_response_status: 1844: Progress is PENDING for task ID: 0196a001-40be-7789-b30b-57a77350c55f 
+
+05-05-2025 16:02:51 DEBUG  Provision: get_tasks_by_id: 1764: Task Details: {"response": {"lastUpdate": 1746441166599, "status": "PENDING", "startTime": 1746441158846, "resultLocation": "/dna/intent/api/v1/tasks/0196a001-40be-7789-b30b-57a77350c55f/detail", "id": "0196a001-40be-7789-b30b-57a77350c55f"}, "version": "1.0"} 
+
+05-05-2025 16:02:51 DEBUG  Provision: get_tasks_by_id: 1765: Retrieving task details by the API "get_tasks_by_id" using task ID: 0196a001-40be-7789-b30b-57a77350c55f, Response: {"response": {"lastUpdate": 1746441166599, "status": "PENDING", "startTime": 1746441158846, "resultLocation": "/dna/intent/api/v1/tasks/0196a001-40be-7789-b30b-57a77350c55f/detail", "id": "0196a001-40be-7789-b30b-57a77350c55f"}, "version": "1.0"} 
+
+05-05-2025 16:02:51 DEBUG  Provision: get_tasks_by_id: 1773: Task Status: {"lastUpdate": 1746441166599, "status": "PENDING", "startTime": 1746441158846, "resultLocation": "/dna/intent/api/v1/tasks/0196a001-40be-7789-b30b-57a77350c55f/detail", "id": "0196a001-40be-7789-b30b-57a77350c55f"} 
+
+05-05-2025 16:02:51 DEBUG  Provision: check_tasks_response_status: 1828: Getting tasks details from task ID 0196a001-40be-7789-b30b-57a77350c55f: {"lastUpdate": 1746441166599, "status": "PENDING", "startTime": 1746441158846, "resultLocation": "/dna/intent/api/v1/tasks/0196a001-40be-7789-b30b-57a77350c55f/detail", "id": "0196a001-40be-7789-b30b-57a77350c55f"} 
+
+05-05-2025 16:02:51 DEBUG  Provision: check_tasks_response_status: 1844: Progress is PENDING for task ID: 0196a001-40be-7789-b30b-57a77350c55f 
+
+05-05-2025 16:02:51 DEBUG  Provision: get_tasks_by_id: 1764: Task Details: {"response": {"lastUpdate": 1746441166599, "status": "PENDING", "startTime": 1746441158846, "resultLocation": "/dna/intent/api/v1/tasks/0196a001-40be-7789-b30b-57a77350c55f/detail", "id": "0196a001-40be-7789-b30b-57a77350c55f"}, "version": "1.0"} 
+
+05-05-2025 16:02:51 DEBUG  Provision: get_tasks_by_id: 1765: Retrieving task details by the API "get_tasks_by_id" using task ID: 0196a001-40be-7789-b30b-57a77350c55f, Response: {"response": {"lastUpdate": 1746441166599, "status": "PENDING", "startTime": 1746441158846, "resultLocation": "/dna/intent/api/v1/tasks/0196a001-40be-7789-b30b-57a77350c55f/detail", "id": "0196a001-40be-7789-b30b-57a77350c55f"}, "version": "1.0"} 
+
+05-05-2025 16:02:51 DEBUG  Provision: get_tasks_by_id: 1773: Task Status: {"lastUpdate": 1746441166599, "status": "PENDING", "startTime": 1746441158846, "resultLocation": "/dna/intent/api/v1/tasks/0196a001-40be-7789-b30b-57a77350c55f/detail", "id": "0196a001-40be-7789-b30b-57a77350c55f"} 
+
+05-05-2025 16:02:51 DEBUG  Provision: check_tasks_response_status: 1828: Getting tasks details from task ID 0196a001-40be-7789-b30b-57a77350c55f: {"lastUpdate": 1746441166599, "status": "PENDING", "startTime": 1746441158846, "resultLocation": "/dna/intent/api/v1/tasks/0196a001-40be-7789-b30b-57a77350c55f/detail", "id": "0196a001-40be-7789-b30b-57a77350c55f"} 
+
+05-05-2025 16:02:51 DEBUG  Provision: check_tasks_response_status: 1844: Progress is PENDING for task ID: 0196a001-40be-7789-b30b-57a77350c55f 
+
+05-05-2025 16:02:51 DEBUG  Provision: get_tasks_by_id: 1764: Task Details: {"response": {"lastUpdate": 1746441166599, "status": "PENDING", "startTime": 1746441158846, "resultLocation": "/dna/intent/api/v1/tasks/0196a001-40be-7789-b30b-57a77350c55f/detail", "id": "0196a001-40be-7789-b30b-57a77350c55f"}, "version": "1.0"} 
+
+05-05-2025 16:02:51 DEBUG  Provision: get_tasks_by_id: 1765: Retrieving task details by the API "get_tasks_by_id" using task ID: 0196a001-40be-7789-b30b-57a77350c55f, Response: {"response": {"lastUpdate": 1746441166599, "status": "PENDING", "startTime": 1746441158846, "resultLocation": "/dna/intent/api/v1/tasks/0196a001-40be-7789-b30b-57a77350c55f/detail", "id": "0196a001-40be-7789-b30b-57a77350c55f"}, "version": "1.0"} 
+
+05-05-2025 16:02:51 DEBUG  Provision: get_tasks_by_id: 1773: Task Status: {"lastUpdate": 1746441166599, "status": "PENDING", "startTime": 1746441158846, "resultLocation": "/dna/intent/api/v1/tasks/0196a001-40be-7789-b30b-57a77350c55f/detail", "id": "0196a001-40be-7789-b30b-57a77350c55f"} 
+
+05-05-2025 16:02:51 DEBUG  Provision: check_tasks_response_status: 1828: Getting tasks details from task ID 0196a001-40be-7789-b30b-57a77350c55f: {"lastUpdate": 1746441166599, "status": "PENDING", "startTime": 1746441158846, "resultLocation": "/dna/intent/api/v1/tasks/0196a001-40be-7789-b30b-57a77350c55f/detail", "id": "0196a001-40be-7789-b30b-57a77350c55f"} 
+
+05-05-2025 16:02:51 DEBUG  Provision: check_tasks_response_status: 1844: Progress is PENDING for task ID: 0196a001-40be-7789-b30b-57a77350c55f 
+
+05-05-2025 16:02:51 DEBUG  Provision: get_tasks_by_id: 1764: Task Details: {"response": {"lastUpdate": 1746441166599, "status": "PENDING", "startTime": 1746441158846, "resultLocation": "/dna/intent/api/v1/tasks/0196a001-40be-7789-b30b-57a77350c55f/detail", "id": "0196a001-40be-7789-b30b-57a77350c55f"}, "version": "1.0"} 
+
+05-05-2025 16:02:51 DEBUG  Provision: get_tasks_by_id: 1765: Retrieving task details by the API "get_tasks_by_id" using task ID: 0196a001-40be-7789-b30b-57a77350c55f, Response: {"response": {"lastUpdate": 1746441166599, "status": "PENDING", "startTime": 1746441158846, "resultLocation": "/dna/intent/api/v1/tasks/0196a001-40be-7789-b30b-57a77350c55f/detail", "id": "0196a001-40be-7789-b30b-57a77350c55f"}, "version": "1.0"} 
+
+05-05-2025 16:02:51 DEBUG  Provision: get_tasks_by_id: 1773: Task Status: {"lastUpdate": 1746441166599, "status": "PENDING", "startTime": 1746441158846, "resultLocation": "/dna/intent/api/v1/tasks/0196a001-40be-7789-b30b-57a77350c55f/detail", "id": "0196a001-40be-7789-b30b-57a77350c55f"} 
+
+05-05-2025 16:02:51 DEBUG  Provision: check_tasks_response_status: 1828: Getting tasks details from task ID 0196a001-40be-7789-b30b-57a77350c55f: {"lastUpdate": 1746441166599, "status": "PENDING", "startTime": 1746441158846, "resultLocation": "/dna/intent/api/v1/tasks/0196a001-40be-7789-b30b-57a77350c55f/detail", "id": "0196a001-40be-7789-b30b-57a77350c55f"} 
+
+05-05-2025 16:02:51 DEBUG  Provision: check_tasks_response_status: 1844: Progress is PENDING for task ID: 0196a001-40be-7789-b30b-57a77350c55f 
+
+05-05-2025 16:02:52 DEBUG  Provision: get_tasks_by_id: 1764: Task Details: {"response": {"lastUpdate": 1746441166599, "status": "PENDING", "startTime": 1746441158846, "resultLocation": "/dna/intent/api/v1/tasks/0196a001-40be-7789-b30b-57a77350c55f/detail", "id": "0196a001-40be-7789-b30b-57a77350c55f"}, "version": "1.0"} 
+
+05-05-2025 16:02:52 DEBUG  Provision: get_tasks_by_id: 1765: Retrieving task details by the API "get_tasks_by_id" using task ID: 0196a001-40be-7789-b30b-57a77350c55f, Response: {"response": {"lastUpdate": 1746441166599, "status": "PENDING", "startTime": 1746441158846, "resultLocation": "/dna/intent/api/v1/tasks/0196a001-40be-7789-b30b-57a77350c55f/detail", "id": "0196a001-40be-7789-b30b-57a77350c55f"}, "version": "1.0"} 
+
+05-05-2025 16:02:52 DEBUG  Provision: get_tasks_by_id: 1773: Task Status: {"lastUpdate": 1746441166599, "status": "PENDING", "startTime": 1746441158846, "resultLocation": "/dna/intent/api/v1/tasks/0196a001-40be-7789-b30b-57a77350c55f/detail", "id": "0196a001-40be-7789-b30b-57a77350c55f"} 
+
+05-05-2025 16:02:52 DEBUG  Provision: check_tasks_response_status: 1828: Getting tasks details from task ID 0196a001-40be-7789-b30b-57a77350c55f: {"lastUpdate": 1746441166599, "status": "PENDING", "startTime": 1746441158846, "resultLocation": "/dna/intent/api/v1/tasks/0196a001-40be-7789-b30b-57a77350c55f/detail", "id": "0196a001-40be-7789-b30b-57a77350c55f"} 
+
+05-05-2025 16:02:52 DEBUG  Provision: check_tasks_response_status: 1844: Progress is PENDING for task ID: 0196a001-40be-7789-b30b-57a77350c55f 
+
+05-05-2025 16:02:52 DEBUG  Provision: get_tasks_by_id: 1764: Task Details: {"response": {"lastUpdate": 1746441166599, "status": "PENDING", "startTime": 1746441158846, "resultLocation": "/dna/intent/api/v1/tasks/0196a001-40be-7789-b30b-57a77350c55f/detail", "id": "0196a001-40be-7789-b30b-57a77350c55f"}, "version": "1.0"} 
+
+05-05-2025 16:02:52 DEBUG  Provision: get_tasks_by_id: 1765: Retrieving task details by the API "get_tasks_by_id" using task ID: 0196a001-40be-7789-b30b-57a77350c55f, Response: {"response": {"lastUpdate": 1746441166599, "status": "PENDING", "startTime": 1746441158846, "resultLocation": "/dna/intent/api/v1/tasks/0196a001-40be-7789-b30b-57a77350c55f/detail", "id": "0196a001-40be-7789-b30b-57a77350c55f"}, "version": "1.0"} 
+
+05-05-2025 16:02:52 DEBUG  Provision: get_tasks_by_id: 1773: Task Status: {"lastUpdate": 1746441166599, "status": "PENDING", "startTime": 1746441158846, "resultLocation": "/dna/intent/api/v1/tasks/0196a001-40be-7789-b30b-57a77350c55f/detail", "id": "0196a001-40be-7789-b30b-57a77350c55f"} 
+
+05-05-2025 16:02:52 DEBUG  Provision: check_tasks_response_status: 1828: Getting tasks details from task ID 0196a001-40be-7789-b30b-57a77350c55f: {"lastUpdate": 1746441166599, "status": "PENDING", "startTime": 1746441158846, "resultLocation": "/dna/intent/api/v1/tasks/0196a001-40be-7789-b30b-57a77350c55f/detail", "id": "0196a001-40be-7789-b30b-57a77350c55f"} 
+
+05-05-2025 16:02:52 DEBUG  Provision: check_tasks_response_status: 1844: Progress is PENDING for task ID: 0196a001-40be-7789-b30b-57a77350c55f 
+
+05-05-2025 16:02:52 DEBUG  Provision: get_tasks_by_id: 1764: Task Details: {"response": {"lastUpdate": 1746441166599, "status": "PENDING", "startTime": 1746441158846, "resultLocation": "/dna/intent/api/v1/tasks/0196a001-40be-7789-b30b-57a77350c55f/detail", "id": "0196a001-40be-7789-b30b-57a77350c55f"}, "version": "1.0"} 
+
+05-05-2025 16:02:52 DEBUG  Provision: get_tasks_by_id: 1765: Retrieving task details by the API "get_tasks_by_id" using task ID: 0196a001-40be-7789-b30b-57a77350c55f, Response: {"response": {"lastUpdate": 1746441166599, "status": "PENDING", "startTime": 1746441158846, "resultLocation": "/dna/intent/api/v1/tasks/0196a001-40be-7789-b30b-57a77350c55f/detail", "id": "0196a001-40be-7789-b30b-57a77350c55f"}, "version": "1.0"} 
+
+05-05-2025 16:02:52 DEBUG  Provision: get_tasks_by_id: 1773: Task Status: {"lastUpdate": 1746441166599, "status": "PENDING", "startTime": 1746441158846, "resultLocation": "/dna/intent/api/v1/tasks/0196a001-40be-7789-b30b-57a77350c55f/detail", "id": "0196a001-40be-7789-b30b-57a77350c55f"} 
+
+05-05-2025 16:02:52 DEBUG  Provision: check_tasks_response_status: 1828: Getting tasks details from task ID 0196a001-40be-7789-b30b-57a77350c55f: {"lastUpdate": 1746441166599, "status": "PENDING", "startTime": 1746441158846, "resultLocation": "/dna/intent/api/v1/tasks/0196a001-40be-7789-b30b-57a77350c55f/detail", "id": "0196a001-40be-7789-b30b-57a77350c55f"} 
+
+05-05-2025 16:02:52 DEBUG  Provision: check_tasks_response_status: 1844: Progress is PENDING for task ID: 0196a001-40be-7789-b30b-57a77350c55f 
+
+05-05-2025 16:02:52 DEBUG  Provision: get_tasks_by_id: 1764: Task Details: {"response": {"lastUpdate": 1746441166599, "status": "PENDING", "startTime": 1746441158846, "resultLocation": "/dna/intent/api/v1/tasks/0196a001-40be-7789-b30b-57a77350c55f/detail", "id": "0196a001-40be-7789-b30b-57a77350c55f"}, "version": "1.0"} 
+
+05-05-2025 16:02:52 DEBUG  Provision: get_tasks_by_id: 1765: Retrieving task details by the API "get_tasks_by_id" using task ID: 0196a001-40be-7789-b30b-57a77350c55f, Response: {"response": {"lastUpdate": 1746441166599, "status": "PENDING", "startTime": 1746441158846, "resultLocation": "/dna/intent/api/v1/tasks/0196a001-40be-7789-b30b-57a77350c55f/detail", "id": "0196a001-40be-7789-b30b-57a77350c55f"}, "version": "1.0"} 
+
+05-05-2025 16:02:52 DEBUG  Provision: get_tasks_by_id: 1773: Task Status: {"lastUpdate": 1746441166599, "status": "PENDING", "startTime": 1746441158846, "resultLocation": "/dna/intent/api/v1/tasks/0196a001-40be-7789-b30b-57a77350c55f/detail", "id": "0196a001-40be-7789-b30b-57a77350c55f"} 
+
+05-05-2025 16:02:52 DEBUG  Provision: check_tasks_response_status: 1828: Getting tasks details from task ID 0196a001-40be-7789-b30b-57a77350c55f: {"lastUpdate": 1746441166599, "status": "PENDING", "startTime": 1746441158846, "resultLocation": "/dna/intent/api/v1/tasks/0196a001-40be-7789-b30b-57a77350c55f/detail", "id": "0196a001-40be-7789-b30b-57a77350c55f"} 
+
+05-05-2025 16:02:52 DEBUG  Provision: check_tasks_response_status: 1844: Progress is PENDING for task ID: 0196a001-40be-7789-b30b-57a77350c55f 
+
+05-05-2025 16:02:53 DEBUG  Provision: get_tasks_by_id: 1764: Task Details: {"response": {"lastUpdate": 1746441166599, "status": "PENDING", "startTime": 1746441158846, "resultLocation": "/dna/intent/api/v1/tasks/0196a001-40be-7789-b30b-57a77350c55f/detail", "id": "0196a001-40be-7789-b30b-57a77350c55f"}, "version": "1.0"} 
+
+05-05-2025 16:02:53 DEBUG  Provision: get_tasks_by_id: 1765: Retrieving task details by the API "get_tasks_by_id" using task ID: 0196a001-40be-7789-b30b-57a77350c55f, Response: {"response": {"lastUpdate": 1746441166599, "status": "PENDING", "startTime": 1746441158846, "resultLocation": "/dna/intent/api/v1/tasks/0196a001-40be-7789-b30b-57a77350c55f/detail", "id": "0196a001-40be-7789-b30b-57a77350c55f"}, "version": "1.0"} 
+
+05-05-2025 16:02:53 DEBUG  Provision: get_tasks_by_id: 1773: Task Status: {"lastUpdate": 1746441166599, "status": "PENDING", "startTime": 1746441158846, "resultLocation": "/dna/intent/api/v1/tasks/0196a001-40be-7789-b30b-57a77350c55f/detail", "id": "0196a001-40be-7789-b30b-57a77350c55f"} 
+
+05-05-2025 16:02:53 DEBUG  Provision: check_tasks_response_status: 1828: Getting tasks details from task ID 0196a001-40be-7789-b30b-57a77350c55f: {"lastUpdate": 1746441166599, "status": "PENDING", "startTime": 1746441158846, "resultLocation": "/dna/intent/api/v1/tasks/0196a001-40be-7789-b30b-57a77350c55f/detail", "id": "0196a001-40be-7789-b30b-57a77350c55f"} 
+
+05-05-2025 16:02:53 DEBUG  Provision: check_tasks_response_status: 1844: Progress is PENDING for task ID: 0196a001-40be-7789-b30b-57a77350c55f 
+
+05-05-2025 16:02:53 DEBUG  Provision: get_tasks_by_id: 1764: Task Details: {"response": {"lastUpdate": 1746441166599, "status": "PENDING", "startTime": 1746441158846, "resultLocation": "/dna/intent/api/v1/tasks/0196a001-40be-7789-b30b-57a77350c55f/detail", "id": "0196a001-40be-7789-b30b-57a77350c55f"}, "version": "1.0"} 
+
+05-05-2025 16:02:53 DEBUG  Provision: get_tasks_by_id: 1765: Retrieving task details by the API "get_tasks_by_id" using task ID: 0196a001-40be-7789-b30b-57a77350c55f, Response: {"response": {"lastUpdate": 1746441166599, "status": "PENDING", "startTime": 1746441158846, "resultLocation": "/dna/intent/api/v1/tasks/0196a001-40be-7789-b30b-57a77350c55f/detail", "id": "0196a001-40be-7789-b30b-57a77350c55f"}, "version": "1.0"} 
+
+05-05-2025 16:02:53 DEBUG  Provision: get_tasks_by_id: 1773: Task Status: {"lastUpdate": 1746441166599, "status": "PENDING", "startTime": 1746441158846, "resultLocation": "/dna/intent/api/v1/tasks/0196a001-40be-7789-b30b-57a77350c55f/detail", "id": "0196a001-40be-7789-b30b-57a77350c55f"} 
+
+05-05-2025 16:02:53 DEBUG  Provision: check_tasks_response_status: 1828: Getting tasks details from task ID 0196a001-40be-7789-b30b-57a77350c55f: {"lastUpdate": 1746441166599, "status": "PENDING", "startTime": 1746441158846, "resultLocation": "/dna/intent/api/v1/tasks/0196a001-40be-7789-b30b-57a77350c55f/detail", "id": "0196a001-40be-7789-b30b-57a77350c55f"} 
+
+05-05-2025 16:02:53 DEBUG  Provision: check_tasks_response_status: 1844: Progress is PENDING for task ID: 0196a001-40be-7789-b30b-57a77350c55f 
+
+05-05-2025 16:02:53 DEBUG  Provision: get_tasks_by_id: 1764: Task Details: {"response": {"lastUpdate": 1746441166599, "status": "PENDING", "startTime": 1746441158846, "resultLocation": "/dna/intent/api/v1/tasks/0196a001-40be-7789-b30b-57a77350c55f/detail", "id": "0196a001-40be-7789-b30b-57a77350c55f"}, "version": "1.0"} 
+
+05-05-2025 16:02:53 DEBUG  Provision: get_tasks_by_id: 1765: Retrieving task details by the API "get_tasks_by_id" using task ID: 0196a001-40be-7789-b30b-57a77350c55f, Response: {"response": {"lastUpdate": 1746441166599, "status": "PENDING", "startTime": 1746441158846, "resultLocation": "/dna/intent/api/v1/tasks/0196a001-40be-7789-b30b-57a77350c55f/detail", "id": "0196a001-40be-7789-b30b-57a77350c55f"}, "version": "1.0"} 
+
+05-05-2025 16:02:53 DEBUG  Provision: get_tasks_by_id: 1773: Task Status: {"lastUpdate": 1746441166599, "status": "PENDING", "startTime": 1746441158846, "resultLocation": "/dna/intent/api/v1/tasks/0196a001-40be-7789-b30b-57a77350c55f/detail", "id": "0196a001-40be-7789-b30b-57a77350c55f"} 
+
+05-05-2025 16:02:53 DEBUG  Provision: check_tasks_response_status: 1828: Getting tasks details from task ID 0196a001-40be-7789-b30b-57a77350c55f: {"lastUpdate": 1746441166599, "status": "PENDING", "startTime": 1746441158846, "resultLocation": "/dna/intent/api/v1/tasks/0196a001-40be-7789-b30b-57a77350c55f/detail", "id": "0196a001-40be-7789-b30b-57a77350c55f"} 
+
+05-05-2025 16:02:53 DEBUG  Provision: check_tasks_response_status: 1844: Progress is PENDING for task ID: 0196a001-40be-7789-b30b-57a77350c55f 
+
+05-05-2025 16:02:53 DEBUG  Provision: get_tasks_by_id: 1764: Task Details: {"response": {"lastUpdate": 1746441166599, "status": "PENDING", "startTime": 1746441158846, "resultLocation": "/dna/intent/api/v1/tasks/0196a001-40be-7789-b30b-57a77350c55f/detail", "id": "0196a001-40be-7789-b30b-57a77350c55f"}, "version": "1.0"} 
+
+05-05-2025 16:02:53 DEBUG  Provision: get_tasks_by_id: 1765: Retrieving task details by the API "get_tasks_by_id" using task ID: 0196a001-40be-7789-b30b-57a77350c55f, Response: {"response": {"lastUpdate": 1746441166599, "status": "PENDING", "startTime": 1746441158846, "resultLocation": "/dna/intent/api/v1/tasks/0196a001-40be-7789-b30b-57a77350c55f/detail", "id": "0196a001-40be-7789-b30b-57a77350c55f"}, "version": "1.0"} 
+
+05-05-2025 16:02:53 DEBUG  Provision: get_tasks_by_id: 1773: Task Status: {"lastUpdate": 1746441166599, "status": "PENDING", "startTime": 1746441158846, "resultLocation": "/dna/intent/api/v1/tasks/0196a001-40be-7789-b30b-57a77350c55f/detail", "id": "0196a001-40be-7789-b30b-57a77350c55f"} 
+
+05-05-2025 16:02:53 DEBUG  Provision: check_tasks_response_status: 1828: Getting tasks details from task ID 0196a001-40be-7789-b30b-57a77350c55f: {"lastUpdate": 1746441166599, "status": "PENDING", "startTime": 1746441158846, "resultLocation": "/dna/intent/api/v1/tasks/0196a001-40be-7789-b30b-57a77350c55f/detail", "id": "0196a001-40be-7789-b30b-57a77350c55f"} 
+
+05-05-2025 16:02:53 DEBUG  Provision: check_tasks_response_status: 1844: Progress is PENDING for task ID: 0196a001-40be-7789-b30b-57a77350c55f 
+
+05-05-2025 16:02:54 DEBUG  Provision: get_tasks_by_id: 1764: Task Details: {"response": {"lastUpdate": 1746441166599, "status": "PENDING", "startTime": 1746441158846, "resultLocation": "/dna/intent/api/v1/tasks/0196a001-40be-7789-b30b-57a77350c55f/detail", "id": "0196a001-40be-7789-b30b-57a77350c55f"}, "version": "1.0"} 
+
+05-05-2025 16:02:54 DEBUG  Provision: get_tasks_by_id: 1765: Retrieving task details by the API "get_tasks_by_id" using task ID: 0196a001-40be-7789-b30b-57a77350c55f, Response: {"response": {"lastUpdate": 1746441166599, "status": "PENDING", "startTime": 1746441158846, "resultLocation": "/dna/intent/api/v1/tasks/0196a001-40be-7789-b30b-57a77350c55f/detail", "id": "0196a001-40be-7789-b30b-57a77350c55f"}, "version": "1.0"} 
+
+05-05-2025 16:02:54 DEBUG  Provision: get_tasks_by_id: 1773: Task Status: {"lastUpdate": 1746441166599, "status": "PENDING", "startTime": 1746441158846, "resultLocation": "/dna/intent/api/v1/tasks/0196a001-40be-7789-b30b-57a77350c55f/detail", "id": "0196a001-40be-7789-b30b-57a77350c55f"} 
+
+05-05-2025 16:02:54 DEBUG  Provision: check_tasks_response_status: 1828: Getting tasks details from task ID 0196a001-40be-7789-b30b-57a77350c55f: {"lastUpdate": 1746441166599, "status": "PENDING", "startTime": 1746441158846, "resultLocation": "/dna/intent/api/v1/tasks/0196a001-40be-7789-b30b-57a77350c55f/detail", "id": "0196a001-40be-7789-b30b-57a77350c55f"} 
+
+05-05-2025 16:02:54 DEBUG  Provision: check_tasks_response_status: 1844: Progress is PENDING for task ID: 0196a001-40be-7789-b30b-57a77350c55f 
+
+05-05-2025 16:02:54 DEBUG  Provision: get_tasks_by_id: 1764: Task Details: {"response": {"lastUpdate": 1746441166599, "status": "PENDING", "startTime": 1746441158846, "resultLocation": "/dna/intent/api/v1/tasks/0196a001-40be-7789-b30b-57a77350c55f/detail", "id": "0196a001-40be-7789-b30b-57a77350c55f"}, "version": "1.0"} 
+
+05-05-2025 16:02:54 DEBUG  Provision: get_tasks_by_id: 1765: Retrieving task details by the API "get_tasks_by_id" using task ID: 0196a001-40be-7789-b30b-57a77350c55f, Response: {"response": {"lastUpdate": 1746441166599, "status": "PENDING", "startTime": 1746441158846, "resultLocation": "/dna/intent/api/v1/tasks/0196a001-40be-7789-b30b-57a77350c55f/detail", "id": "0196a001-40be-7789-b30b-57a77350c55f"}, "version": "1.0"} 
+
+05-05-2025 16:02:54 DEBUG  Provision: get_tasks_by_id: 1773: Task Status: {"lastUpdate": 1746441166599, "status": "PENDING", "startTime": 1746441158846, "resultLocation": "/dna/intent/api/v1/tasks/0196a001-40be-7789-b30b-57a77350c55f/detail", "id": "0196a001-40be-7789-b30b-57a77350c55f"} 
+
+05-05-2025 16:02:54 DEBUG  Provision: check_tasks_response_status: 1828: Getting tasks details from task ID 0196a001-40be-7789-b30b-57a77350c55f: {"lastUpdate": 1746441166599, "status": "PENDING", "startTime": 1746441158846, "resultLocation": "/dna/intent/api/v1/tasks/0196a001-40be-7789-b30b-57a77350c55f/detail", "id": "0196a001-40be-7789-b30b-57a77350c55f"} 
+
+05-05-2025 16:02:54 DEBUG  Provision: check_tasks_response_status: 1844: Progress is PENDING for task ID: 0196a001-40be-7789-b30b-57a77350c55f 
+
+05-05-2025 16:02:54 DEBUG  Provision: get_tasks_by_id: 1764: Task Details: {"response": {"lastUpdate": 1746441166599, "status": "PENDING", "startTime": 1746441158846, "resultLocation": "/dna/intent/api/v1/tasks/0196a001-40be-7789-b30b-57a77350c55f/detail", "id": "0196a001-40be-7789-b30b-57a77350c55f"}, "version": "1.0"} 
+
+05-05-2025 16:02:54 DEBUG  Provision: get_tasks_by_id: 1765: Retrieving task details by the API "get_tasks_by_id" using task ID: 0196a001-40be-7789-b30b-57a77350c55f, Response: {"response": {"lastUpdate": 1746441166599, "status": "PENDING", "startTime": 1746441158846, "resultLocation": "/dna/intent/api/v1/tasks/0196a001-40be-7789-b30b-57a77350c55f/detail", "id": "0196a001-40be-7789-b30b-57a77350c55f"}, "version": "1.0"} 
+
+05-05-2025 16:02:54 DEBUG  Provision: get_tasks_by_id: 1773: Task Status: {"lastUpdate": 1746441166599, "status": "PENDING", "startTime": 1746441158846, "resultLocation": "/dna/intent/api/v1/tasks/0196a001-40be-7789-b30b-57a77350c55f/detail", "id": "0196a001-40be-7789-b30b-57a77350c55f"} 
+
+05-05-2025 16:02:54 DEBUG  Provision: check_tasks_response_status: 1828: Getting tasks details from task ID 0196a001-40be-7789-b30b-57a77350c55f: {"lastUpdate": 1746441166599, "status": "PENDING", "startTime": 1746441158846, "resultLocation": "/dna/intent/api/v1/tasks/0196a001-40be-7789-b30b-57a77350c55f/detail", "id": "0196a001-40be-7789-b30b-57a77350c55f"} 
+
+05-05-2025 16:02:54 DEBUG  Provision: check_tasks_response_status: 1844: Progress is PENDING for task ID: 0196a001-40be-7789-b30b-57a77350c55f 
+
+05-05-2025 16:02:54 DEBUG  Provision: get_tasks_by_id: 1764: Task Details: {"response": {"lastUpdate": 1746441166599, "status": "PENDING", "startTime": 1746441158846, "resultLocation": "/dna/intent/api/v1/tasks/0196a001-40be-7789-b30b-57a77350c55f/detail", "id": "0196a001-40be-7789-b30b-57a77350c55f"}, "version": "1.0"} 
+
+05-05-2025 16:02:54 DEBUG  Provision: get_tasks_by_id: 1765: Retrieving task details by the API "get_tasks_by_id" using task ID: 0196a001-40be-7789-b30b-57a77350c55f, Response: {"response": {"lastUpdate": 1746441166599, "status": "PENDING", "startTime": 1746441158846, "resultLocation": "/dna/intent/api/v1/tasks/0196a001-40be-7789-b30b-57a77350c55f/detail", "id": "0196a001-40be-7789-b30b-57a77350c55f"}, "version": "1.0"} 
+
+05-05-2025 16:02:54 DEBUG  Provision: get_tasks_by_id: 1773: Task Status: {"lastUpdate": 1746441166599, "status": "PENDING", "startTime": 1746441158846, "resultLocation": "/dna/intent/api/v1/tasks/0196a001-40be-7789-b30b-57a77350c55f/detail", "id": "0196a001-40be-7789-b30b-57a77350c55f"} 
+
+05-05-2025 16:02:54 DEBUG  Provision: check_tasks_response_status: 1828: Getting tasks details from task ID 0196a001-40be-7789-b30b-57a77350c55f: {"lastUpdate": 1746441166599, "status": "PENDING", "startTime": 1746441158846, "resultLocation": "/dna/intent/api/v1/tasks/0196a001-40be-7789-b30b-57a77350c55f/detail", "id": "0196a001-40be-7789-b30b-57a77350c55f"} 
+
+05-05-2025 16:02:54 DEBUG  Provision: check_tasks_response_status: 1844: Progress is PENDING for task ID: 0196a001-40be-7789-b30b-57a77350c55f 
+
+05-05-2025 16:02:54 DEBUG  Provision: get_tasks_by_id: 1764: Task Details: {"response": {"lastUpdate": 1746441166599, "status": "PENDING", "startTime": 1746441158846, "resultLocation": "/dna/intent/api/v1/tasks/0196a001-40be-7789-b30b-57a77350c55f/detail", "id": "0196a001-40be-7789-b30b-57a77350c55f"}, "version": "1.0"} 
+
+05-05-2025 16:02:54 DEBUG  Provision: get_tasks_by_id: 1765: Retrieving task details by the API "get_tasks_by_id" using task ID: 0196a001-40be-7789-b30b-57a77350c55f, Response: {"response": {"lastUpdate": 1746441166599, "status": "PENDING", "startTime": 1746441158846, "resultLocation": "/dna/intent/api/v1/tasks/0196a001-40be-7789-b30b-57a77350c55f/detail", "id": "0196a001-40be-7789-b30b-57a77350c55f"}, "version": "1.0"} 
+
+05-05-2025 16:02:54 DEBUG  Provision: get_tasks_by_id: 1773: Task Status: {"lastUpdate": 1746441166599, "status": "PENDING", "startTime": 1746441158846, "resultLocation": "/dna/intent/api/v1/tasks/0196a001-40be-7789-b30b-57a77350c55f/detail", "id": "0196a001-40be-7789-b30b-57a77350c55f"} 
+
+05-05-2025 16:02:54 DEBUG  Provision: check_tasks_response_status: 1828: Getting tasks details from task ID 0196a001-40be-7789-b30b-57a77350c55f: {"lastUpdate": 1746441166599, "status": "PENDING", "startTime": 1746441158846, "resultLocation": "/dna/intent/api/v1/tasks/0196a001-40be-7789-b30b-57a77350c55f/detail", "id": "0196a001-40be-7789-b30b-57a77350c55f"} 
+
+05-05-2025 16:02:54 DEBUG  Provision: check_tasks_response_status: 1844: Progress is PENDING for task ID: 0196a001-40be-7789-b30b-57a77350c55f 
+
+05-05-2025 16:02:55 DEBUG  Provision: get_tasks_by_id: 1764: Task Details: {"response": {"lastUpdate": 1746441166599, "status": "PENDING", "startTime": 1746441158846, "resultLocation": "/dna/intent/api/v1/tasks/0196a001-40be-7789-b30b-57a77350c55f/detail", "id": "0196a001-40be-7789-b30b-57a77350c55f"}, "version": "1.0"} 
+
+05-05-2025 16:02:55 DEBUG  Provision: get_tasks_by_id: 1765: Retrieving task details by the API "get_tasks_by_id" using task ID: 0196a001-40be-7789-b30b-57a77350c55f, Response: {"response": {"lastUpdate": 1746441166599, "status": "PENDING", "startTime": 1746441158846, "resultLocation": "/dna/intent/api/v1/tasks/0196a001-40be-7789-b30b-57a77350c55f/detail", "id": "0196a001-40be-7789-b30b-57a77350c55f"}, "version": "1.0"} 
+
+05-05-2025 16:02:55 DEBUG  Provision: get_tasks_by_id: 1773: Task Status: {"lastUpdate": 1746441166599, "status": "PENDING", "startTime": 1746441158846, "resultLocation": "/dna/intent/api/v1/tasks/0196a001-40be-7789-b30b-57a77350c55f/detail", "id": "0196a001-40be-7789-b30b-57a77350c55f"} 
+
+05-05-2025 16:02:55 DEBUG  Provision: check_tasks_response_status: 1828: Getting tasks details from task ID 0196a001-40be-7789-b30b-57a77350c55f: {"lastUpdate": 1746441166599, "status": "PENDING", "startTime": 1746441158846, "resultLocation": "/dna/intent/api/v1/tasks/0196a001-40be-7789-b30b-57a77350c55f/detail", "id": "0196a001-40be-7789-b30b-57a77350c55f"} 
+
+05-05-2025 16:02:55 DEBUG  Provision: check_tasks_response_status: 1844: Progress is PENDING for task ID: 0196a001-40be-7789-b30b-57a77350c55f 
+
+05-05-2025 16:02:55 DEBUG  Provision: get_tasks_by_id: 1764: Task Details: {"response": {"lastUpdate": 1746441166599, "status": "PENDING", "startTime": 1746441158846, "resultLocation": "/dna/intent/api/v1/tasks/0196a001-40be-7789-b30b-57a77350c55f/detail", "id": "0196a001-40be-7789-b30b-57a77350c55f"}, "version": "1.0"} 
+
+05-05-2025 16:02:55 DEBUG  Provision: get_tasks_by_id: 1765: Retrieving task details by the API "get_tasks_by_id" using task ID: 0196a001-40be-7789-b30b-57a77350c55f, Response: {"response": {"lastUpdate": 1746441166599, "status": "PENDING", "startTime": 1746441158846, "resultLocation": "/dna/intent/api/v1/tasks/0196a001-40be-7789-b30b-57a77350c55f/detail", "id": "0196a001-40be-7789-b30b-57a77350c55f"}, "version": "1.0"} 
+
+05-05-2025 16:02:55 DEBUG  Provision: get_tasks_by_id: 1773: Task Status: {"lastUpdate": 1746441166599, "status": "PENDING", "startTime": 1746441158846, "resultLocation": "/dna/intent/api/v1/tasks/0196a001-40be-7789-b30b-57a77350c55f/detail", "id": "0196a001-40be-7789-b30b-57a77350c55f"} 
+
+05-05-2025 16:02:55 DEBUG  Provision: check_tasks_response_status: 1828: Getting tasks details from task ID 0196a001-40be-7789-b30b-57a77350c55f: {"lastUpdate": 1746441166599, "status": "PENDING", "startTime": 1746441158846, "resultLocation": "/dna/intent/api/v1/tasks/0196a001-40be-7789-b30b-57a77350c55f/detail", "id": "0196a001-40be-7789-b30b-57a77350c55f"} 
+
+05-05-2025 16:02:55 DEBUG  Provision: check_tasks_response_status: 1844: Progress is PENDING for task ID: 0196a001-40be-7789-b30b-57a77350c55f 
+
+05-05-2025 16:02:55 DEBUG  Provision: get_tasks_by_id: 1764: Task Details: {"response": {"lastUpdate": 1746441166599, "status": "PENDING", "startTime": 1746441158846, "resultLocation": "/dna/intent/api/v1/tasks/0196a001-40be-7789-b30b-57a77350c55f/detail", "id": "0196a001-40be-7789-b30b-57a77350c55f"}, "version": "1.0"} 
+
+05-05-2025 16:02:55 DEBUG  Provision: get_tasks_by_id: 1765: Retrieving task details by the API "get_tasks_by_id" using task ID: 0196a001-40be-7789-b30b-57a77350c55f, Response: {"response": {"lastUpdate": 1746441166599, "status": "PENDING", "startTime": 1746441158846, "resultLocation": "/dna/intent/api/v1/tasks/0196a001-40be-7789-b30b-57a77350c55f/detail", "id": "0196a001-40be-7789-b30b-57a77350c55f"}, "version": "1.0"} 
+
+05-05-2025 16:02:55 DEBUG  Provision: get_tasks_by_id: 1773: Task Status: {"lastUpdate": 1746441166599, "status": "PENDING", "startTime": 1746441158846, "resultLocation": "/dna/intent/api/v1/tasks/0196a001-40be-7789-b30b-57a77350c55f/detail", "id": "0196a001-40be-7789-b30b-57a77350c55f"} 
+
+05-05-2025 16:02:55 DEBUG  Provision: check_tasks_response_status: 1828: Getting tasks details from task ID 0196a001-40be-7789-b30b-57a77350c55f: {"lastUpdate": 1746441166599, "status": "PENDING", "startTime": 1746441158846, "resultLocation": "/dna/intent/api/v1/tasks/0196a001-40be-7789-b30b-57a77350c55f/detail", "id": "0196a001-40be-7789-b30b-57a77350c55f"} 
+
+05-05-2025 16:02:55 DEBUG  Provision: check_tasks_response_status: 1844: Progress is PENDING for task ID: 0196a001-40be-7789-b30b-57a77350c55f 
+
+05-05-2025 16:02:55 DEBUG  Provision: get_tasks_by_id: 1764: Task Details: {"response": {"lastUpdate": 1746441166599, "status": "PENDING", "startTime": 1746441158846, "resultLocation": "/dna/intent/api/v1/tasks/0196a001-40be-7789-b30b-57a77350c55f/detail", "id": "0196a001-40be-7789-b30b-57a77350c55f"}, "version": "1.0"} 
+
+05-05-2025 16:02:55 DEBUG  Provision: get_tasks_by_id: 1765: Retrieving task details by the API "get_tasks_by_id" using task ID: 0196a001-40be-7789-b30b-57a77350c55f, Response: {"response": {"lastUpdate": 1746441166599, "status": "PENDING", "startTime": 1746441158846, "resultLocation": "/dna/intent/api/v1/tasks/0196a001-40be-7789-b30b-57a77350c55f/detail", "id": "0196a001-40be-7789-b30b-57a77350c55f"}, "version": "1.0"} 
+
+05-05-2025 16:02:55 DEBUG  Provision: get_tasks_by_id: 1773: Task Status: {"lastUpdate": 1746441166599, "status": "PENDING", "startTime": 1746441158846, "resultLocation": "/dna/intent/api/v1/tasks/0196a001-40be-7789-b30b-57a77350c55f/detail", "id": "0196a001-40be-7789-b30b-57a77350c55f"} 
+
+05-05-2025 16:02:55 DEBUG  Provision: check_tasks_response_status: 1828: Getting tasks details from task ID 0196a001-40be-7789-b30b-57a77350c55f: {"lastUpdate": 1746441166599, "status": "PENDING", "startTime": 1746441158846, "resultLocation": "/dna/intent/api/v1/tasks/0196a001-40be-7789-b30b-57a77350c55f/detail", "id": "0196a001-40be-7789-b30b-57a77350c55f"} 
+
+05-05-2025 16:02:55 DEBUG  Provision: check_tasks_response_status: 1844: Progress is PENDING for task ID: 0196a001-40be-7789-b30b-57a77350c55f 
+
+05-05-2025 16:02:56 DEBUG  Provision: get_tasks_by_id: 1764: Task Details: {"response": {"lastUpdate": 1746441166599, "status": "PENDING", "startTime": 1746441158846, "resultLocation": "/dna/intent/api/v1/tasks/0196a001-40be-7789-b30b-57a77350c55f/detail", "id": "0196a001-40be-7789-b30b-57a77350c55f"}, "version": "1.0"} 
+
+05-05-2025 16:02:56 DEBUG  Provision: get_tasks_by_id: 1765: Retrieving task details by the API "get_tasks_by_id" using task ID: 0196a001-40be-7789-b30b-57a77350c55f, Response: {"response": {"lastUpdate": 1746441166599, "status": "PENDING", "startTime": 1746441158846, "resultLocation": "/dna/intent/api/v1/tasks/0196a001-40be-7789-b30b-57a77350c55f/detail", "id": "0196a001-40be-7789-b30b-57a77350c55f"}, "version": "1.0"} 
+
+05-05-2025 16:02:56 DEBUG  Provision: get_tasks_by_id: 1773: Task Status: {"lastUpdate": 1746441166599, "status": "PENDING", "startTime": 1746441158846, "resultLocation": "/dna/intent/api/v1/tasks/0196a001-40be-7789-b30b-57a77350c55f/detail", "id": "0196a001-40be-7789-b30b-57a77350c55f"} 
+
+05-05-2025 16:02:56 DEBUG  Provision: check_tasks_response_status: 1828: Getting tasks details from task ID 0196a001-40be-7789-b30b-57a77350c55f: {"lastUpdate": 1746441166599, "status": "PENDING", "startTime": 1746441158846, "resultLocation": "/dna/intent/api/v1/tasks/0196a001-40be-7789-b30b-57a77350c55f/detail", "id": "0196a001-40be-7789-b30b-57a77350c55f"} 
+
+05-05-2025 16:02:56 DEBUG  Provision: check_tasks_response_status: 1844: Progress is PENDING for task ID: 0196a001-40be-7789-b30b-57a77350c55f 
+
+05-05-2025 16:02:56 DEBUG  Provision: get_tasks_by_id: 1764: Task Details: {"response": {"endTime": 1746441176047, "lastUpdate": 1746441166599, "status": "SUCCESS", "startTime": 1746441158846, "resultLocation": "/dna/intent/api/v1/tasks/0196a001-40be-7789-b30b-57a77350c55f/detail", "id": "0196a001-40be-7789-b30b-57a77350c55f"}, "version": "1.0"} 
+
+05-05-2025 16:02:56 DEBUG  Provision: get_tasks_by_id: 1765: Retrieving task details by the API "get_tasks_by_id" using task ID: 0196a001-40be-7789-b30b-57a77350c55f, Response: {"response": {"endTime": 1746441176047, "lastUpdate": 1746441166599, "status": "SUCCESS", "startTime": 1746441158846, "resultLocation": "/dna/intent/api/v1/tasks/0196a001-40be-7789-b30b-57a77350c55f/detail", "id": "0196a001-40be-7789-b30b-57a77350c55f"}, "version": "1.0"} 
+
+05-05-2025 16:02:56 DEBUG  Provision: get_tasks_by_id: 1773: Task Status: {"endTime": 1746441176047, "lastUpdate": 1746441166599, "status": "SUCCESS", "startTime": 1746441158846, "resultLocation": "/dna/intent/api/v1/tasks/0196a001-40be-7789-b30b-57a77350c55f/detail", "id": "0196a001-40be-7789-b30b-57a77350c55f"} 
+
+05-05-2025 16:02:56 DEBUG  Provision: check_tasks_response_status: 1828: Getting tasks details from task ID 0196a001-40be-7789-b30b-57a77350c55f: {"endTime": 1746441176047, "lastUpdate": 1746441166599, "status": "SUCCESS", "startTime": 1746441158846, "resultLocation": "/dna/intent/api/v1/tasks/0196a001-40be-7789-b30b-57a77350c55f/detail", "id": "0196a001-40be-7789-b30b-57a77350c55f"} 
+
+05-05-2025 16:02:56 INFO  Provision: check_tasks_response_status: 1840: The task with task ID "0196a001-40be-7789-b30b-57a77350c55f" is executed successfully. 
+
+05-05-2025 16:02:56 INFO  Provision: provision_wireless_device: 2093: wireless Device "204.192.13.1" provisioning completed successfully. 
+
+05-05-2025 16:02:56 INFO  Provision: provision_wireless_device: 2097: Provisioning of the wireless device "204.192.13.1" completed successfully. 
+
+05-05-2025 16:02:56 DEBUG  Provision: check_return_status: 325: Line No: 2460 status: success, msg: Successfully collected all parameters from playbook for comparison 
+
+05-05-2025 16:02:56 INFO  Provision: main: 2462: Verifying configuration for wireless device: 204.192.13.1 
+
+05-05-2025 16:02:56 INFO  Provision: verify_diff_merged: 2269: validate Cisco Catalyst Center config for merged state 
+
+05-05-2025 16:02:56 INFO  Provision: verify_diff_merged: 2270: Desired State (want): {"device_type": "wireless", "prov_params": [{"site": "Global/USA/SAN-FRANCISCO/BLD_SF", "managedAPLocations": ["Global/USA/SAN-FRANCISCO/BLD_SF", "Global/USA/SAN-FRANCISCO/BLD_SF/FLOOR1", "Global/USA/SAN-FRANCISCO/BLD_SF/FLOOR2"], "dynamicInterfaces": [], "skip_ap_provision": None, "primaryManagedAPLocationsSiteIds": ["Global/USA/SAN-FRANCISCO/BLD_SF", "Global/USA/SAN-FRANCISCO/BLD_SF/FLOOR1", "Global/USA/SAN-FRANCISCO/BLD_SF/FLOOR2"], "secondaryManagedAPLocationsSiteIds": None, "deviceName": "ISBTE-TB6-9880WLC2.cisco.com", "device_id": "c7eabe6d-f2fc-44e8-9702-631a0c7a20ea"}]} 
+
+05-05-2025 16:02:56 DEBUG  Provision: get_device_id: 651: The device response from "get_network_device_by_ip" API is {"response": {"description": "Cisco IOS Software [Dublin], C9800 Software (C9800_IOSXE-K9), Version 17.12.4, RELEASE SOFTWARE (fc3) Technical Support: http://www.cisco.com/techsupport Copyright (c) 1986-2024 by Cisco Systems, Inc. Compiled Tue 23-Jul-24 09:45 by mcpre netconf enabled", "type": "Cisco Catalyst 9800-80 Wireless Controller", "softwareType": "IOS-XE", "softwareVersion": "17.12.4", "lastUpdateTime": 1746431940405, "deviceSupportLevel": "Supported", "serialNumber": "FXS2349Q289", "macAddress": "c4:b2:39:67:48:0b", "syncRequestedByApp": "", "inventoryStatusDetail": "<status><general code="SUCCESS"/></status>", "collectionInterval": "Global Default", "dnsResolvedManagementAddress": "204.192.13.1", "lastManagedResyncReasons": "Periodic", "managementState": "Managed", "pendingSyncRequestsCount": "0", "reasonsForDeviceResync": "Periodic", "reasonsForPendingSyncRequests": "", "upTime": "57 days, 7:13:24.18", "roleSource": "AUTO", "interfaceCount": "0", "lastUpdated": "2025-05-05 07:59:00", "bootDateTime": "2025-03-09 00:46:00", "apManagerInterfaceIp": "", "collectionStatus": "Managed", "family": "Wireless Controller", "hostname": "ISBTE-TB6-9880WLC2.cisco.com", "locationName": None, "managementIpAddress": "204.192.13.1", "platformId": "C9800-80-K9", "reachabilityFailureReason": "", "reachabilityStatus": "Reachable", "series": "Cisco Catalyst 9800 Series Wireless Controllers", "snmpContact": "", "snmpLocation": "", "associatedWlcIp": "", "apEthernetMacAddress": None, "errorCode": None, "errorDescription": None, "lastDeviceResyncStartTime": "2025-05-05 07:58:14", "lineCardCount": "0", "lineCardId": "", "managedAtleastOnce": True, "memorySize": "NA", "tagCount": "0", "tunnelUdpPort": None, "uptimeSeconds": 4960016, "vendor": "Cisco", "waasDeviceMode": None, "location": None, "role": "ACCESS", "instanceUuid": "c7eabe6d-f2fc-44e8-9702-631a0c7a20ea", "instanceTenantId": "67d3924020720200139444d2", "id": "c7eabe6d-f2fc-44e8-9702-631a0c7a20ea"}, "version": "1.0"} 
+
+05-05-2025 16:02:56 INFO  Provision: get_device_id: 655: Device ID of the device with IP address 204.192.13.1 is c7eabe6d-f2fc-44e8-9702-631a0c7a20ea 
+
+05-05-2025 16:02:56 INFO  Provision: verify_diff_merged: 2305: Currently we don"t have any API in the Cisco Catalyst Center to fetch the provisioning details of wireless devices 
+
+05-05-2025 16:02:56 DEBUG  Provision: check_return_status: 325: Line No: 2463 status: success, msg: Successfully collected all parameters from playbook for comparison 
+
+05-05-2025 16:02:56 INFO  Provision: validate_input: 573: Successfully validated playbook configuration parameters using "validate_input": [{"management_ip_address": "204.192.13.1", "managed_ap_locations": ["Global/USA/SAN-FRANCISCO/BLD_SF", "Global/USA/SAN-FRANCISCO/BLD_SF/FLOOR1", "Global/USA/SAN-FRANCISCO/BLD_SF/FLOOR2"], "site_name_hierarchy": "Global/USA/SAN-FRANCISCO/BLD_SF", "primary_managed_ap_locations": None, "secondary_managed_ap_locations": None, "dynamic_interfaces": None, "skip_ap_provision": None, "rolling_ap_upgrade": None, "provisioning": True, "force_provisioning": True, "clean_config": False, "application_telemetry": None}] 
+
+05-05-2025 16:02:56 DEBUG  Provision: check_return_status: 325: Line No: 2466 status: success, msg: Successfully validated playbook configuration parameters using "validate_input": [{"management_ip_address": "204.192.13.1", "managed_ap_locations": ["Global/USA/SAN-FRANCISCO/BLD_SF", "Global/USA/SAN-FRANCISCO/BLD_SF/FLOOR1", "Global/USA/SAN-FRANCISCO/BLD_SF/FLOOR2"], "site_name_hierarchy": "Global/USA/SAN-FRANCISCO/BLD_SF", "primary_managed_ap_locations": None, "secondary_managed_ap_locations": None, "dynamic_interfaces": None, "skip_ap_provision": None, "rolling_ap_upgrade": None, "provisioning": True, "force_provisioning": True, "clean_config": False, "application_telemetry": None}] 
+
+05-05-2025 16:02:56 DEBUG  Provision: main: 2467: Checking for telemetry configs... 
+
+05-05-2025 16:02:56 DEBUG  Provision: main: 2469: Inspecting config: {"management_ip_address": "204.192.13.1", "managed_ap_locations": ["Global/USA/SAN-FRANCISCO/BLD_SF", "Global/USA/SAN-FRANCISCO/BLD_SF/FLOOR1", "Global/USA/SAN-FRANCISCO/BLD_SF/FLOOR2"], "site_name_hierarchy": "Global/USA/SAN-FRANCISCO/BLD_SF", "primary_managed_ap_locations": None, "secondary_managed_ap_locations": None, "dynamic_interfaces": None, "skip_ap_provision": None, "rolling_ap_upgrade": None, "provisioning": True, "force_provisioning": True, "clean_config": False, "application_telemetry": None} 
+
