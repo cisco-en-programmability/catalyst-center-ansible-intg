@@ -3883,6 +3883,100 @@ EXAMPLES = r"""
           - anchor_group_name: "Enterprise_Anchor_Group"
           - anchor_group_name: "Branch_Anchor_Group"
           - anchor_group_name: "DataCenter_Anchor_Group"
+
+- name: Generate YAML Configuration File 
+  cisco.dnac.wireless_design_workflow_manager:
+    dnac_host: "{{dnac_host}}"
+    dnac_username: "{{dnac_username}}"
+    dnac_password: "{{dnac_password}}"
+    dnac_verify: "{{dnac_verify}}"
+    dnac_port: "{{dnac_port}}"
+    dnac_version: "{{dnac_version}}"
+    dnac_debug: "{{dnac_debug}}"
+    dnac_log: true
+    dnac_log_level: "{{dnac_log_level}}"
+    state: merged
+    config:
+      generate_yaml_config: true
+
+- name: Generate YAML Configuration with File Path specified
+  cisco.dnac.wireless_design_workflow_manager:
+    dnac_host: "{{dnac_host}}"
+    dnac_username: "{{dnac_username}}"
+    dnac_password: "{{dnac_password}}"
+    dnac_verify: "{{dnac_verify}}"
+    dnac_port: "{{dnac_port}}"
+    dnac_version: "{{dnac_version}}"
+    dnac_debug: "{{dnac_debug}}"
+    dnac_log: true
+    dnac_log_level: "{{dnac_log_level}}"
+    state: merged
+    config:
+      generate_yaml_config: true
+      yaml_config_options:
+        file_path: "/tmp/catc_wireless_components_config.yaml"
+
+- name: Generate YAML Configuration with specific wireless network components only
+  cisco.dnac.wireless_design_workflow_manager:
+    dnac_host: "{{dnac_host}}"
+    dnac_username: "{{dnac_username}}"
+    dnac_password: "{{dnac_password}}"
+    dnac_verify: "{{dnac_verify}}"
+    dnac_port: "{{dnac_port}}"
+    dnac_version: "{{dnac_version}}"
+    dnac_debug: "{{dnac_debug}}"
+    dnac_log: true
+    dnac_log_level: "{{dnac_log_level}}"
+    state: merged
+    config:
+      generate_yaml_config: true
+      yaml_config_options:
+        file_path: "/tmp/catc_wireless_components_config.yaml"
+        component_specific_filters:
+          components_list: ["interfaces", "anchor_groups"]
+
+- name: Generate YAML Configuration for wireless SSIDs with site filter
+  cisco.dnac.wireless_design_workflow_manager:
+    dnac_host: "{{dnac_host}}"
+    dnac_username: "{{dnac_username}}"
+    dnac_password: "{{dnac_password}}"
+    dnac_verify: "{{dnac_verify}}"
+    dnac_port: "{{dnac_port}}"
+    dnac_version: "{{dnac_version}}"
+    dnac_debug: "{{dnac_debug}}"
+    dnac_log: true
+    dnac_log_level: "{{dnac_log_level}}"
+    state: merged
+    config:
+      generate_yaml_config: true
+      yaml_config_options:
+        file_path: "/tmp/catc_wireless_components_config.yaml"
+        component_specific_filters:
+          components_list: ["ssids"]
+          site_name_hierarchy: "Global/USA/San Jose"
+
+- name: Generate YAML Configuration with multiple filters
+  cisco.dnac.wireless_design_workflow_manager:
+    dnac_host: "{{dnac_host}}"
+    dnac_username: "{{dnac_username}}"
+    dnac_password: "{{dnac_password}}"
+    dnac_verify: "{{dnac_verify}}"
+    dnac_port: "{{dnac_port}}"
+    dnac_version: "{{dnac_version}}"
+    dnac_debug: "{{dnac_debug}}"
+    dnac_log: true
+    dnac_log_level: "{{dnac_log_level}}"
+    state: merged
+    config:
+      generate_yaml_config: true
+      yaml_config_options:
+        file_path: "/tmp/catc_wireless_components_config.yaml"
+        component_specific_filters:
+          ssid_names_list: ["lab_wifi", "enterprise_secure", "guest_wifi"]
+          interface_names_list: ["data", "voice]
+          power_profile_names_list: ["EthernetSpeeds", "EthernetState"]
+          access_point_profile_names_list: ["Warehouse-AP", "Default_AP_Profile_AireOS"]
+          radio_frequency_profile_names_list: ["rf_profile_2_4_5_6ghz_high_low", "rf_profile_5ghz_basic"]
 """
 
 RETURN = r"""
@@ -11571,7 +11665,7 @@ class WirelessDesign(DnacBase):
         return global_site_id
 
     def wireless_ssid_temp_spec(self):
-        """Wireless SSIDs Template Specification."""
+        """Returns the Wireless SSIDs Template Specification."""
         wireless_ssid_temp_spec = OrderedDict({
             "ssid_name": {"type": "str", "source_key": "ssid"},
             "wlan_profile_name": {"type": "str", "source_key": "profileName"},
@@ -11916,7 +12010,7 @@ class WirelessDesign(DnacBase):
         return ssids
 
     def wireless_interfaces_temp_spec(self):
-        """Wireless Interfaces Template Specification."""
+        """Returns the Wireless Interfaces Template Specification."""
         wireless_interfaces_temp_spec =  OrderedDict({
                         "interface_name": {"type": "str", "source_key": "interfaceName"},
                         "vlan_id": {"type": "int", "source_key": "vlanId"}
@@ -11975,7 +12069,7 @@ class WirelessDesign(DnacBase):
         return interfaces
 
     def wireless_power_profiles_temp_spec(self):
-        """Wireless Power Profiles Template Specification."""
+        """Returns the Wireless Power Profiles Template Specification."""
         wireless_power_profiles_temp_spec = OrderedDict({
             "power_profile_name": {"type": "str", "source_key": "profileName"},
             "power_profile_description": {"type": "str", "source_key": "description"},
@@ -12043,7 +12137,7 @@ class WirelessDesign(DnacBase):
         return power_profiles
 
     def wireless_access_point_profiles_temp_spec(self):
-        """Wireless Access Point Profiles Template Specification."""
+        """Returns the Wireless Access Point Profiles Template Specification."""
         country_code_map = {
             "AF": "Afghanistan", "AL": "Albania", "DZ": "Algeria", "AO": "Angola", "AR": "Argentina", "AU": "Australia",
             "AT": "Austria", "BS": "Bahamas", "BH": "Bahrain", "BD": "Bangladesh", "BB": "Barbados", "BY": "Belarus",
@@ -12220,7 +12314,7 @@ class WirelessDesign(DnacBase):
         return ap_profiles
 
     def wireless_radio_frequency_profiles_temp_spec(self):
-        """Wireless Radio Frequency Profiles Template Specification."""
+        """Returns the Wireless Radio Frequency Profiles Template Specification."""
         radio_frequency_profiles_temp_spec = OrderedDict({
             "radio_frequency_profile_name": {"type": "str", "source_key": "rfProfileName"},
             "default_rf_profile": {"type": "bool", "source_key": "defaultRfProfile"},
@@ -12456,7 +12550,7 @@ class WirelessDesign(DnacBase):
         return rf_profiles
 
     def wireless_anchor_groups_temp_spec(self):
-        """Wireless Anchor Groups Template Specification."""
+        """Returns the Wireless Anchor Groups Template Specification."""
         priority_mapping = {
             "PRIMARY": 1,
             "SECONDARY": 2,
@@ -12645,13 +12739,10 @@ class WirelessDesign(DnacBase):
     def yaml_config_generator(self, yaml_config_generator):
         """
         Generates a YAML configuration file based on the provided parameters.
-
         This function retrieves network element details using global and component-specific filters, processes the data,
         and writes the YAML content to a specified file. It dynamically handles multiple network elements and their respective filters.
-
         Args:
             yaml_config_generator (dict): Contains file_path, global_filters, and component_specific_filters.
-
         Returns:
             self: The current instance with the operation result and message updated.
         """
