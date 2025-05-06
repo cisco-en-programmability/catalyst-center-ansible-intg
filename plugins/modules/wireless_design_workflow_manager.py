@@ -1986,7 +1986,7 @@ options:
                 elements: str
               power_profile_names_list:
                 description:
-                  - List of power profile names to filter power profiles.                
+                  - List of power profile names to filter power profiles.
                 type: list
                 elements: str
               access_point_profile_names_list:
@@ -3884,7 +3884,7 @@ EXAMPLES = r"""
           - anchor_group_name: "Branch_Anchor_Group"
           - anchor_group_name: "DataCenter_Anchor_Group"
 
-- name: Generate YAML Configuration File 
+- name: Generate YAML Configuration File
   cisco.dnac.wireless_design_workflow_manager:
     dnac_host: "{{dnac_host}}"
     dnac_username: "{{dnac_username}}"
@@ -4018,9 +4018,11 @@ import yaml
 from collections import OrderedDict
 import os
 
+
 class OrderedDumper(yaml.Dumper):
     def represent_dict(self, data):
         return self.represent_mapping('tag:yaml.org,2002:map', data.items())
+
 
 OrderedDumper.add_representer(OrderedDict, OrderedDumper.represent_dict)
 
@@ -6765,7 +6767,6 @@ class WirelessDesign(DnacBase):
                     "api_function": "get_ssid_by_site",
                     "api_family": "wireless",
                     "get_function_name": self.get_wireless_ssids,
-                    
                 },
                 "interfaces": {
                     "filters": [
@@ -6837,7 +6838,7 @@ class WirelessDesign(DnacBase):
             )
             self.log(self.msg, "ERROR")
             self.fail_and_exit(self.msg)
-        
+
         self.log("Valid global filters for module '{0}': {1}".format(self.module_name, valid_global_filters), "DEBUG")
 
         # Check each filter in the provided global filters against the list of valid filters
@@ -6851,7 +6852,7 @@ class WirelessDesign(DnacBase):
             )
             self.log(self.msg, "ERROR")
             self.fail_and_exit(self.msg)
-        
+
         # Log the successful validation of all filters
         self.log("All global filters for module '{0}' are valid.".format(self.module_name), "INFO")
         return True
@@ -6866,21 +6867,21 @@ class WirelessDesign(DnacBase):
         """
         # Log the start of component-specific filter validation
         self.log("Validating 'component_specific_filters' for module: {0}".format(self.module_name), "INFO")
-        
+
         # Retrieve network elements for the module
         module_info = self.module_mapping
         self.log("Module info: {0}".format(module_info), "DEBUG")
         network_elements = module_info.get("network_elements", {})
         self.log("Network elements: {0}".format(network_elements), "DEBUG")
-        
+
         if not network_elements:
             # Exit if no network elements are defined for the module
             self.msg = "'component_specific_filters' are not supported for module '{0}'.".format(self.module_name)
             self.fail_and_exit(self.msg)
-        
+
         # Retrieve components_list from the filters
         components_list = component_specific_filters.get("components_list", [])
-        
+
         # Validate components_list
         invalid_components = [component for component in components_list if component not in network_elements]
         if invalid_components:
@@ -6888,12 +6889,12 @@ class WirelessDesign(DnacBase):
                 self.module_name, invalid_components, list(network_elements.keys())
             )
             self.fail_and_exit(self.msg)
-        
+
         # Gather all valid filters from network elements
         valid_filters = []
         for element, details in network_elements.items():
             valid_filters.extend(details.get("filters", []))
-        
+
         self.log("Valid filters for module '{0}': {1}".format(self.module_name, valid_filters), "DEBUG")
 
         # Validate provided filters against valid filters list
@@ -6901,13 +6902,13 @@ class WirelessDesign(DnacBase):
             filter_name for filter_name in component_specific_filters.keys()
             if filter_name != "components_list" and filter_name not in valid_filters
         ]
-        
+
         if invalid_filters:
             self.msg = "Invalid filters provided for module '{0}': {1}. Valid filters are: {2}".format(
                 self.module_name, invalid_filters, valid_filters
             )
             self.fail_and_exit(self.msg)
-        
+
         # Log the successful validation of component-specific filters
         self.log("All component-specific filters for module '{0}' are valid.".format(self.module_name), "INFO")
         return True
@@ -6933,7 +6934,7 @@ class WirelessDesign(DnacBase):
             self.validate_global_filters(global_filters)
         else:
             self.log("No 'global_filters' provided for module '{0}'; skipping validation.".format(self.module_name), "INFO")
-        
+
         # Validate component_specific_filters if provided
         component_specific_filters = yaml_config_generator.get("component_specific_filters")
         if component_specific_filters:
@@ -11957,7 +11958,7 @@ class WirelessDesign(DnacBase):
                 # If only site_name_hierarchy is provided
                 if not ssid_names_list:
                     # Create params for global site
-                    
+
                     global_params = self.get_ssids_params(site_id=global_site_id)
                     self.log("Created params for global site: {0}".format(global_params), "DEBUG")
                     global_ssids = self.execute_get_with_pagination(api_family, api_function, global_params)
@@ -12011,10 +12012,10 @@ class WirelessDesign(DnacBase):
 
     def wireless_interfaces_temp_spec(self):
         """Returns the Wireless Interfaces Template Specification."""
-        wireless_interfaces_temp_spec =  OrderedDict({
-                        "interface_name": {"type": "str", "source_key": "interfaceName"},
-                        "vlan_id": {"type": "int", "source_key": "vlanId"}
-                    })
+        wireless_interfaces_temp_spec = OrderedDict({
+            "interface_name": {"type": "str", "source_key": "interfaceName"},
+            "vlan_id": {"type": "int", "source_key": "vlanId"}
+        })
 
         return wireless_interfaces_temp_spec
 
@@ -12358,7 +12359,7 @@ class WirelessDesign(DnacBase):
                         "type": "dict",
                         # "source_key": "spatialReuseProperties",
                         "options": OrderedDict({
-                            "non_srg_obss_pd": {"type": "bool", "source_key": "radioTypeBProperties.spatialReuseProperties.dot11axNonSrgObssPacketDetect"},
+                            "non_srg_obss_pd": {"type": "bool","source_key": "radioTypeBProperties.spatialReuseProperties.dot11axNonSrgObssPacketDetect"},
                             "non_srg_obss_pd_max_threshold": {"type": "int", "source_key": "radioTypeBProperties.spatialReuseProperties.dot11axNonSrgObssPacketDetectMaxThreshold"},
                             "srg_obss_pd": {"type": "bool", "source_key": "radioTypeBProperties.spatialReuseProperties.dot11axSrgObssPacketDetect"},
                             "srg_obss_pd_min_threshold": {"type": "int", "source_key": "radioTypeBProperties.spatialReuseProperties.dot11axSrgObssPacketDetectMinThreshold"},
