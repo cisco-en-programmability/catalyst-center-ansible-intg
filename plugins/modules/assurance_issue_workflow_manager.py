@@ -306,6 +306,18 @@ options:
                 parameters need adjustment to align with the current system configurations and alerting criteria.
             type: str
             required: true
+          device_type:
+            description: >
+                Specifies the type of device to which the issue configuration applies.
+                For example,
+                choices:
+                - Router
+                - SWITCH_AND_HUB
+                - UNIFIED_AP
+                - FIREWALL
+                - CONTROLLER
+            type: str
+            required: true
           synchronize_to_health_threshold:
             description: >
               A boolean value indicating whether the system issue should be synchronized to the health threshold.
@@ -438,8 +450,29 @@ facility_mnemonic_map = r"""
         "CI": ["PARTIAL_FAN_FAIL", "PARTFANFAIL", "PSFANFAIL"],
         "STANDBY": ["DUPADDR"],
         "IOSXE_PEM": ["PEMCHASFSERR", "PEMFAIL", "FAN_FAIL_SHUTDOWN", "FANFAIL"],
-        "CMRP_ENVMON": ["TEMP_SYS_SHUTDOWN_PENDING", "TEMP_WARN_CRITICAL", "TEMP_FRU_SHUTDOWN_PENDING"]
-    },
+        "CMRP_ENVMON": ["TEMP_SYS_SHUTDOWN_PENDING", "TEMP_WARN_CRITICAL", "TEMP_FRU_SHUTDOWN_PENDING"],
+        "CMRP": ["FAN_FAILURE_SYS_SHUTDOWN"],
+        "CMRP_PFU": ["PWR_MGMT_ALARM", "PWR_MGMT_LC_SHUTDOWN"],
+        "CTS": ["AUTHZ_POLICY_SGACL_ACE_FAILED",
+                "SXP_CONN_STATE_CHG_OFF",
+                "AUTHZ_POLICY_SGACL_FAILED",
+                "AAA_NO_RADIUS_SERVER",
+                "AUTHZ_ENTRY_RADIUS_FAILED",
+                "PAC_PROVI_FAIL"
+                ],
+        "ENVIRONMENT": ["OVERTEMP"],
+        "ENVM": ["FAN_FAILED", "FAN_OK_ERR", "FAN_FAILED_ERR", "FAN_ON", "FAN_RECOVERED", "FAN_SHUTDOWN_ERR"],
+        "FAN": ["FAN_OK", "FAN_FAILED"],
+        "HARDWARE": ["THERMAL_NOT_FUNCTIONING"],
+        "ILPOWER": ["CONTROLLER_ERR", "CONTROLLER_PORT_ERR", "SHUT_OVERDRAWN"],
+        "LINK": ["UPDOWN"],
+        "PLATFORM_THERMAL": ["OVERTEMP"],
+        "RMGR": ["RED_WLC_SWITCHOVER", "RED_HEARTBEAT_TMOUT"],
+        "RADIUS": ["ALLDEADSERVER"],
+        "RPS": ["FANOK, FANFAIL"],
+        "RTT": ["IPSLATHRESHOLD"],
+        "SYS": ["DISK_SPACE_ALMOST_FULL"]
+            },
     # Severity 4 facilities and mnemonics
     4: {
         "LISP": [
@@ -470,7 +503,15 @@ facility_mnemonic_map = r"""
             "FANTRAYREMOVED"
         ],
         "C6KENV": ["TERMINATOR_PS_TEMP_MAJORALARM"],
-        "MAC_MOVE": ["NOTIF"]
+        "MAC_MOVE": ["NOTIF"],
+        "ACL_ERRMSG": ["HASH_FULL"],
+        "CDP": ["NATIVE_VLAN_MISMATCH", "DUPLEX_MISMATCH"],
+        "MAC_LIMIT": ["PORT_EXCEED", "VLAN_EXCEED"],
+        "MM": ["MEMBER_DOWN", "MEMBER_UP"],
+        "PM-SP": ["ERR_DISABLE"],
+        "RADIUS": ["RADIUS_DEAD", "RADIUS_ALIVE"],
+        "REP": ["LINKSTATUS"],
+        "RTT": ["OPER_TIMEOUT"]
     },
     # Severity 5 facilities and mnemonics
     5: {
@@ -483,7 +524,18 @@ facility_mnemonic_map = r"""
         "CAPWAPAC_SMGR_TRACE_MESSAGE": ["AP_JOIN_DISJOIN"],
         "OSPF": ["ADJCHG"],
         "DOT1X": ["SUCCESS", "FAIL"],
-        "ILPOWER": ["ILPOWER_POWER_DENY"]
+        "ILPOWER": ["ILPOWER_POWER_DENY"],
+        "AUTHMGR": ["START", "SUCCESS"],
+        "CLNS": ["ADJCHANGE"],
+        "ENVIRONMENTAL": ["SENSOROK"],
+        "LINEPROTO": ["SENSOROK"],
+        "LINK": ["CHANGED"],
+        "MAB": ["FAIL", "SUCCESS"],
+        "PORT": ["IF_UP", "IF_DOWN"],
+        "PLATFORM": ["HALF_DUPLEX"],
+        "SYS": ["RESTART", "RELOAD", "CONFIG_I"],
+        "SESSION_MGR": ["START", "SUCCESS"],
+        "SPANTREE": ["ROOTCHANGE"]
     },
     # Severity 6 facilities and mnemonics
     6: {
@@ -496,7 +548,30 @@ facility_mnemonic_map = r"""
         "ENV_MON": ["REMPEM"],
         "PLATFORM": ["HASTATUS_DETAIL", "HASTATUS"],
         "IOSXE_INFRA": ["PROCPATH_CLIENT_HOG"],
-        "STACKMGR": ["STACK_LINK_CHANGE"]
+        "STACKMGR": ["STACK_LINK_CHANGE"],
+        "CMRP_PFU": ["PWR_MGMT_OK"],
+        "C4K_IOSMODPORTMAN": ["MODULEINSERTED",
+                            "POWERSUPPLYGOOD",
+                            "POWERSUPPLYFANGOOD",
+                            "MODULEREMOVED",
+                            "FANTRAYINSERTEDDETAILED",
+                            "MODULEOFFLINE",
+                            "MODULEONLINE"
+                            ],
+        "CMCC": ["MGMT_SFP_REMOVED", "MGMT_SFP_INSERT"],
+        "FLASH": ["DEVICE_INSERTED"],
+        "HA": ["SWITCHOVER"],
+        "HA_CONFIG_SYNC": ["BULK_CFGSYNC_SUCCEED"],
+        "IGMP": ["IGMP_GROUP_LIMIT"],
+        "IOSXE_REDUNDANCY": ["PEER-LOST", "PEER"],
+        "IOSD_INFRA": ["IFS_DEVICE_OIR"],
+        "OIR": ["INSCARD", "REMCARD"],
+        "PLATFORM": ["HASTATUS_DETAIL", "HASTATUS"],
+        "PTP": ["GRANDMASTER_CLOCK_CHANGE"],
+        "RBM": ["SGACLHIT"],
+        "SISF": ["ENTRY_CREATED"],
+        "SYS": ["INTF_STATUS_CHANGE"],
+        "SPA_OIR": ["OFFLINECARD"]
     }
 }
 """
@@ -942,6 +1017,7 @@ class AssuranceSettings(DnacBase):
                 'name': {'type': 'str', 'required': True},
                 'description': {'type': 'str'},
                 'issue_enabled': {'type': 'bool'},
+                'device_type': {'type': 'str', 'required': True},
                 'priority': {'type': 'str', 'choices': ['P1', 'P2', 'P3', 'P4']},
                 'synchronize_to_health_threshold': {'type': 'bool'},
                 'threshold_value': {'type': int}
@@ -1113,7 +1189,28 @@ class AssuranceSettings(DnacBase):
                 "CI": ["PARTIAL_FAN_FAIL", "PARTFANFAIL", "PSFANFAIL"],
                 "STANDBY": ["DUPADDR"],
                 "IOSXE_PEM": ["PEMCHASFSERR", "PEMFAIL", "FAN_FAIL_SHUTDOWN", "FANFAIL"],
-                "CMRP_ENVMON": ["TEMP_SYS_SHUTDOWN_PENDING", "TEMP_WARN_CRITICAL", "TEMP_FRU_SHUTDOWN_PENDING"]
+                "CMRP_ENVMON": ["TEMP_SYS_SHUTDOWN_PENDING", "TEMP_WARN_CRITICAL", "TEMP_FRU_SHUTDOWN_PENDING"],
+                "CMRP": ["FAN_FAILURE_SYS_SHUTDOWN"],
+                "CMRP_PFU": ["PWR_MGMT_ALARM", "PWR_MGMT_LC_SHUTDOWN"],
+                "CTS": ["AUTHZ_POLICY_SGACL_ACE_FAILED",
+                        "SXP_CONN_STATE_CHG_OFF",
+                        "AUTHZ_POLICY_SGACL_FAILED",
+                        "AAA_NO_RADIUS_SERVER",
+                        "AUTHZ_ENTRY_RADIUS_FAILED",
+                        "PAC_PROVI_FAIL"
+                        ],
+                "ENVIRONMENT": ["OVERTEMP"],
+                "ENVM": ["FAN_FAILED", "FAN_OK_ERR", "FAN_FAILED_ERR", "FAN_ON", "FAN_RECOVERED", "FAN_SHUTDOWN_ERR"],
+                "FAN": ["FAN_OK", "FAN_FAILED"],
+                "HARDWARE": ["THERMAL_NOT_FUNCTIONING"],
+                "ILPOWER": ["CONTROLLER_ERR", "CONTROLLER_PORT_ERR", "SHUT_OVERDRAWN"],
+                "LINK": ["UPDOWN"],
+                "PLATFORM_THERMAL": ["OVERTEMP"],
+                "RMGR": ["RED_WLC_SWITCHOVER", "RED_HEARTBEAT_TMOUT"],
+                "RADIUS": ["ALLDEADSERVER"],
+                "RPS": ["FANOK, FANFAIL"],
+                "RTT": ["IPSLATHRESHOLD"],
+                "SYS": ["DISK_SPACE_ALMOST_FULL"]
             },
             # Severity 4 facilities and mnemonics
             4: {
@@ -1145,7 +1242,15 @@ class AssuranceSettings(DnacBase):
                     "FANTRAYREMOVED"
                 ],
                 "C6KENV": ["TERMINATOR_PS_TEMP_MAJORALARM"],
-                "MAC_MOVE": ["NOTIF"]
+                "MAC_MOVE": ["NOTIF"],
+                "ACL_ERRMSG": ["HASH_FULL"],
+                "CDP": ["NATIVE_VLAN_MISMATCH", "DUPLEX_MISMATCH"],
+                "MAC_LIMIT": ["PORT_EXCEED", "VLAN_EXCEED"],
+                "MM": ["MEMBER_DOWN", "MEMBER_UP"],
+                "PM-SP": ["ERR_DISABLE"],
+                "RADIUS": ["RADIUS_DEAD", "RADIUS_ALIVE"],
+                "REP": ["LINKSTATUS"],
+                "RTT": ["OPER_TIMEOUT"]
             },
             # Severity 5 facilities and mnemonics
             5: {
@@ -1158,7 +1263,18 @@ class AssuranceSettings(DnacBase):
                 "CAPWAPAC_SMGR_TRACE_MESSAGE": ["AP_JOIN_DISJOIN"],
                 "OSPF": ["ADJCHG"],
                 "DOT1X": ["SUCCESS", "FAIL"],
-                "ILPOWER": ["ILPOWER_POWER_DENY"]
+                "ILPOWER": ["ILPOWER_POWER_DENY"],
+                "AUTHMGR": ["START", "SUCCESS"],
+                "CLNS": ["ADJCHANGE"],
+                "ENVIRONMENTAL": ["SENSOROK"],
+                "LINEPROTO": ["SENSOROK"],
+                "LINK": ["CHANGED"],
+                "MAB": ["FAIL", "SUCCESS"],
+                "PORT": ["IF_UP", "IF_DOWN"],
+                "PLATFORM": ["HALF_DUPLEX"],
+                "SYS": ["RESTART", "RELOAD", "CONFIG_I"],
+                "SESSION_MGR": ["START", "SUCCESS"],
+                "SPANTREE": ["ROOTCHANGE"]
             },
             # Severity 6 facilities and mnemonics
             6: {
@@ -1169,9 +1285,32 @@ class AssuranceSettings(DnacBase):
                 "IOSXE_PEM": ["REMPEM_FM", "FANOK", "PEMOK"],
                 "PLATFORM_STACKPOWER": ["CABLE_EVENT", "LINK_EVENT"],
                 "ENV_MON": ["REMPEM"],
-                "PLATFORM": ["HASTATUS_DETAIL", "HASTATUS"],
                 "IOSXE_INFRA": ["PROCPATH_CLIENT_HOG"],
-                "STACKMGR": ["STACK_LINK_CHANGE"]
+                "STACKMGR": ["STACK_LINK_CHANGE"],
+                "CMRP_PFU": ["PWR_MGMT_OK"],
+                "C4K_IOSMODPORTMAN": [
+                    "MODULEINSERTED",
+                    "POWERSUPPLYGOOD",
+                    "POWERSUPPLYFANGOOD",
+                    "MODULEREMOVED",
+                    "FANTRAYINSERTEDDETAILED",
+                    "MODULEOFFLINE",
+                    "MODULEONLINE"
+                ],
+                "CMCC": ["MGMT_SFP_REMOVED", "MGMT_SFP_INSERT"],
+                "FLASH": ["DEVICE_INSERTED"],
+                "HA": ["SWITCHOVER"],
+                "HA_CONFIG_SYNC": ["BULK_CFGSYNC_SUCCEED"],
+                "IGMP": ["IGMP_GROUP_LIMIT"],
+                "IOSXE_REDUNDANCY": ["PEER-LOST", "PEER"],
+                "IOSD_INFRA": ["IFS_DEVICE_OIR"],
+                "OIR": ["INSCARD", "REMCARD"],
+                "PLATFORM": ["HASTATUS_DETAIL", "HASTATUS"],
+                "PTP": ["GRANDMASTER_CLOCK_CHANGE"],
+                "RBM": ["SGACLHIT"],
+                "SISF": ["ENTRY_CREATED"],
+                "SYS": ["INTF_STATUS_CHANGE"],
+                "SPA_OIR": ["OFFLINECARD"]
             }
         }
 
@@ -1432,6 +1571,10 @@ class AssuranceSettings(DnacBase):
                 for rule in issue_setting.get("rules", []):
                     if "occurrences" not in rule:
                         rule["occurrences"] = 1
+                    elif not isinstance(rule["occurrences"], int) or rule["occurrences"] < 0:
+                        self.msg = "Invalid input: 'occurrences' must be a non-negative integer."
+                        self.log(self.msg, "ERROR")
+                        self.set_operation_result("failed", False, self.msg, "ERROR").check_return_status()
 
                     severity = rule.get("severity")
                     if severity is None:
@@ -1677,12 +1820,19 @@ class AssuranceSettings(DnacBase):
             rules = issue_detail.get("rules", [])
             for rule in rules:
                 rule["duration_in_minutes"] = rule.pop("durationInMinutes", None)
-                rule.pop("type")
+                rule.pop("type", None)  # Safer to avoid KeyError
+
+            # Create a copy to avoid modifying the original
+            other_fields = issue_detail.copy()
+            other_fields.pop("isEnabled", None)
+            other_fields.pop("isNotificationEnabled", None)
+            other_fields.pop("rules", None)
+
             transformed_detail = {
-                "is_enabled": issue_detail.pop("isEnabled", None),
-                "is_notification_enabled": issue_detail.pop("isNotificationEnabled", None),
+                "is_enabled": issue_detail.get("isEnabled"),
+                "is_notification_enabled": issue_detail.get("isNotificationEnabled"),
                 "rules": rules,
-                **issue_detail
+                **other_fields
             }
             all_assurance_issue_details.append(transformed_detail)
 
@@ -1960,7 +2110,7 @@ class AssuranceSettings(DnacBase):
             dict or None: A dictionary with execution details if successful, otherwise None.
 
         Description:
-            This function used to execute the comamnd and show the processed
+            This function used to execute the command and show the processed
             status of the issue id.
         """
         self.log("Executing suggested actions for issue ID: {0}".format(issue_id), "INFO")
@@ -2232,7 +2382,7 @@ class AssuranceSettings(DnacBase):
                 result_assurance_issue.get("response").update(
                     {"created user-defined issue": issue})
                 result_assurance_issue.get("msg").update(
-                    {response_data.get("name"): "User Defined Issue Created Successfully"})
+                    {response_data.get("name"): "user-defined issue created successfully"})
                 self.result['changed'] = True
 
         if update_assurance_issue:
@@ -2365,7 +2515,7 @@ class AssuranceSettings(DnacBase):
                         if response_data:
                             if "name" in response_data:
                                 self.log(
-                                    "Successfully Updated defined issue with these details: {0}"
+                                    "Successfully updated defined issue with these details: {0}"
                                     .format(response_data),
                                     "INFO"
                                 )
@@ -2409,7 +2559,7 @@ class AssuranceSettings(DnacBase):
                 assurance_issue_index += 1
 
                 if not assurance_issue_exists:
-                    result_assurance_issue.get("msg").update({name: "Assurance Issue not found"})
+                    result_assurance_issue.get("msg").update({name: "Assurance issue not found"})
                     self.log("Assurance Issue '{0}' not found".format(name), "INFO")
                     continue
 
@@ -2434,7 +2584,7 @@ class AssuranceSettings(DnacBase):
                         if msg in str(e):
                             self.log("Exception while deleting Assurance Issue '{0}': {1}".format(name, str(e)), "WARNING")
                         result_assurance_issue = self.result.get("response")[0].get("assurance_user_defined_issue_settings")
-                        result_assurance_issue.get("msg").update({name: "Assurance user issue deleted successfully"})
+                        result_assurance_issue.get("msg").update({name: "Assurance user-defined issue deleted successfully"})
                         self.result['changed'] = True
                         self.msg = "Assurance Issue '{0}' deleted successfully".format(name)
 
