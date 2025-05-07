@@ -12359,11 +12359,41 @@ class WirelessDesign(DnacBase):
                         "type": "dict",
                         # "source_key": "spatialReuseProperties",
                         "options": OrderedDict({
-                            "non_srg_obss_pd": {"type": "bool","source_key": "radioTypeBProperties.spatialReuseProperties.dot11axNonSrgObssPacketDetect"},
-                            "non_srg_obss_pd_max_threshold": {"type": "int", "source_key": "radioTypeBProperties.spatialReuseProperties.dot11axNonSrgObssPacketDetectMaxThreshold"},
-                            "srg_obss_pd": {"type": "bool", "source_key": "radioTypeBProperties.spatialReuseProperties.dot11axSrgObssPacketDetect"},
-                            "srg_obss_pd_min_threshold": {"type": "int", "source_key": "radioTypeBProperties.spatialReuseProperties.dot11axSrgObssPacketDetectMinThreshold"},
-                            "srg_obss_pd_max_threshold": {"type": "int", "source_key": "radioTypeBProperties.spatialReuseProperties.dot11axSrgObssPacketDetectMaxThreshold"},
+                            "non_srg_obss_pd": {
+                                "type": "bool",
+                                "source_key": (
+                                    "radioTypeBProperties.spatialReuseProperties."
+                                    "dot11axNonSrgObssPacketDetect"
+                                )
+                            },
+                            "non_srg_obss_pd_max_threshold": {
+                                "type": "int",
+                                "source_key": (
+                                    "radioTypeBProperties.spatialReuseProperties."
+                                    "dot11axNonSrgObssPacketDetectMaxThreshold"
+                                )
+                            },
+                            "srg_obss_pd": {
+                                "type": "bool",
+                                "source_key": (
+                                    "radioTypeBProperties.spatialReuseProperties."
+                                    "dot11axSrgObssPacketDetect"
+                                )
+                            },
+                            "srg_obss_pd_min_threshold": {
+                                "type": "int",
+                                "source_key": (
+                                    "radioTypeBProperties.spatialReuseProperties."
+                                    "dot11axSrgObssPacketDetectMinThreshold"
+                                )
+                            },
+                            "srg_obss_pd_max_threshold": {
+                                "type": "int",
+                                "source_key": (
+                                    "radioTypeBProperties.spatialReuseProperties."
+                                    "dot11axSrgObssPacketDetectMaxThreshold"
+                                )
+                            },
                         })
                     }
                 })
@@ -12408,11 +12438,41 @@ class WirelessDesign(DnacBase):
                         "type": "dict",
                         "source_key": "spatialReuseProperties",
                         "options": OrderedDict({
-                            "non_srg_obss_pd": {"type": "bool", "source_key": "radioTypeAProperties.spatialReuseProperties.dot11axNonSrgObssPacketDetect"},
-                            "non_srg_obss_pd_max_threshold": {"type": "int", "source_key": "radioTypeAProperties.spatialReuseProperties.dot11axNonSrgObssPacketDetectMaxThreshold"},
-                            "srg_obss_pd": {"type": "bool", "source_key": "radioTypeAProperties.spatialReuseProperties.dot11axSrgObssPacketDetect"},
-                            "srg_obss_pd_min_threshold": {"type": "int", "source_key": "radioTypeAProperties.spatialReuseProperties.dot11axSrgObssPacketDetectMinThreshold"},
-                            "srg_obss_pd_max_threshold": {"type": "int", "source_key": "radioTypeAProperties.spatialReuseProperties.dot11axSrgObssPacketDetectMaxThreshold"},
+                            "non_srg_obss_pd": {
+                                "type": "bool",
+                                "source_key": (
+                                    "radioTypeAProperties.spatialReuseProperties."
+                                    "dot11axNonSrgObssPacketDetect"
+                                )
+                            },
+                            "non_srg_obss_pd_max_threshold": {
+                                "type": "int",
+                                "source_key": (
+                                    "radioTypeAProperties.spatialReuseProperties."
+                                    "dot11axNonSrgObssPacketDetectMaxThreshold"
+                                )
+                            },
+                            "srg_obss_pd": {
+                                "type": "bool",
+                                "source_key": (
+                                    "radioTypeAProperties.spatialReuseProperties."
+                                    "dot11axSrgObssPacketDetect"
+                                )
+                            },
+                            "srg_obss_pd_min_threshold": {
+                                "type": "int",
+                                "source_key": (
+                                    "radioTypeAProperties.spatialReuseProperties."
+                                    "dot11axSrgObssPacketDetectMinThreshold"
+                                )
+                            },
+                            "srg_obss_pd_max_threshold": {
+                                "type": "int",
+                                "source_key": (
+                                    "radioTypeAProperties.spatialReuseProperties."
+                                    "dot11axSrgObssPacketDetectMaxThreshold"
+                                )
+                            },
                         })
                     }
                 })
@@ -12439,10 +12499,34 @@ class WirelessDesign(DnacBase):
                         "type": "dict",
                         # "source_key": "coverageHoleDetectionProperties",
                         "options": OrderedDict({
-                            "minimum_client_level": {"type": "int", "source_key": "radioType6GHzProperties.coverageHoleDetectionProperties.chdClientLevel"},
-                            "data_rssi_threshold": {"type": "int", "source_key": "radioType6GHzProperties.coverageHoleDetectionProperties.chdDataRssiThreshold"},
-                            "voice_rssi_threshold": {"type": "int", "source_key": "radioType6GHzProperties.coverageHoleDetectionProperties.chdVoiceRssiThreshold"},
-                            "exception_level": {"type": "int", "source_key": "radioType6GHzProperties.coverageHoleDetectionProperties.chdExceptionLevel"},
+                            "minimum_client_level": {
+                                "type": "int",
+                                "source_key": (
+                                    "radioType6GHzProperties.coverageHoleDetectionProperties."
+                                    "chdClientLevel"
+                                )
+                            },
+                            "data_rssi_threshold": {
+                                "type": "int",
+                                "source_key": (
+                                    "radioType6GHzProperties.coverageHoleDetectionProperties."
+                                    "chdDataRssiThreshold"
+                                )
+                            },
+                            "voice_rssi_threshold": {
+                                "type": "int",
+                                "source_key": (
+                                    "radioType6GHzProperties.coverageHoleDetectionProperties."
+                                    "chdVoiceRssiThreshold"
+                                )
+                            },
+                            "exception_level": {
+                                "type": "int",
+                                "source_key": (
+                                    "radioType6GHzProperties.coverageHoleDetectionProperties."
+                                    "chdExceptionLevel"
+                                )
+                            },
                         })
                     },
                     "flexible_radio_assigment": {
@@ -12463,21 +12547,75 @@ class WirelessDesign(DnacBase):
                                 "type": "dict",
                                 "source_key": "radioType6GHzProperties.multiBssidProperties.dot11axParameters",
                                 "options": OrderedDict({
-                                    "ofdma_downlink": {"type": "bool", "source_key": "radioType6GHzProperties.multiBssidProperties.dot11axParameters.ofdmaDownLink"},
-                                    "ofdma_uplink": {"type": "bool", "source_key": "radioType6GHzProperties.multiBssidProperties.dot11axParameters.ofdmaUpLink"},
-                                    "mu_mimo_downlink": {"type": "bool", "source_key": "radioType6GHzProperties.multiBssidProperties.dot11axParameters.muMimoDownLink"},
-                                    "mu_mimo_uplink": {"type": "bool", "source_key": "radioType6GHzProperties.multiBssidProperties.dot11axParameters.muMimoUpLink"},
+                                    "ofdma_downlink": {
+                                        "type": "bool",
+                                        "source_key": (
+                                            "radioType6GHzProperties.multiBssidProperties."
+                                            "dot11axParameters.ofdmaDownLink"
+                                        )
+                                    },
+                                    "ofdma_uplink": {
+                                        "type": "bool",
+                                        "source_key": (
+                                            "radioType6GHzProperties.multiBssidProperties."
+                                            "dot11axParameters.ofdmaUpLink"
+                                        )
+                                    },
+                                    "mu_mimo_downlink": {
+                                        "type": "bool",
+                                        "source_key": (
+                                            "radioType6GHzProperties.multiBssidProperties."
+                                            "dot11axParameters.muMimoDownLink"
+                                        )
+                                    },
+                                    "mu_mimo_uplink": {
+                                        "type": "bool",
+                                        "source_key": (
+                                            "radioType6GHzProperties.multiBssidProperties."
+                                            "dot11axParameters.muMimoUpLink"
+                                        )
+                                    },
                                 })
                             },
                             "dot_11be_parameters": {
                                 "type": "dict",
                                 "source_key": "multiBssidProperties.dot11beParameters",
                                 "options": OrderedDict({
-                                    "ofdma_downlink": {"type": "bool", "source_key": "radioType6GHzProperties.multiBssidProperties.dot11beParameters.ofdmaDownLink"},
-                                    "ofdma_uplink": {"type": "bool", "source_key": "radioType6GHzProperties.multiBssidProperties.dot11beParameters.ofdmaUpLink"},
-                                    "mu_mimo_downlink": {"type": "bool", "source_key": "radioType6GHzProperties.multiBssidProperties.dot11beParameters.muMimoDownLink"},
-                                    "mu_mimo_uplink": {"type": "bool", "source_key": "radioType6GHzProperties.multiBssidProperties.dot11beParameters.muMimoUpLink"},
-                                    "ofdma_multi_ru": {"type": "bool", "source_key": "radioType6GHzProperties.multiBssidProperties.dot11beParameters.ofdmaMultiRu"},
+                                    "ofdma_downlink": {
+                                        "type": "bool",
+                                        "source_key": (
+                                            "radioType6GHzProperties.multiBssidProperties."
+                                            "dot11beParameters.ofdmaDownLink"
+                                        )
+                                    },
+                                    "ofdma_uplink": {
+                                        "type": "bool",
+                                        "source_key": (
+                                            "radioType6GHzProperties.multiBssidProperties."
+                                            "dot11beParameters.ofdmaUpLink"
+                                        )
+                                    },
+                                    "mu_mimo_downlink": {
+                                        "type": "bool",
+                                        "source_key": (
+                                            "radioType6GHzProperties.multiBssidProperties."
+                                            "dot11beParameters.muMimoDownLink"
+                                        )
+                                    },
+                                    "mu_mimo_uplink": {
+                                        "type": "bool",
+                                        "source_key": (
+                                            "radioType6GHzProperties.multiBssidProperties."
+                                            "dot11beParameters.muMimoUpLink"
+                                        )
+                                    },
+                                    "ofdma_multi_ru": {
+                                        "type": "bool",
+                                        "source_key": (
+                                            "radioType6GHzProperties.multiBssidProperties."
+                                            "dot11beParameters.ofdmaMultiRu"
+                                        )
+                                    },
                                 })
                             },
                             "target_waketime": {"type": "bool", "source_key": "radioType6GHzProperties.multiBssidProperties.targetWakeTime"},
@@ -12488,11 +12626,41 @@ class WirelessDesign(DnacBase):
                         "type": "dict",
                         "source_key": "spatialReuseProperties",
                         "options": OrderedDict({
-                            "non_srg_obss_pd": {"type": "bool", "source_key": "radioType6GHzProperties.spatialReuseProperties.dot11axNonSrgObssPacketDetect"},
-                            "non_srg_obss_pd_max_threshold": {"type": "int", "source_key": "radioType6GHzProperties.spatialReuseProperties.dot11axNonSrgObssPacketDetectMaxThreshold"},
-                            "srg_obss_pd": {"type": "bool", "source_key": "radioType6GHzProperties.spatialReuseProperties.dot11axSrgObssPacketDetect"},
-                            "srg_obss_pd_min_threshold": {"type": "int", "source_key": "radioType6GHzProperties.spatialReuseProperties.dot11axSrgObssPacketDetectMinThreshold"},
-                            "srg_obss_pd_max_threshold": {"type": "int", "source_key": "radioType6GHzProperties.spatialReuseProperties.dot11axSrgObssPacketDetectMaxThreshold"},
+                            "non_srg_obss_pd": {
+                                "type": "bool",
+                                "source_key": (
+                                    "radioType6GHzProperties.spatialReuseProperties."
+                                    "dot11axNonSrgObssPacketDetect"
+                                )
+                            },
+                            "non_srg_obss_pd_max_threshold": {
+                                "type": "int",
+                                "source_key": (
+                                    "radioType6GHzProperties.spatialReuseProperties."
+                                    "dot11axNonSrgObssPacketDetectMaxThreshold"
+                                )
+                            },
+                            "srg_obss_pd": {
+                                "type": "bool",
+                                "source_key": (
+                                    "radioType6GHzProperties.spatialReuseProperties."
+                                    "dot11axSrgObssPacketDetect"
+                                )
+                            },
+                            "srg_obss_pd_min_threshold": {
+                                "type": "int",
+                                "source_key": (
+                                    "radioType6GHzProperties.spatialReuseProperties."
+                                    "dot11axSrgObssPacketDetectMinThreshold"
+                                )
+                            },
+                            "srg_obss_pd_max_threshold": {
+                                "type": "int",
+                                "source_key": (
+                                    "radioType6GHzProperties.spatialReuseProperties."
+                                    "dot11axSrgObssPacketDetectMaxThreshold"
+                                )
+                            },
                         })
                     }
                 })
@@ -12571,7 +12739,7 @@ class WirelessDesign(DnacBase):
                     "device_priority": {
                         "type": "str",
                         "source_key": "anchorPriority",
-                        "transform": lambda priority: priority_mapping.get(priority)
+                        "transform":  priority_mapping.get
                     },
                     "device_nat_ip_address": {"type": "str", "source_key": "privateIp"},
                     "mobility_group_name": {"type": "str", "source_key": "mobilityGroupName"},
@@ -12637,7 +12805,7 @@ class WirelessDesign(DnacBase):
 
             for key, spec in temp_spec.items():
                 self.log("Processing key '{0}' with spec: {1}".format(key, spec), "DEBUG")
-                
+
                 source_key = spec.get('source_key', key)
                 value = detail.get(source_key)
                 self.log("Retrieved value for source key '{0}': {1}".format(source_key, value), "DEBUG")
@@ -12812,11 +12980,12 @@ class WirelessDesign(DnacBase):
         if isinstance(yaml_config_options, dict):
             self.log("yaml_config_options retrieved: {0}".format(yaml_config_options), "DEBUG")
             # Extract file_path and component_specific_filters or set to default values
-            yaml_config_generator["file_path"] = yaml_config_options.get("file_path", "")
+            if yaml_config_options.get("file_path"):
+                yaml_config_generator["file_path"] = yaml_config_options.get("file_path")
             yaml_config_generator["component_specific_filters"] = yaml_config_options.get("component_specific_filters", {})
         else:
             self.log("yaml_config_options is not provided. Setting default values.", "WARNING")
-            yaml_config_generator["file_path"] = ""
+            # yaml_config_generator["file_path"] = ""
             yaml_config_generator["component_specific_filters"] = {}
 
         self.log("Processed yaml_config_generator: {0}".format(yaml_config_generator), "DEBUG")
@@ -12959,7 +13128,7 @@ class WirelessDesign(DnacBase):
 
         if config.get("generate_yaml_config"):
             self.log("generate_yaml_config is set to True. Preparing to process YAML configuration options.", "INFO")
-            
+
             # Call the new function to process YAML configuration
             yaml_config_generator = self.process_yaml_config_params(config)
 
