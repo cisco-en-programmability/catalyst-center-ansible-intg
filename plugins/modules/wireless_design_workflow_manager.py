@@ -3973,7 +3973,7 @@ EXAMPLES = r"""
         file_path: "/tmp/catc_wireless_components_config.yaml"
         component_specific_filters:
           ssid_names_list: ["lab_wifi", "enterprise_secure", "guest_wifi"]
-          interface_names_list: ["data", "voice]
+          interface_names_list: ["data", "voice"]
           power_profile_names_list: ["EthernetSpeeds", "EthernetState"]
           access_point_profile_names_list: ["Warehouse-AP", "Default_AP_Profile_AireOS"]
           radio_frequency_profile_names_list: ["rf_profile_2_4_5_6ghz_high_low", "rf_profile_5ghz_basic"]
@@ -12739,7 +12739,7 @@ class WirelessDesign(DnacBase):
                     "device_priority": {
                         "type": "str",
                         "source_key": "anchorPriority",
-                        "transform":  priority_mapping.get
+                        "transform": priority_mapping.get
                     },
                     "device_nat_ip_address": {"type": "str", "source_key": "privateIp"},
                     "mobility_group_name": {"type": "str", "source_key": "mobilityGroupName"},
