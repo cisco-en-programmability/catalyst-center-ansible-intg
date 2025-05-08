@@ -977,31 +977,33 @@ class Provision(DnacBase):
         ap_locations = self.validated_config.get("primary_managed_ap_locations") or self.validated_config.get("managed_ap_locations")
 
         self.floor_names = []
-        for ap_loc in ap_locations:
-            self.log("Processing AP location: {0}".format(ap_loc), "DEBUG")
-            site_type = self.get_site_type(site_name_hierarchy=ap_loc)
-            self.log("Resolved site type for AP location '{0}': '{1}'".format(ap_loc, site_type), "DEBUG")
 
-            if site_type == "floor":
-                self.log("Adding '{0}' to floor names list".format(ap_loc), "DEBUG")
-                self.floor_names.append(ap_loc)
-            elif site_type == "building":
-                self.log("Building site type detected for '{0}'. Retrieving floor details.".format(ap_loc), "DEBUG")
-                building_name = ap_loc + ".*"
-                floors = self.get_site(building_name)
+        if self.compare_dnac_versions(self.get_ccc_version(), "2.3.5.3") <= 0:
+            for ap_loc in ap_locations:
+                self.log("Processing AP location: {0}".format(ap_loc), "DEBUG")
+                site_type = self.get_site_type(site_name_hierarchy=ap_loc)
+                self.log("Resolved site type for AP location '{0}': '{1}'".format(ap_loc, site_type), "DEBUG")
 
-                for item in floors['response']:
-                    if item.get('type') == 'floor':
-                        self.log("Floor found: '{0}' for building '{1}'".format(item['nameHierarchy'], ap_loc), "DEBUG")
-                        self.floor_names.append(item['nameHierarchy'])
-                    elif 'additionalInfo' in item:
-                        for additional_info in item['additionalInfo']:
-                            if 'attributes' in additional_info and additional_info['attributes'].get('type') == 'floor':
-                                self.log("Floor found in additionalInfo: '{0}' for building '{1}'".format(item['siteNameHierarchy'], ap_loc), "DEBUG")
-                                self.floor_names.append(item['siteNameHierarchy'])
-            else:
-                self.log("Invalid site type detected for '{0}'. Managed AP Location must be building or floor.".format(ap_loc), "CRITICAL")
-                self.module.fail_json(msg="Managed AP Location must be building or floor", response=[])
+                if site_type == "floor":
+                    self.log("Adding '{0}' to floor names list".format(ap_loc), "DEBUG")
+                    self.floor_names.append(ap_loc)
+                elif site_type == "building":
+                    self.log("Building site type detected for '{0}'. Retrieving floor details.".format(ap_loc), "DEBUG")
+                    building_name = ap_loc + ".*"
+                    floors = self.get_site(building_name)
+
+                    for item in floors['response']:
+                        if item.get('type') == 'floor':
+                            self.log("Floor found: '{0}' for building '{1}'".format(item['nameHierarchy'], ap_loc), "DEBUG")
+                            self.floor_names.append(item['nameHierarchy'])
+                        elif 'additionalInfo' in item:
+                            for additional_info in item['additionalInfo']:
+                                if 'attributes' in additional_info and additional_info['attributes'].get('type') == 'floor':
+                                    self.log("Floor found in additionalInfo: '{0}' for building '{1}'".format(item['siteNameHierarchy'], ap_loc), "DEBUG")
+                                    self.floor_names.append(item['siteNameHierarchy'])
+                else:
+                    self.log("Invalid site type detected for '{0}'. Managed AP Location must be building or floor.".format(ap_loc), "CRITICAL")
+                    self.module.fail_json(msg="Managed AP Location must be building or floor", response=[])
 
         self.log("Final list of floor names: {0}".format(self.floor_names), "DEBUG")
 
@@ -1790,6 +1792,7 @@ class Provision(DnacBase):
                 self.check_return_status()
         else:
             try:
+                self.log(reprovision_param)
                 self.log("Starting reprovisioning of wired device using 're_provision_devices' API.", "DEBUG")
                 response = self.dnac_apply['exec'](
                     family="sda",
@@ -1797,13 +1800,17 @@ class Provision(DnacBase):
                     op_modifies=True,
                     params={"payload": reprovision_param}
                 )
-                self.log("Received response for 're_provision_devices': {0}".format(response), "DEBUG")
+                self.log("Received response for 're_provision_devices': {0}".format(response), "error")
                 self.check_tasks_response_status(response, api_name='re_provision_devices')
-                self.log("Task status after 're_provision_devices' execution: {0}".format(self.status), "DEBUG")
+                self.log("Task status after 're_provision_devices' execution: {0}".format(self.status), "error")
 
                 if self.status not in ["failed", "exited"]:
                     self.msg = ("Wired Device '{0}' re-provisioning completed successfully.".format(device_ips))
                     self.set_operation_result("success", True, self.msg, "INFO")
+
+                if self.status in ["failed", "exited"]:
+                    self.msg = ("Wired Device '{0}' re-provisioning failed due to {1}.".format(device_ips, self.msg))
+                    self.set_operation_result("failed", False, self.msg, "ERROR").check_return_status()
 
             except Exception as e:
                 self.msg = "Error in re-provisioning device '{0}' due to {1}".format(device_ips, str(e))
