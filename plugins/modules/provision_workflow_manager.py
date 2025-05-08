@@ -1797,9 +1797,9 @@ class Provision(DnacBase):
                     op_modifies=True,
                     params={"payload": reprovision_param}
                 )
-                self.log("Received response for 're_provision_devices': {0}".format(response), "error")
+                self.log("Received response for 're_provision_devices': {0}".format(response), "DEBUG")
                 self.check_tasks_response_status(response, api_name='re_provision_devices')
-                self.log("Task status after 're_provision_devices' execution: {0}".format(self.status), "error")
+                self.log("Task status after 're_provision_devices' execution: {0}".format(self.status), "DEBUG")
 
                 if self.status not in ["failed", "exited"]:
                     self.msg = ("Wired Device '{0}' re-provisioning completed successfully.".format(device_ips))
