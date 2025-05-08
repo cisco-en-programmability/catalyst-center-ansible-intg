@@ -46,6 +46,15 @@ class TestDnacTemplateWorkflow(TestDnacModule):
     playbook_config_import_template_playbook_case_7 = test_data.get(
         "import_template_playbook_case_7"
     )
+    playbook_config_import_project_playbook_case_1 = test_data.get(
+        "import_project_playbook_case_1"
+    )
+    playbook_config_import_project_playbook_case_2 = test_data.get(
+        "import_project_playbook_case_2"
+    )
+    playbook_config_import_project_playbook_case_3 = test_data.get(
+        "import_project_playbook_case_3"
+    )
 
     def setUp(self):
         super(TestDnacTemplateWorkflow, self).setUp()
@@ -133,6 +142,25 @@ class TestDnacTemplateWorkflow(TestDnacModule):
                 self.test_data.get("get_task_id_case_7_call_1"),
                 self.test_data.get("get_task_details_by_id_case_7_call_1"),
                 self.test_data.get("get_task_details_by_id_case_7_call_2"),
+            ]
+        elif "test_import_project_playbook_case_1" in self._testMethodName:
+            self.run_dnac_exec.side_effect = [
+                self.test_data.get("get_projects_response_1_call_1"),
+                self.test_data.get("get_projects_response_1_call_2"),
+                self.test_data.get("get_projects_response_1_call_3"),
+            ]
+        elif "test_import_project_playbook_case_2" in self._testMethodName:
+            self.run_dnac_exec.side_effect = [
+                self.test_data.get("get_projects_response_update_call_1"),
+                self.test_data.get("get_projects_response_update_call_1"),
+                self.test_data.get("get_projects_response_1_call_2"),
+                self.test_data.get("get_projects_response_1_call_3"),
+            ]
+        elif "test_import_project_playbook_case_3" in self._testMethodName:
+            self.run_dnac_exec.side_effect = [
+                self.test_data.get("get_projects_response_delete_call_1"),
+                self.test_data.get("get_projects_response_1_call_2"),
+                self.test_data.get("get_projects_response_1_call_1"),
             ]
 
     def test_create_template_playbook_case_1(self):
@@ -308,4 +336,76 @@ class TestDnacTemplateWorkflow(TestDnacModule):
             .get("response")
             .get("importTemplate"),
             "Successfully imported the templates",
+        )
+
+    def test_import_project_playbook_case_1(self):
+        """
+        Create Project
+        """
+        set_module_args(
+            dict(
+                dnac_host="1.1.1.1",
+                dnac_username="dummy",
+                dnac_password="dummy",
+                dnac_version="2.3.7.9",
+                dnac_log=True,
+                dnac_log_level="DEBUG",
+                state="merged",
+                config_verify=True,
+                config=self.playbook_config_import_project_playbook_case_1,
+            )
+        )
+        result = self.execute_module(changed=True, failed=False)
+        self.maxDiff = None
+        self.assertEqual(
+            result.get('msg'),
+            "project test-project-1 created succesfully"
+        )
+
+    def test_import_project_playbook_case_2(self):
+        """
+        Update Project
+        """
+        set_module_args(
+            dict(
+                dnac_host="1.1.1.1",
+                dnac_username="dummy",
+                dnac_password="dummy",
+                dnac_version="2.3.7.9",
+                dnac_log=True,
+                dnac_log_level="DEBUG",
+                state="merged",
+                config_verify=True,
+                config=self.playbook_config_import_project_playbook_case_2,
+            )
+        )
+        result = self.execute_module(changed=True, failed=False)
+        self.maxDiff = None
+        self.assertEqual(
+            result.get('msg'),
+            "Project 'test-rename-2' updated successfully."
+        )
+
+    def test_import_project_playbook_case_3(self):
+        """
+        Delete Project
+        """
+        set_module_args(
+            dict(
+                dnac_host="1.1.1.1",
+                dnac_username="dummy",
+                dnac_password="dummy",
+                dnac_version="2.3.7.9",
+                dnac_log=True,
+                dnac_log_level="DEBUG",
+                state="deleted",
+                config_verify=True,
+                config=self.playbook_config_import_project_playbook_case_3,
+            )
+        )
+        result = self.execute_module(changed=True, failed=False)
+        self.maxDiff = None
+        self.assertEqual(
+            result.get('msg'),
+            "Project(s) are deleted and verified successfully. ['test-rename-2']"
         )
