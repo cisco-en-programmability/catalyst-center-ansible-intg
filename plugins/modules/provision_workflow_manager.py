@@ -1221,8 +1221,7 @@ class Provision(DnacBase):
         # Check if provisioning should be handled based on DNAC version:
         # - If DNAC version is ≤ 2.3.5.3, always proceed with provisioning logic.
         # - If DNAC version is ≥ 2.3.7.6 AND the device is wireless, follow wireless provisioning logic.
-        self.log(self.want)
-        self.log(self.device_type)
+
         if (
             self.compare_dnac_versions(ccc_version, "2.3.5.3") <= 0
             or (
@@ -1266,7 +1265,6 @@ class Provision(DnacBase):
             self.application_telemetry(telemetry_config)
 
         else:
-            self.log(self.want)
             self.log("Skipping individual provisioning. Initiating bulk provisioning for wired devices.", "INFO")
             self.provision_bulk_wired_device()
 
@@ -1298,7 +1296,6 @@ class Provision(DnacBase):
             - Handles and logs any exceptions that may occur during the API execution.
         """
 
-        self.log(telemetry_config)
         application_telemetry_details = telemetry_config.get("application_telemetry", [])
 
         enable_payload = []
@@ -2177,7 +2174,6 @@ class Provision(DnacBase):
                 self.check_return_status()
 
         elif self.compare_dnac_versions(self.get_ccc_version(), "2.3.7.6") <= 0:
-            self.log("vesion - 2.3.7.6")
             try:
                 response = self.dnac._exec(
                     family="sda",
@@ -2436,10 +2432,7 @@ def main():
         device_dict = ccc_provision.get_device_type()
         ccc_provision.log("Device classification result: {0}".format(device_dict), "DEBUG")
 
-    ccc_provision.log(ccc_provision.validated_config)
-
     if is_version_valid and state == "merged":
-        ccc_provision.log(ccc_provision.validated_config)
         for device_type, devices in device_dict.items():
             if not devices:
                 ccc_provision.log("No devices found for type '{0}', skipping.".format(device_type), "INFO")
