@@ -905,7 +905,7 @@ class DnacBase():
                 self.msg = "No site details retrieved for site name: {0}".format(site_name)
                 self.fail_and_exit(self.msg)
 
-            self.log("Site details retrieved for site '{0}'': {1}".format(site_name, str(response)), "error")
+            self.log("Site details retrieved for site '{0}'': {1}".format(site_name, str(response)), "DEBUG")
             site = response.get("response")
             site_id = site[0].get("id")
             site_exists = True
@@ -1313,12 +1313,10 @@ class DnacBase():
                     params={"management_ip_address": device_ip}
                 )
                 if response:
-                    self.log("Received API response for device ip  '{0}': {1}".format(device_ip, str(response)), "ERROR")
+                    self.log("Received API response for device ip  '{0}': {1}".format(device_ip, str(response)), "DEBUG")
                     response = response.get("response")
-                    self.log(response,"ERROR")
                     if response:
                         device_id = response[0]["id"]
-                        self.log(device_id,"ERROR")
                         if device_id:
                             device_id_mapping[device_ip] = device_id
                             self.log("Added device ID '{0}' for device ip  '{1}'.".format(device_id, device_ip), "INFO")
