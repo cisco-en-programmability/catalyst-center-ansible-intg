@@ -4014,17 +4014,20 @@ from ansible_collections.cisco.dnac.plugins.module_utils.dnac import (
 )
 import re
 import datetime
-import yaml
-from collections import OrderedDict
 import os
+from collections import OrderedDict
 
+try:
+    import yaml
 
-class OrderedDumper(yaml.Dumper):
-    def represent_dict(self, data):
-        return self.represent_mapping('tag:yaml.org,2002:map', data.items())
+    class OrderedDumper(yaml.Dumper):
+        def represent_dict(self, data):
+            return self.represent_mapping('tag:yaml.org,2002:map', data.items())
 
+    OrderedDumper.add_representer(OrderedDict, OrderedDumper.represent_dict)
 
-OrderedDumper.add_representer(OrderedDict, OrderedDumper.represent_dict)
+except ImportError as e:
+    OrderedDumper = None
 
 
 class WirelessDesign(DnacBase):
@@ -12852,6 +12855,7 @@ class WirelessDesign(DnacBase):
         """
         try:
             self.log("Starting conversion of dictionary to YAML format.", "INFO")
+
             yaml_content = yaml.dump(data_dict, Dumper=OrderedDumper, default_flow_style=False)
             yaml_content = "---\n" + yaml_content
             self.log("Dictionary successfully converted to YAML format.", "DEBUG")
@@ -13129,12 +13133,21 @@ class WirelessDesign(DnacBase):
         if config.get("generate_yaml_config"):
             self.log("generate_yaml_config is set to True. Preparing to process YAML configuration options.", "INFO")
 
-            # Call the new function to process YAML configuration
-            yaml_config_generator = self.process_yaml_config_params(config)
+            # Check if OrderedDumper is available
+            if OrderedDumper:
+                # Call the function to process YAML configuration
+                yaml_config_generator = self.process_yaml_config_params(config)
 
-            # Add yaml_config_generator to want
-            want["yaml_config_generator"] = yaml_config_generator
-            self.log("yaml_config_generator added to want: {0}".format(want["yaml_config_generator"]), "INFO")
+                # Add yaml_config_generator to want
+                want["yaml_config_generator"] = yaml_config_generator
+                self.log("yaml_config_generator added to want: {0}".format(want["yaml_config_generator"]), "INFO")
+            else:
+                # Fail and exit if OrderedDumper is not available
+                self.msg = (
+                    "YAML configuration generation requires the 'yaml' library, which is not available. "
+                    "Please install the 'PyYAML' library to enable this functionality."
+                )
+                self.fail_and_exit(self.msg)
         else:
             self.log("generate_yaml_config is not set to True. Skipping YAML configuration processing.", "INFO")
 
