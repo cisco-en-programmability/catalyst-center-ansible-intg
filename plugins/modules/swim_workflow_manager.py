@@ -40,7 +40,7 @@ options:
   state:
     description: The state of Catalyst Center after module completion.
     type: str
-    choices: [ merged ]
+    choices: [ merged, deleted]
     default: merged
   config:
     description: List of details of SWIM image being managed
@@ -48,6 +48,10 @@ options:
     elements: dict
     required: True
     suboptions:
+      image_name:
+        description: Details of image to be deleted.
+        type: list
+        elements: str
       import_image_details:
         description: Details of image being imported
         type: dict
@@ -349,12 +353,14 @@ notes:
     software_image_management_swim.SoftwareImageManagementSwim.tag_as_golden_image,
     software_image_management_swim.SoftwareImageManagementSwim.trigger_software_image_distribution,
     software_image_management_swim.SoftwareImageManagementSwim.trigger_software_image_activation,
+    software_image_management_swim.SoftwareImageManagementSwim.delete_image_v1,
 
   - Paths used are
     post /dna/intent/api/v1/image/importation/source/url,
     post /dna/intent/api/v1/image/importation/golden,
     post /dna/intent/api/v1/image/distribution,
     post /dna/intent/api/v1/image/activation/device,
+    delete /dna/intent/api/v1/images/{id},
 
   - Added the parameter 'dnac_api_task_timeout', 'dnac_task_poll_interval' options in v6.13.2.
 
@@ -601,6 +607,23 @@ EXAMPLES = r"""
         activate_lower_image_version: True
         distribute_if_needed: True
 
+- name: Delete image from Cisco Catalyst Center.
+  cisco.dnac.swim_workflow_manager:
+    dnac_host: "{{dnac_host}}"
+    dnac_username: "{{dnac_username}}"
+    dnac_password: "{{dnac_password}}"
+    dnac_verify: "{{dnac_verify}}"
+    dnac_port: "{{dnac_port}}"
+    dnac_version: "{{dnac_version}}"
+    dnac_debug: "{{dnac_debug}}"
+    dnac_log: True
+    dnac_log_level: DEBUG
+    config_verify: True
+    dnac_api_task_timeout: 1000
+    dnac_task_poll_interval: 1
+    state: deleted
+    config:
+      - image_name: [C9800-SW-iosxe-wlc.17.07.01.SPA.bin]
 """
 
 RETURN = r"""
@@ -645,7 +668,7 @@ class Swim(DnacBase):
 
     def __init__(self, module):
         super().__init__(module)
-        self.supported_states = ["merged"]
+        self.supported_states = ["merged", "deleted"]
         self.images_to_import, self.existing_images = [], []
 
     def validate_input(self):
@@ -666,7 +689,7 @@ class Swim(DnacBase):
           will contain the validated configuration. If it fails, 'self.status' will be 'failed',
           'self.msg' will describe the validation issues.
         """
-
+        self.log(self.config)
         if not self.config:
             self.status = "success"
             self.msg = "Configuration is not available in the playbook for validation"
@@ -674,6 +697,7 @@ class Swim(DnacBase):
             return self
 
         temp_spec = dict(
+            image_name=dict(type='list', elements='str'),
             import_image_details=dict(type='dict'),
             tagging_details=dict(type='dict'),
             image_distribution_details=dict(type='dict'),
@@ -767,6 +791,41 @@ class Swim(DnacBase):
             self.status = "failed"
             self.result['response'] = self.msg
             self.check_return_status()
+
+        return image_id
+
+    def get_image_id_v1(self, name):
+        """
+        Retrieve the unique image ID based on the provided image name.
+        Parameters:
+            self (object): An instance of a class used for interacting with Cisco Catalyst Center.
+            name (str): The name of the software image to search for.
+        Returns:
+            str: The unique image ID (UUID) corresponding to the given image name. or NONE if not found
+        Raises:
+            AnsibleFailJson: If the image is not found in the response.
+        Description:
+            This function sends a request to Cisco Catalyst Center to retrieve details about a software image based on its name.
+            It extracts and returns the image ID if a single matching image is found. If no image or multiple
+            images are found with the same name, it raises an exception.
+        """
+
+        image_response = self.dnac._exec(
+            family="software_image_management_swim",
+            function='get_software_image_details',
+            op_modifies=True,
+            params={"image_name": name},
+        )
+        self.log("Received API response from 'get_software_image_details': {0}".format(str(image_response)), "DEBUG")
+        image_list = image_response.get("response")
+
+        if (len(image_list) == 1):
+            image_id = image_list[0].get("imageUuid")
+            self.log("SWIM image '{0}' has the ID: {1}".format(name, image_id), "INFO")
+        else:
+            self.msg = "SWIM image '{0}' could not be found".format(name)
+            self.log(self.msg, "ERROR")
+            return None
 
         return image_id
 
@@ -1017,13 +1076,16 @@ class Swim(DnacBase):
             else:
                 self.log("Unknown site type '{site_type}' for site '{site_name}'.".format(site_type=site_type, site_name=site_name), "ERROR")
 
-            get_site_names = self.get_site(site_names)
-            self.log("Fetched site names: {0}".format(str(get_site_names)), "DEBUG")
+            if site_type in ["area", "floor"]:
+                self.log("Fetching site names for pattern: {0}".format(site_names), "DEBUG")
+                get_site_names = self.get_site(site_names)
+                self.log("Fetched site names: {0}".format(str(get_site_names)), "DEBUG")
 
-            for item in get_site_names['response']:
-                if 'nameHierarchy' in item and 'id' in item:
-                    site_info[item['nameHierarchy']] = item['id']
+                for item in get_site_names['response']:
+                    if 'nameHierarchy' in item and 'id' in item:
+                        site_info[item['nameHierarchy']] = item['id']
 
+            self.log("Site information retrieved: {0}".format(str(site_info)), "DEBUG")
             for site_name, site_id in site_info.items():
                 offset = 1
                 limit = self.get_device_details_limit()
@@ -1208,6 +1270,21 @@ class Swim(DnacBase):
             It validates and retrieves the necessary information from Cisco Catalyst Center to support later actions.
         """
 
+        if self.want.get("image_name"):
+            have = {}
+            names = self.want.get("image_name")
+            self.log(names)
+
+            image_id_map = {}
+
+            for name in names:
+                image_id = self.get_image_id(name)
+                image_id_map[name] = image_id
+                self.log("Image ID for '{0}' is: {1}".format(name, image_id), "DEBUG")
+
+            have["image_ids"] = image_id_map
+            self.have.update(have)
+
         if self.want.get("tagging_details"):
             have = {}
             tagging_details = self.want.get("tagging_details")
@@ -1373,7 +1450,7 @@ class Swim(DnacBase):
             import, tagging, distribution, and activation. It stores these details in the 'want' dictionary
             for later use in the Ansible module.
         """
-
+        self.log(config)
         want = {}
         import_image_details = config.get("import_image_details", {})
         if import_image_details:
@@ -1408,6 +1485,7 @@ class Swim(DnacBase):
         want["tagging_details"] = config.get("tagging_details")
         want["distribution_details"] = config.get("image_distribution_details")
         want["activation_details"] = config.get("image_activation_details")
+        want["image_name"] = config.get("image_name")
 
         self.want = want
         self.log("Desired State (want): {0}".format(str(self.want)), "INFO")
@@ -2281,6 +2359,9 @@ class Swim(DnacBase):
             self.msg = final_msg
             self.set_operation_result("success", True, self.msg, "INFO")
             self.partial_successful_distribution = True
+        elif device_ip_for_not_elg_list:
+            self.msg = "Devices not eligible for image distribution: " + ", ".join(device_ip_for_not_elg_list)
+            self.set_operation_result("success", False, self.msg, "WARNING")
         else:
             self.msg = final_msg
             self.set_operation_result("success", True, self.msg, "INFO")
@@ -2886,6 +2967,111 @@ class Swim(DnacBase):
 
         return self
 
+    def get_diff_deleted(self, config):
+        """
+        Deletes software images from Cisco Catalyst Center based on the image names provided in the configuration.
+
+        Args:
+            config (dict): A dictionary containing the configuration for image deletion.
+                        Expected to have a key "image_name" with a list of image names to be deleted.
+
+        Returns:
+            self (object): Returns the current object instance after processing the deletion request.
+
+        Raises:
+            None explicitly, but exceptions during API execution are caught and logged.
+
+        Description:
+            1. Extract the list of image names from the config.
+            2. For each image name:
+                - Retrieve the corresponding image ID using `get_image_id`.
+                - If image ID is found:
+                    - Attempt to delete the image using Cisco Catalyst Center API.
+                    - Log the response and update status based on API result.
+                - If image ID is not found or an exception occurs, log it as a failure.
+            3. After processing all images:
+                - Summarize the results into success and failure messages.
+                - Set final operation result status (`success` or `failed`) based on outcomes.
+        """
+        image_names = config.get("image_name", [])
+        self.log("Image names to be deleted: {0}".format(image_names), "INFO")
+        if not image_names:
+            self.msg = "No image names provided for deletion."
+            self.set_operation_result("failed", False, self.msg, "ERROR").check_return_status()
+
+        results = []
+
+        for image_name in image_names:
+            image_id = self.get_image_id(image_name)
+
+            if not image_id:
+                msg = "Image '{0}' does not exist in Cisco Catalyst Center.".format(image_name)
+                results.append({"image": image_name, "status": "failed", "message": msg})
+                continue
+
+            try:
+                self.log("Attempting to delete image '{0}' with ID '{1}'.".format(image_name, image_id), "INFO")
+                response = self.dnac._exec(
+                    family="software_image_management_swim",
+                    function='delete_image_v1',
+                    op_modifies=True,
+                    params={"id": image_id}
+                )
+                self.check_tasks_response_status(response, "delete_image_v1")
+                self.log("Received API response from 'delete_image_v1': {0}".format(str(response)), "DEBUG")
+
+                if self.status not in ["failed", "exited"]:
+                    msg = "Image '{0}' deleted successfully.".format(image_name)
+                    results.append({"image": image_name, "status": "success", "message": msg})
+                else:
+                    msg = "Image '{0}' failed to delete: {1}".format(image_name, self.msg)
+                    results.append({"image": image_name, "status": "failed", "message": msg})
+
+            except Exception as e:
+                msg = "Image '{0}' failed to delete due to exception: {1}".format(image_name, str(e))
+                results.append({"image": image_name, "status": "failed", "message": msg})
+
+        # Summarize results
+        success_msgs = []
+        failure_msgs = []
+
+        for res in results:
+            log_level = "INFO" if res["status"] == "success" else "ERROR"
+            self.set_operation_result(res["status"], res["status"] == "success", res["message"], log_level)
+
+            if res["status"] == "success":
+                success_msgs.append("Image {0} deleted successfully.".format(res["image"]))
+            else:
+                failure_msgs.append("Image {0} failed to delete.".format(res["image"]))
+
+        # Final decision
+        if success_msgs:
+            full_msg = " ".join(success_msgs + failure_msgs)
+            self.msg = full_msg
+            self.set_operation_result("success", True, self.msg, "INFO")
+            return self
+        else:
+            full_msg = " ".join(failure_msgs)
+            self.msg = full_msg
+            self.set_operation_result("failed", False, self.msg, "ERROR").check_return_status()
+
+    def verify_diff_deleted(self, config):
+
+        image_names = config.get("image_name", [])
+        self.log("Image names to be deleted: {0}".format(image_names), "INFO")
+
+        for image_name in image_names:
+            image_id = self.get_image_id_v1(image_name)
+
+            if not image_id:
+                self.msg = "Image '{0}' does not exist in Cisco Catalyst Center. hence deletion has been verified".format(image_name)
+                self.log(self.msg, "INFO")
+            else:
+                self.msg = "Image '{0}' still exists in Cisco Catalyst Center. Deletion has not been verified.".format(image_name)
+                self.log(self.msg, "ERROR")
+
+        return self
+
     def update_swim_profile_messages(self):
         """
         Verify the merged status (Importing/Tagging/Distributing/Activating) of the SWIM Image in devices in Cisco Catalyst Center.
@@ -2944,7 +3130,7 @@ def main():
                     'dnac_api_task_timeout': {'type': 'int', "default": 1200},
                     'dnac_task_poll_interval': {'type': 'int', "default": 2},
                     'config': {'required': True, 'type': 'list', 'elements': 'dict'},
-                    'state': {'default': 'merged', 'choices': ['merged']}
+                    'state': {'default': 'merged', 'choices': ['merged', 'deleted']}
                     }
 
     module = AnsibleModule(argument_spec=element_spec,
