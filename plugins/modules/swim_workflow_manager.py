@@ -60,7 +60,10 @@ options:
     required: true
     suboptions:
       image_name:
-        description: Details of image to be deleted.
+        description:
+          - Details of image to be deleted.
+          - This parameter is mandatory to delete
+          - Works only in state 'deleted'.
         type: list
         elements: str
       import_image_details:
@@ -909,7 +912,6 @@ class Swim(DnacBase):
           will contain the validated configuration. If it fails, 'self.status' will be 'failed',
           'self.msg' will describe the validation issues.
         """
-        self.log(self.config)
         if not self.config:
             self.status = "success"
             self.msg = "Configuration is not available in the playbook for validation"
@@ -1681,7 +1683,6 @@ class Swim(DnacBase):
         if self.want.get("image_name"):
             have = {}
             names = self.want.get("image_name")
-            self.log(names)
 
             image_id_map = {}
 
@@ -1906,7 +1907,6 @@ class Swim(DnacBase):
             import, tagging, distribution, and activation. It stores these details in the 'want' dictionary
             for later use in the Ansible module.
         """
-        self.log(config)
         want = {}
         import_image_details = config.get("import_image_details", {})
         if import_image_details:
