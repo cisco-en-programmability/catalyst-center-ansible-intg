@@ -920,6 +920,7 @@ class Swim(DnacBase):
 
         temp_spec = dict(
             image_name=dict(type='list', elements='str'),
+            sync_cco=dict(type='bool'),
             import_image_details=dict(type='dict'),
             tagging_details=dict(type='dict'),
             image_distribution_details=dict(type='dict'),
@@ -1970,6 +1971,7 @@ class Swim(DnacBase):
         want["distribution_details"] = config.get("image_distribution_details")
         want["activation_details"] = config.get("image_activation_details")
         want["image_name"] = config.get("image_name")
+        want["sync_cco"] = config.get("sync_cco")
 
         self.want = want
         self.log("Desired State (want): {0}".format(str(self.want)), "INFO")
@@ -3706,6 +3708,10 @@ class Swim(DnacBase):
             operations are successful, 'changed' is set to True.
         """
 
+        config_cco = config.get("sync_cco", False)
+        if config_cco:
+            self.sync_cco_image()
+
         if config.get("tagging_details"):
             self.get_diff_tagging().check_return_status()
 
@@ -3716,7 +3722,57 @@ class Swim(DnacBase):
             self.get_diff_activation().check_return_status()
 
         return self
+    
+    def sync_cco_image(self):
+        """
+        Synchronize software images from Cisco CCO to Cisco Catalyst Center.
+        Args:
+            self (object): An instance of a class used for interacting with Cisco Catalyst Center.
+        Returns:
+            self (object): An instance of a class used for interacting with Cisco Catalyst Center.
+        Description:
+            This method synchronizes software images from Cisco CCO to Cisco Catalyst Center.
+            It retrieves the image details from the playbook and triggers the synchronization process.
+            The method logs the status of the synchronization and updates the result accordingly.
+        """
+        self.log("Starting synchronization of software images from Cisco CCO.", "INFO")
 
+        sync_cco = self.want.get("sync_cco")
+        self.log(sync_cco)
+
+        if not sync_cco:
+            self.log("No CCO synchronization details found. Skipping synchronization.", "INFO")
+            self.set_operation_result("failed", False, self.msg, "ERROR").check_return_status()
+        try:
+            response = self.dnac._exec(
+                family="software_image_management_swim",
+                function="initiates_sync_of_software_images_from_cisco_com_v1",
+                op_modifies=True,
+            )
+            self.log("Received API response from 'initiates_sync_of_software_images_from_cisco_com_v1' for Update: {0}".format(response), "DEBUG")
+            self.check_tasks_response_status(response, "initiates_sync_of_software_images_from_cisco_com_v1")
+
+            # Handle successful update
+            if self.status not in ["failed", "exited"]:
+                self.msg = ("Synchronization of software images from Cisco CCO initiated successfully, Fetched recommended image(s) from cisco.com")
+                self.set_operation_result("success", True, self.msg, "INFO")
+                return self
+
+            # Handle failed update
+            if self.status == "failed":
+                fail_reason = self.msg
+                self.msg = "Synchronization of software images from Cisco CCO failed: {}".format(fail_reason)
+                self.set_operation_result("failed", False, self.msg, "ERROR").check_return_status()
+
+        except Exception as e:
+            self.msg = ("Error occurred during CCO image synchronization: {}".format(e), "ERROR")
+            self.set_operation_result("failed", False, self.msg, "ERROR").check_return_status()
+            # self.result["response"] = self.msg
+            # self.result["msg"] = self.msg
+            # self.log(self.msg, "WARNING")
+            # self.result["response"] = self.msg
+            # self.result["changed"] = False
+            # return self
     def verify_diff_imported(self, import_type):
         """
         Verify the successful import of a software image into Cisco Catalyst Center.
