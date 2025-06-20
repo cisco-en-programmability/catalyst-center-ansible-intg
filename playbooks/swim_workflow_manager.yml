@@ -23,4 +23,9 @@
         dnac_task_poll_interval: 1
         state: merged
         config:
-          - sync_cco: true
+          - image_distribution_details:
+              # image_name: cat9k_iosxe.17.12.02.SPA.bin
+              site_name: Global/Chennai/LTTS2
+          # - image_activation_details:
+          #     site_name: Global/Chennai/LTTS2
+          #     device_ip_address: 204.1.2.4

@@ -1756,7 +1756,7 @@ class Swim(DnacBase):
             # check if image for distributon is available
             if distribution_details.get("image_name"):
                 name = distribution_details.get("image_name").split("/")[-1]
-                image_id = self.get_image_id(name)
+                image_id = self.get_image_id_v1(name)
                 have["distribution_image_id"] = image_id
 
             elif self.have.get("imported_image_id"):
@@ -1764,12 +1764,8 @@ class Swim(DnacBase):
 
             else:
                 self.log(
-                    "Image details required for distribution have not been provided",
+                    "Image details for distribution have not been provided, will proceed with the golden image",
                     "ERROR",
-                )
-                self.module.fail_json(
-                    msg="Image details required for distribution have not been provided",
-                    response=[],
                 )
 
             device_params = {
@@ -1815,7 +1811,7 @@ class Swim(DnacBase):
             # check if image for activation is available
             if activation_details.get("image_name"):
                 name = activation_details.get("image_name").split("/")[-1]
-                image_id = self.get_image_id(name)
+                image_id = self.get_image_id_v1(name)
                 have["activation_image_id"] = image_id
 
             elif self.have.get("imported_image_id"):
@@ -1824,10 +1820,6 @@ class Swim(DnacBase):
                 self.log(
                     "Image details required for activation have not been provided",
                     "ERROR",
-                )
-                self.module.fail_json(
-                    msg="Image details required for activation have not been provided",
-                    response=[],
                 )
 
             site_name = activation_details.get("site_name")
@@ -2921,7 +2913,7 @@ class Swim(DnacBase):
             )
 
         image_ids = {
-            image: self.get_image_id(image) for image in all_images_for_distribution
+            image: self.get_image_id_v1(image) for image in all_images_for_distribution
         }
         self.log("Resolved image IDs: {0}".format(image_ids), "DEBUG")
 
@@ -3015,11 +3007,18 @@ class Swim(DnacBase):
                     if not task_details.get(
                         "isError"
                     ) and "completed successfully" in task_details.get("progress"):
-                        success_msg = (
-                            "'{0}' (ID: {1}) successfully distributed.".format(
-                                image_name, image_id
+                        if image_id:
+                            success_msg = (
+                                "'{0}' (ID: {1}) successfully distributed for device {2}.".format(
+                                    image_name, image_id, elg_device_ip
+                                )
                             )
-                        )
+                        else:
+                            success_msg = (
+                                "Golden image successfully distributed to device {0}.".format(
+                                    elg_device_ip
+                                )
+                            )
                         success_msg_parts.append(success_msg)
                         success_distribution_list.append(image_name)
                         self.log(success_msg, "INFO")
@@ -3181,10 +3180,18 @@ class Swim(DnacBase):
                 failed_image_map[img_name] = []
             failed_image_map[img_name].append(device_ip)
 
-        success_msg_parts = [
-            "{} to {}".format(img, ", ".join(devices))
-            for img, devices in success_image_map.items()
-        ]
+        if list(success_image_map.keys()) == [None]:
+            # Only None as key
+            success_msg_parts = [
+                "Golden image has been sent to {}".format(", ".join(devices))
+                for devices in success_image_map.values()
+            ]
+        else:
+            # Normal case
+            success_msg_parts = [
+                "{} to {}".format(img, ", ".join(devices))
+                for img, devices in success_image_map.items()
+            ]
 
         failed_msg_parts = [
             "{} to {}".format(img, ", ".join(devices))
@@ -3352,12 +3359,14 @@ class Swim(DnacBase):
             all_images_for_activation.extend([str(img) for img in sub_package_images])
 
         image_ids = {
-            image: self.get_image_id(image) for image in all_images_for_activation
+            image: self.get_image_id_v1(image) for image in all_images_for_activation
         }
-        self.log(
-            "Images identified for activation: {0}".format(", ".join(image_ids.keys())),
-            "INFO",
-        )
+
+        if image_ids and not (len(image_ids) == 1 and None in image_ids):
+            self.log(
+                "Images identified for activation: {0}".format(", ".join(str(k) for k in image_ids.keys())),
+                "INFO",
+            )
 
         if activation_device_id:
             success_msg_parts = []
@@ -3963,7 +3972,8 @@ class Swim(DnacBase):
         """
 
         image_id = self.have.get("distribution_image_id")
-        image_name = self.get_image_name_from_id(image_id)
+        if image_id:
+            image_name = self.get_image_name_from_id(image_id)
 
         if self.have.get("distribution_device_id"):
             if self.single_device_distribution:
@@ -3982,10 +3992,14 @@ class Swim(DnacBase):
                     "INFO",
                 )
         elif self.complete_successful_distribution:
-            self.msg = """The requested image '{0}', with ID '{1}', has been successfully distributed to all devices within the specified
-                     site in the Cisco Catalyst Center.""".format(
-                image_name, image_id
-            )
+            if image_id:
+                self.msg = """The requested image '{0}', with ID '{1}', has been successfully distributed to all devices within the specified
+                        site in the Cisco Catalyst Center.""".format(
+                    image_name, image_id
+                )
+            else:
+                self.msg = """The golden image has been successfully distributed to all devices within the specified site in the Cisco Catalyst Center."""
+                
             self.log(self.msg, "INFO")
         elif self.partial_successful_distribution:
             self.msg = """T"The requested image '{0}', with ID '{1}', has been partially distributed across some devices in the Cisco Catalyst
