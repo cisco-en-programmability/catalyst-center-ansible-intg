@@ -3152,7 +3152,7 @@ class Swim(DnacBase):
         bulk_payload = []
 
         if self.compare_dnac_versions(self.get_ccc_version(), "2.3.7.9") <= 0:
-            # -------- OLD VERSION (Sequential Distribution + Task Monitoring) --------
+            # -------- OLD VERSION (Sequential Distribution) -------- #
             self.log(
                 "Using old version of SWIM API for image distribution (before 2.3.7.9)"
             )
@@ -3205,7 +3205,7 @@ class Swim(DnacBase):
                     failed_distribution_list.append((device_ip, img_name))
 
         else:
-            # -------- NEW VERSION (Bulk Distribution) --------
+            # -------- NEW VERSION (Bulk Distribution) -------- #
             for device_uuid in device_uuid_list:
                 device_ip = self.get_device_ip_from_id(device_uuid)
                 self.log("Processing device: {0}".format(device_ip), "DEBUG")
@@ -3233,32 +3233,32 @@ class Swim(DnacBase):
 
             # -------- Bulk API Call --------
             self.log(bulk_payload, "DEBUG")
-        # try:
-            response = self.dnac._exec(
-                family="software_image_management_swim",
-                function="bulk_distribute_images_on_network_devices",
-                op_modifies=True,
-                params={"payload": bulk_payload},
-            )
+            try:
+                response = self.dnac._exec(
+                    family="software_image_management_swim",
+                    function="bulk_distribute_images_on_network_devices",
+                    op_modifies=True,
+                    params={"payload": bulk_payload},
+                )
 
-            self.log("API response from 'bulk_distribute_images_on_network_devices': {0}".format(str(response)), "DEBUG")
+                self.log("API response from 'bulk_distribute_images_on_network_devices': {0}".format(str(response)), "DEBUG")
 
-            self.check_tasks_response_status(
-                response, "bulk_distribute_images_on_network_devices"
-            )
+                self.check_tasks_response_status(
+                    response, "bulk_distribute_images_on_network_devices"
+                )
 
-            if response and self.status not in ["failed", "exited"]:
-                self.msg = "Bulk image distribution completed successfully."
-                self.set_operation_result("success", True, self.msg, "INFO")
-                return self
-            else:
-                self.msg = "Bulk image distribution failed."
+                if response and self.status not in ["failed", "exited"]:
+                    self.msg = "Bulk image distribution completed successfully."
+                    self.set_operation_result("success", True, self.msg, "INFO")
+                    return self
+                else:
+                    self.msg = "Bulk image distribution failed."
+                    self.set_operation_result("failed", False, self.msg, "ERROR").check_return_status()
+
+            except Exception as e:
+                self.msg = "Exception occurred during bulk image distribution: {0}".format(str(e))
                 self.set_operation_result("failed", False, self.msg, "ERROR").check_return_status()
-
-        # except Exception as e:
-            self.msg = "Exception occurred during bulk image distribution: {0}".format(str(e))
-            self.set_operation_result("failed", False, self.msg, "ERROR").check_return_status()
-            self.log(self.msg, "ERROR")
+                self.log(self.msg, "ERROR")
 
         # -------- Final Summary Logging --------
         success_image_map = {}
@@ -3556,26 +3556,32 @@ class Swim(DnacBase):
 
             # NEW FLOW (for DNAC >= 2.3.7.9)
             else:
-                for image_name, image_id in image_ids.items():
-                    activation_payload_list.append(
-                        {
-                            "installedImages": [{"id": image_id}],
-                            "compatibleFeatures": activation_details.get("compatible_features", []),
-                            "networkValidationIds": activation_details.get("network_validation_ids", []),
-                        }
-                    )
+                self.log("Using new SWIM API for image activation (after 2.3.7.9)", "INFO")
+
+                activation_device_id = self.have.get("activation_device_id")
+
+                # Correct: Combine all image IDs into one installedImages list
+                activation_payload = {
+                    "id": activation_device_id,
+                    "installedImages": [{"id": image_id} for image_id in image_ids.values()],
+                    "compatibleFeatures": activation_details.get("compatible_features", []),
+                    "networkValidationIds": activation_details.get("network_validation_ids", []),
+                }
+
+                self.log("Payload for 'update_images_on_the_network_device': {0}".format(str(activation_payload)), "DEBUG")
 
                 try:
                     response = self.dnac._exec(
                         family="software_image_management_swim",
                         function="update_images_on_the_network_device",
                         op_modifies=True,
-                        params=activation_payload_list,
+                        params=activation_payload
                     )
 
                     self.log("API response from 'update_images_on_the_network_device': {0}".format(str(response)), "DEBUG")
+                    self.check_tasks_response_status(response, "update_images_on_the_network_device")
 
-                    device_ip = self.get_device_ip_from_id(self.have.get("activation_device_id"))
+                    device_ip = self.get_device_ip_from_id(activation_device_id)
                     if response and self.status not in ["failed", "exited"]:
                         success_msg_parts = ["All images activated successfully on device {0}".format(device_ip)]
                         success_activation_list = list(image_ids.keys())
@@ -3584,8 +3590,8 @@ class Swim(DnacBase):
                         failed_activation_list = list(image_ids.keys())
 
                 except Exception as e:
-                    self.log("Exception during bulk activation: {0}".format(str(e)), "ERROR")
-                    failed_msg_parts = ["Exception during bulk activation: {0}".format(str(e))]
+                    self.log("Exception during activation: {0}".format(str(e)), "ERROR")
+                    failed_msg_parts = ["Exception during activation: {0}".format(str(e))]
                     failed_activation_list = list(image_ids.keys())
 
             # Final status summary
@@ -3638,148 +3644,135 @@ class Swim(DnacBase):
         elg_device_list = []
         device_ip_for_not_elg_list = []
 
-        for device_uuid in device_uuid_list:
-            device_ip = self.get_device_ip_from_id(device_uuid)
-            activated = False
-            self.log("Checking compliance for device {0}".format(device_ip), "INFO")
+        # OLD FLOW (for DNAC < 2.3.7.9)
+        if self.compare_dnac_versions(self.get_ccc_version(), "2.3.7.9") < 0:
+            for device_uuid in device_uuid_list:
+                device_ip = self.get_device_ip_from_id(device_uuid)
+                activated = False
+                self.log("Checking compliance for device {0}".format(device_ip), "INFO")
 
-            for image_name, image_id in image_ids.items():
+                for image_name, image_id in image_ids.items():
+                    elg_device_ip, device_id = self.check_device_compliance(device_uuid, image_name)
 
-                elg_device_ip, device_id = self.check_device_compliance(
-                    device_uuid, image_name
-                )
+                    if not elg_device_ip:
+                        device_ip_for_not_elg = self.get_device_ip_from_id(device_uuid)
+                        device_ip_for_not_elg_list.append(device_ip_for_not_elg)
+                        self.log("Device {0} is not eligible for activation of image '{1}'".format(device_ip, image_name), "WARNING")
+                        continue
 
-                if not elg_device_ip:
-                    device_ip_for_not_elg = self.get_device_ip_from_id(device_uuid)
-                    device_ip_for_not_elg_list.append(device_ip_for_not_elg)
-                    self.log(
-                        "Device {0} is not eligible for activation of image '{1}'".format(
-                            device_ip, image_name
-                        ),
-                        "WARNING",
+                    self.log("Device {0} is eligible for activation of image {1}".format(elg_device_ip, image_name), "INFO")
+                    elg_device_list.append(elg_device_ip)
+
+                    self.log("Starting activation of image '{0}' on device {1}".format(image_name, device_ip), "INFO")
+
+                    payload = [
+                        dict(
+                            activateLowerImageVersion=activation_details.get("activate_lower_image_version"),
+                            deviceUpgradeMode=activation_details.get("device_upgrade_mode"),
+                            distributeIfNeeded=activation_details.get("distribute_if_needed"),
+                            deviceUuid=device_id,
+                            imageUuidList=[image_id],
+                        )
+                    ]
+
+                    activation_params = dict(
+                        schedule_validate=activation_details.get("schedule_validate"),
+                        payload=payload,
                     )
-                    continue
+                    self.log("Activation Params: {0}".format(str(activation_params)), "INFO")
 
-                self.log(
-                    "Device {0} is eligible for activation of image {1}".format(
-                        elg_device_ip, image_name
-                    ),
-                    "INFO",
-                )
-                elg_device_list.append(elg_device_ip)
-
-                self.log(
-                    "Starting activation of image '{0}' on device {1}".format(
-                        image_name, device_ip
-                    ),
-                    "INFO",
-                )
-
-                payload = [
-                    dict(
-                        activateLowerImageVersion=activation_details.get(
-                            "activate_lower_image_version"
-                        ),
-                        deviceUpgradeMode=activation_details.get("device_upgrade_mode"),
-                        distributeIfNeeded=activation_details.get(
-                            "distribute_if_needed"
-                        ),
-                        deviceUuid=device_id,
-                        imageUuidList=[image_id],
+                    response = self.dnac._exec(
+                        family="software_image_management_swim",
+                        function="trigger_software_image_activation",
+                        op_modifies=True,
+                        params=activation_params,
                     )
-                ]
+                    self.log("Received API from from 'trigger_software_image_activation': {0}".format(str(response)), "DEBUG")
 
-                activation_params = dict(
-                    schedule_validate=activation_details.get("schedule_validate"),
-                    payload=payload,
-                )
-                self.log(
-                    "Activation Params: {0}".format(str(activation_params)), "INFO"
-                )
+                    if response:
+                        task_id = response.get("response", {}).get("taskId")
+                        activation_task_dict[(device_ip, image_name)] = task_id
+                        self.log("Task ID {0} assigned for image {1} activation on device {2}".format(task_id, image_name, device_ip), "INFO")
+                        activated = True
 
+                if not activated:
+                    already_activated_devices.append(device_ip)
+                    self.log("Image already activated on device {0}".format(device_ip), "INFO")
+
+            # Check activation status sequentially
+            for (device_ip, img_name), task_id in activation_task_dict.items():
+                task_name = "Activation for {0}".format(device_ip)
+                self.log("Checking activation status for device {0}, image {1}, Task ID {2}".format(device_ip, img_name, task_id), "INFO")
+                success_msg = "Successfully activated image {0} on device {1}".format(img_name, device_ip)
+
+                status_check = self.get_task_status_from_tasks_by_id(task_id, task_name, success_msg)
+
+                if status_check.status == "success":
+                    success_activation_list.append((device_ip, img_name))
+                    self.log("Activation successful for device {0}, image {1}".format(device_ip, img_name), "INFO")
+                else:
+                    failed_activation_list.append((device_ip, img_name))
+                    self.log("Activation failed for device {0}, image {1}".format(device_ip, img_name), "ERROR")
+
+            success_image_map = {}
+            failed_image_map = {}
+
+            for device_ip, img_name in success_activation_list:
+                success_image_map.setdefault(img_name, []).append(device_ip)
+
+            for device_ip, img_name in failed_activation_list:
+                failed_image_map.setdefault(img_name, []).append(device_ip)
+
+            success_msg_parts = [
+                "{} to {}".format(img, ", ".join(devices)) for img, devices in success_image_map.items()
+            ]
+
+            failed_msg_parts = [
+                "{} to {}".format(img, ", ".join(devices)) for img, devices in failed_image_map.items()
+            ]
+
+        # NEW FLOW (for DNAC >= 2.3.7.9)
+        else:
+            activation_payload_list = []
+            for device_uuid in device_uuid_list:
+                device_ip = self.get_device_ip_from_id(device_uuid)
+                for image_name, image_id in image_ids.items():
+                    elg_device_ip, device_id = self.check_device_compliance(device_uuid, image_name)
+
+                    if not elg_device_ip:
+                        device_ip_for_not_elg_list.append(device_ip)
+                        continue
+
+                    activation_payload_list.append(
+                        {
+                            "id": device_id,
+                            "installedImages": [{"id": image_id}],
+                            "compatibleFeatures": activation_details.get("compatible_features", []),
+                            "networkValidationIds": activation_details.get("network_validation_ids", []),
+                        }
+                    )
+
+            try:
                 response = self.dnac._exec(
                     family="software_image_management_swim",
-                    function="trigger_software_image_activation",
+                    function="bulk_update_images_on_network_devices",
                     op_modifies=True,
-                    params=activation_params,
+                    params={"payload": activation_payload_list},
                 )
-                self.log(
-                    "Received API from from 'trigger_software_image_activation': {0}".format(
-                        str(response)
-                    ),
-                    "DEBUG",
-                )
-
-                if response:
-                    task_id = response.get("response", {}).get("taskId")
-                    activation_task_dict[(device_ip, image_name)] = task_id
-                    self.log(
-                        "Task ID {0} assigned for image {1} activation on device {2}".format(
-                            task_id, image_name, device_ip
-                        ),
-                        "INFO",
-                    )
-                    activated = True
-
-            if not activated:
-                already_activated_devices.append(device_ip)
-                self.log(
-                    "Image already activated on device {0}".format(device_ip), "INFO"
-                )
-
-        # Check activation status sequentially
-        for (device_ip, img_name), task_id in activation_task_dict.items():
-            task_name = "Activation for {0}".format(device_ip)
-            self.log(
-                "Checking activation status for device {0}, image {1}, Task ID {2}".format(
-                    device_ip, img_name, task_id
-                ),
-                "INFO",
-            )
-            success_msg = "Successfully activated image {0} on device {1}".format(
-                img_name, device_ip
-            )
-
-            status_check = self.get_task_status_from_tasks_by_id(
-                task_id, task_name, success_msg
-            )
-
-            if status_check.status == "success":
-                success_activation_list.append((device_ip, img_name))
-                self.log(
-                    "Activation successful for device {0}, image {1}".format(
-                        device_ip, img_name
-                    ),
-                    "INFO",
-                )
-            else:
-                failed_activation_list.append((device_ip, img_name))
-                self.log(
-                    "Activation failed for device {0}, image {1}".format(
-                        device_ip, img_name
-                    ),
-                    "ERROR",
-                )
-
-        success_image_map = {}
-        failed_image_map = {}
-
-        for device_ip, img_name in success_activation_list:
-            success_image_map.setdefault(img_name, []).append(device_ip)
-
-        for device_ip, img_name in failed_activation_list:
-            failed_image_map.setdefault(img_name, []).append(device_ip)
-
-        # Building message parts
-        success_msg_parts = [
-            "{} to {}".format(img, ", ".join(devices))
-            for img, devices in success_image_map.items()
-        ]
-
-        failed_msg_parts = [
-            "{} to {}".format(img, ", ".join(devices))
-            for img, devices in failed_image_map.items()
-        ]
+                self.log("API response from 'bulk_update_images_on_network_devices': {0}".format(str(response)), "DEBUG")
+                self.check_tasks_response_status(response, "bulk_update_images_on_network_devices")
+                if response and self.status not in ["failed", "exited"]:
+                    self.msg = "All eligible images activated successfully on the devices."
+                    self.set_operation_result("success", True, self.msg, "INFO")
+                    return self
+                else:
+                    self.msg = "Some or all image activations failed"
+                    failed_activation_list = list(image_ids.keys())
+                    self.set_operation_result("failed", False, self.msg, "ERROR").check_return_status()
+            except Exception as e:
+                self.log("Exception during bulk activation: {0}".format(str(e)), "ERROR")
+                failed_msg_parts = ["Exception during bulk activation: {0}".format(str(e))]
+                failed_activation_list = list(image_ids.keys())
 
         # Final single-line message formation
         final_msg = ""
@@ -3790,21 +3783,20 @@ class Swim(DnacBase):
                 final_msg += ". "
             final_msg += "Failed to activate: " + "; ".join(failed_msg_parts) + "."
 
+        self.msg = final_msg
+        self.log("Final activation status: {0}".format(final_msg), "INFO")
+
         if not success_activation_list and failed_activation_list:
-            self.msg = final_msg
-            self.set_operation_result(
-                "failed", False, self.msg, "ERROR"
-            ).check_return_status()
+            self.set_operation_result("failed", False, self.msg, "ERROR").check_return_status()
         elif success_activation_list and failed_activation_list:
-            self.msg = final_msg
             self.set_operation_result("success", True, self.msg, "INFO")
             self.partial_successful_activation = True
         else:
-            self.msg = final_msg
             self.set_operation_result("success", True, self.msg, "INFO")
             self.complete_successful_activation = True
 
         return self
+
 
     def get_diff_merged(self, config):
         """
