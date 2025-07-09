@@ -66,6 +66,11 @@ options:
           - Works only in state 'deleted'.
         type: list
         elements: str
+      sync_cco:
+        description: Set to True to synchronize the image
+          with Cisco Connection Online (CCO).
+        type: bool
+        default: false
       import_image_details:
         description: Details of image being imported
         type: dict
@@ -546,6 +551,18 @@ options:
               ScheduleValidate, validates data before
               schedule (optional).
             type: bool
+          compatible_features:
+            description: List of compatible feature key-value pairs.
+            type: list
+            elements: dict
+            suboptions:
+              key:
+                description: Feature name. (e.g., "ISSU", "Rommon update")
+                type: str
+              value:
+                description: Feature status (e.g., Enable or Disable).
+                type: str
+
 requirements:
   - dnacentersdk == 2.7.3
   - python >= 3.9
@@ -920,7 +937,7 @@ class Swim(DnacBase):
 
         temp_spec = dict(
             image_name=dict(type='list', elements='str'),
-            sync_cco=dict(type='bool'),
+            sync_cco=dict(type='bool', default=False),
             import_image_details=dict(type='dict'),
             tagging_details=dict(type='dict'),
             image_distribution_details=dict(type='dict'),
@@ -3212,7 +3229,7 @@ class Swim(DnacBase):
                 device_distributed_images = []
 
                 for img_name, img_id in image_ids.items():
-                    elg_device_ip, _ = self.check_device_compliance(device_uuid, img_name)
+                    elg_device_ip, elg_device_uuid = self.check_device_compliance(device_uuid, img_name)
 
                     if not elg_device_ip:
                         device_ip_for_not_elg_list.append(device_ip)
@@ -3314,7 +3331,6 @@ class Swim(DnacBase):
             self.complete_successful_distribution = True
 
         return self
-
 
     def check_device_compliance(self, device_uuid, image_name):
         """
@@ -3797,7 +3813,6 @@ class Swim(DnacBase):
 
         return self
 
-
     def get_diff_merged(self, config):
         """
         Get tagging details and then trigger distribution followed by activation if specified in the playbook.
@@ -3827,7 +3842,7 @@ class Swim(DnacBase):
             self.get_diff_activation().check_return_status()
 
         return self
-    
+
     def sync_cco_image(self):
         """
         Synchronize software images from Cisco CCO to Cisco Catalyst Center.
@@ -3878,6 +3893,7 @@ class Swim(DnacBase):
             # self.result["response"] = self.msg
             # self.result["changed"] = False
             # return self
+
     def verify_diff_imported(self, import_type):
         """
         Verify the successful import of a software image into Cisco Catalyst Center.
@@ -4095,7 +4111,7 @@ class Swim(DnacBase):
                 )
             else:
                 self.msg = """The golden image has been successfully distributed to all devices within the specified site in the Cisco Catalyst Center."""
-                
+
             self.log(self.msg, "INFO")
         elif self.partial_successful_distribution:
             self.msg = """T"The requested image '{0}', with ID '{1}', has been partially distributed across some devices in the Cisco Catalyst
