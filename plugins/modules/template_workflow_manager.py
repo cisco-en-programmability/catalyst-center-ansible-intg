@@ -111,7 +111,7 @@ options:
                 description: Specifies if the template
                   is composite.
                 type: bool
-              description:
+              template_description:
                 description: Provides a description
                   of the template.
                 type: str
@@ -1411,7 +1411,7 @@ EXAMPLES = r"""
           author: string
           composite: true
           custom_params_order: true
-          description: string
+          template_description: string
           device_types:
             - product_family: string
               product_series: string
@@ -1448,7 +1448,7 @@ EXAMPLES = r"""
           author: string
           composite: true
           custom_params_order: true
-          description: string
+          template_description: string
           device_types:
             - product_family: string
               product_series: string
@@ -1566,7 +1566,7 @@ EXAMPLES = r"""
           author: Test_User
           composite: false
           custom_params_order: true
-          description: Template to configure access
+          template_description: Template to configure access
             VLAN and access interfaces
           device_types:
             - product_family: Switches and Hubs
@@ -1606,7 +1606,7 @@ EXAMPLES = r"""
     config:
       - configuration_templates:
           template_name: "Fusion Router Config"
-          description: "VELOCITY template to configure
+          template_description: "VELOCITY template to configure
             L3 handoff and loopback on Catalyst 3850"
           project_name: "Network Configuration Templates"
           tags: []
