@@ -1124,8 +1124,8 @@ options:
                       - When provided, this field takes precedence over 'template_content'.
                       - Supports absolute and relative paths. Relative paths are resolved from the playbook's working
                         directory (typically the directory where `ansible-playbook` is executed).
-                      - For '.j2' files, content is evaluated if validate_template_content is set to true, using Jinja templating engine before being sent to Cisco Catalyst Center;
-                        variables and logic are evaluated using the provided `template_params` and runtime context.
+                      - For '.j2' files, content is evaluated if validate_template_content is set to true, using Jinja templating engine before
+                        being sent to Cisco Catalyst Center; variables and logic are evaluated using the provided `template_params` and runtime context.
                       - For '.txt' files, content is passed transparently to the Cisco Catalyst Center APIs without
                         evaluation or interpolation.
                       - Rendering errors (e.g., missing variables, invalid Jinja syntax) cause the module to fail with a descriptive message.
