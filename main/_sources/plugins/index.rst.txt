@@ -6,7 +6,7 @@
 Cisco.Dnac
 ==========
 
-Collection version 6.46.0
+Collection version 6.47.0
 
 .. contents::
    :local:
