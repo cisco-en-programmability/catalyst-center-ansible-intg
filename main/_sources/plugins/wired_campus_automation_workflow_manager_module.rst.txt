@@ -1815,7 +1815,7 @@ Parameters
 
       .. rst-class:: ansible-option-type-line
 
-      :ansible-option-type:`integer` / :ansible-option-required:`required`
+      :ansible-option-type:`integer`
 
       .. raw:: html
 
@@ -6493,7 +6493,7 @@ Parameters
 
       .. rst-class:: ansible-option-type-line
 
-      :ansible-option-type:`integer` / :ansible-option-required:`required`
+      :ansible-option-type:`integer`
 
       .. raw:: html
 
